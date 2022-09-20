@@ -45,11 +45,21 @@
  * cmd = "ls -l"
  * conj = CONJ_AND
  */
-struct s_cmd
+typedef struct s_cmd
 {
 	char	*cmd;
 	int		conj;
 }	t_cmd;
+
+/**
+ * @brief struct for entire shell programe
+ */
+typedef struct	s_shell
+{
+	char	*line;
+	t_cmd	*cmds;
+}	t_shell;
+
 
 extern char	**environ;
 
