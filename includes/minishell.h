@@ -21,17 +21,35 @@
 # include <errno.h>
 # include <fcntl.h>
 
+# define CONJ_NULL	0
+# define CONJ_PIPE	1
+# define CONJ_AND	2
+# define CONJ_OR	3
+
 // mode in count_word //
-# define WORD 1
-# define LETTER 2
+# define WORD	1
+# define LETTER	2
 
 // mode in ft_split //
-# define FREE 111
-# define BOUND 222
+# define FREE	111
+# define BOUND	222
 
 // mode in ft_strchar //
 # define FRONT 1111
 # define BACK 2222
+
+/**
+ * @brief struct for single command with conjuction
+ * exmaple input: ls -l && wc -l
+ * for index 0
+ * cmd = "ls -l"
+ * conj = CONJ_AND
+ */
+struct s_cmd
+{
+	char	*cmd;
+	int		conj;
+}	t_cmd;
 
 extern char	**environ;
 
