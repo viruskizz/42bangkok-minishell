@@ -1,2 +1,2 @@
-GCC = gcc
-FLAG = -wExtra -wAll -wError
+# GCC = gcc
+# FLAG = -wExtra -wAll -wError
