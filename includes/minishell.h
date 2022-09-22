@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sharnvon <sharnvon@student.42bangkok.com>  +#+  +:+       +#+        */
+/*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 22:58:34 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/09/20 20:36:21 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/09/23 01:22:22 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ typedef struct	s_shell
 {
 	char	*line;
 	t_cmd	*cmds;
+	int		cmd_amount;
 }	t_shell;
 
 

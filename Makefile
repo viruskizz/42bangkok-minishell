@@ -8,7 +8,7 @@ INCLUDES =	-I$(INCLUDE_DIR)
 LIBS = -lreadline
 
 SRC_DIR = srcs
-SRCS = main.c \
+SRCS = minishell.c \
 	minishell_split.c \
 	minishell_util1.c
 
@@ -30,3 +30,7 @@ clean:
 
 fclean: clean
 	$(RM) -f $(NAME)
+
+re: fclean all
+
+PHONY: all clean fclean re

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_util1.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sharnvon <sharnvon@student.42bangkok.com>  +#+  +:+       +#+        */
+/*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 22:48:33 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/09/21 00:35:36 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/09/23 00:03:23 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ void	*ft_calloc(int count, int size)
 	}
 	return (result);
 }
-
+// function compare two strings //
+	//return:1 strings are same | return:0 string aren't same //
 int	string_compare(char *str1, char *str2)
 {
 	int	index;
