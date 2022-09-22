@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 00:28:26 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/09/23 01:27:18 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/09/23 01:44:54 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,22 +63,21 @@ int	cmd_execution(t_shell *shell)
 	char	**command;
 	char	**env_path;
 	char	*path;
-	int		i = 0;
+	int		count;
 	int		index;
+	int		status;
 
-	while (i < shell->cmd_amount)
+	count = 0;
+	while (count < shell->cmd_amount)
 	{	
-		command = ft_split(shell->cmds[i].cmd, ' ', BOUND);
+		command = ft_split(shell->cmds[count].cmd, ' ', BOUND);
 		if (command == NULL)
 			return (-1);
-
-	// //	for (int i = 0; command[i] != NULL; i++)
-	// //		printf("=> %s\n", command[i]);
 
 		//* bashing command section */
 			//* check and execute abslute path */
 		if (access(command[0], F_OK | R_OK | X_OK) == 0)
-			execution_now(shell, command[0], command, i);
+			status = execution_now(shell, command[0], command, count);
 			//* check and execute from env_path */
 		else
 		{
@@ -92,7 +91,7 @@ int	cmd_execution(t_shell *shell)
 				//* command is exist and can execute */
 				if (access(path, F_OK | R_OK | X_OK) == 0)
 				{
-					execution_now(shell, path, command, i);
+					status = execution_now(shell, path, command, count);
 					//free section//
 					for (int i = 0; command[i] != NULL; i++)
 						free(command[i]);
@@ -106,8 +105,8 @@ int	cmd_execution(t_shell *shell)
 				//* command is not exist and can't execute */
 				else if (env_path[index + 1] == NULL)
 				{
-					perror("minishell");
-					printf(": %s\n", command[0]);
+					//perror("minishell");
+					printf("minishell: command not found: %s\n", command[0]);
 					return (-1);
 					// command not exite : error section//
 					// free section //
@@ -116,7 +115,7 @@ int	cmd_execution(t_shell *shell)
 				//free(path);
 			}
 		}
-		i++;
+		count++;
 	}
 	return (0);
 }
@@ -134,14 +133,11 @@ int	main(void)
 		return (0);
 	shell->cmds[0].cmd = ft_stringvalue("ls -la");
 	shell->cmds[0].conj = CONJ_PIPE;
-	shell->cmds[1].cmd = ft_stringvalue("wc -l");
+	shell->cmds[1].cmd = ft_stringvalue("dfdfdfdf dfdf");
 	shell->cmds[1].conj = CONJ_PIPE;
 	shell->cmds[2].cmd = ft_stringvalue("wc -c");
 	shell->cmds[2].conj = CONJ_NULL;
 	shell->cmd_amount = 3;
-	printf("cmd[0] = %s, conj = %d\n", shell->cmds[0].cmd, shell->cmds[0].conj); 
-	printf("cmd[1] = %s, conj = %d\n", shell->cmds[1].cmd, shell->cmds[1].conj); 
-
 	cmd_execution(shell);
 
 
