@@ -6,17 +6,19 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 00:28:26 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/09/23 01:44:54 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/09/24 04:46:23 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	execution_now(t_shell *shell, char *path, char **command, int index)
+int	execute_now(t_shell *shell, char *path, char **command, int index)
 {
 	pid_t	pid;
 	int		status;
 	int 	fd[2];
+	int		from_fd;
+	int		to_fd;
 
 	pipe(fd);
 	pid = fork();
@@ -24,7 +26,25 @@ int	execution_now(t_shell *shell, char *path, char **command, int index)
 		return (-1);
 	else if (pid == 0)
 	{
-		if (index < shell->cmd_amount - 1)
+		// file_fd = open("test.txt", O_RDONLY); //* redirect with <
+		// dup2(file_fd, 0);
+		// close(file_fd);
+		if (shell->cmds[index].redir == FROM)
+		{
+			from_fd = open(shell->cmds[index].file, O_RDWR);
+			dup2(from_fd, 0);
+			close(from_fd);
+		}
+		if (shell->cmds[index].redir == TO || shell->cmds[index].redir == TTO)
+		{
+			if (shell->cmds[index].redir == TO)
+				to_fd = open(shell->cmds[index].file, O_RDWR | O_CREAT);
+			else
+				to_fd = open(shell->cmds[index].file, O_RDWR | O_CREAT | O_APPEND, 0777);
+			dup2(to_fd, 1);
+			close(to_fd);
+		}
+		else if (index < shell->cmd_amount - 1) // * add cordition < << > >> //
 			dup2(fd[1], 1);
 		close(fd[0]);
 		close(fd[1]);
@@ -46,7 +66,7 @@ char	*ft_stringvalue(char *str)
 	char	*result;
 
 	index = 0;
-	result = (char *)ft_calloc(sizeof(char), ft_lencount(str) + 1);
+	result = (char *)ft_calloc(sizeof(char), ft_lencount(str, NULL, STR) + 1);
 	if (result == NULL)
 		return (0);
 	while (str[index] != '\0')
@@ -77,10 +97,11 @@ int	cmd_execution(t_shell *shell)
 		//* bashing command section */
 			//* check and execute abslute path */
 		if (access(command[0], F_OK | R_OK | X_OK) == 0)
-			status = execution_now(shell, command[0], command, count);
+			status = execute_now(shell, command[0], command, count);
 			//* check and execute from env_path */
 		else
 		{
+			// TODO status = execute_envpath()
 			// add "free(str)" in the split //
 			env_path = ft_split(getenv("PATH"), ':', BOUND);  //? FREE ?? //
 			// access: check path //
@@ -91,8 +112,9 @@ int	cmd_execution(t_shell *shell)
 				//* command is exist and can execute */
 				if (access(path, F_OK | R_OK | X_OK) == 0)
 				{
-					status = execution_now(shell, path, command, count);
+					status = execute_now(shell, path, command, count);
 					//free section//
+					// TODO void	make_it_free
 					for (int i = 0; command[i] != NULL; i++)
 						free(command[i]);
 					free(command);
@@ -114,6 +136,8 @@ int	cmd_execution(t_shell *shell)
 				}
 				//free(path);
 			}
+			if ((shell->cmds[count].conj == CONJ_AND && status != 0) || (shell->cmds[count].conj == CONJ_OR && status == 0))
+				break ;
 		}
 		count++;
 	}
@@ -124,20 +148,39 @@ int	main(void)
 {
 	// line = ls -la | wc -l
 	t_shell		*shell;
+	char		dir[100];
+	char		*dir_path;
 
+	// unlink("/Users/shivarakii/Documents/42_coding/real_minishell/test.c");
+	// printf("%s\n",getcwd(dir, 100));
+	// printf("dir = %s | size = %lu\n", dir, sizeof(dir));
+	// dir_path = ft_strjoin(dir, "test/", '/');
+	// printf("=> %s\n", dir_path);
+	// printf("return %d\n", chdir(dir_path));
+	// printf("%s\n",getcwd(dir, 100));
+	// exit (0);
+
+	// * ls -l | wc -l 
 	shell = (t_shell *)ft_calloc(sizeof(t_shell), 1);
 	if (shell == NULL)
 		return (EXIT_FAILURE);
 	shell->cmds = (t_cmd *)ft_calloc(sizeof(t_cmd), 3);
 	if (shell->cmds == NULL)
 		return (0);
-	shell->cmds[0].cmd = ft_stringvalue("ls -la");
+	shell->cmds[0].cmd = ft_stringvalue("wc -l");
 	shell->cmds[0].conj = CONJ_PIPE;
-	shell->cmds[1].cmd = ft_stringvalue("dfdfdfdf dfdf");
+	shell->cmds[0].redir = FROM;
+	shell->cmds[0].file = "test_from.txt";
+
+	shell->cmds[1].cmd = ft_stringvalue("wc -l");
 	shell->cmds[1].conj = CONJ_PIPE;
+
 	shell->cmds[2].cmd = ft_stringvalue("wc -c");
 	shell->cmds[2].conj = CONJ_NULL;
+	shell->cmds[2].redir = TTO;
+	shell->cmds[2].file = "test_tto.txt";
 	shell->cmd_amount = 3;
+	
 	cmd_execution(shell);
 
 

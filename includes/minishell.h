@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 22:58:34 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/09/23 01:22:22 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/09/24 03:45:01 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,12 @@
 # define CONJ_AND	2
 # define CONJ_OR	3
 
+/* redirect flag in t_cmd */
+# define FROM		1 // <  
+# define FFROM		2 // <<
+# define TO			3 // >
+# define TTO		4 // >>
+
 // mode in count_word //
 # define WORD	1
 # define LETTER	2
@@ -35,8 +41,12 @@
 # define BOUND	222
 
 // mode in ft_strchar //
-# define FRONT 1111
-# define BACK 2222
+# define FRONT	1111
+# define BACK	2222
+
+// mode in ft_lencount //
+# define STR	1
+# define STRS	2
 
 /**
  * @brief struct for single command with conjuction
@@ -48,7 +58,9 @@
 typedef struct s_cmd
 {
 	char	*cmd;
+	char	*file;
 	int		conj;
+	int		redir;
 }	t_cmd;
 
 /**
@@ -66,7 +78,7 @@ extern char	**environ;
 
 int		string_compare(char *str1, char *str2);
 int		character_search(char *str, char c, int mode);
-int		ft_lencount(char *str);
+int		ft_lencount(char *str, char **strs, int mode);
 void	*ft_calloc(int count, int size);
 char	**ft_split(char *str, char c, int mode);
 char	*ft_strjoin(char *str1, char *str2, char c);
