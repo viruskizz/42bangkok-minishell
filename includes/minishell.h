@@ -13,18 +13,25 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include "libft.h"
 # include <stdio.h>
 # include <unistd.h>
-# include <readline/readline.h>
 # include <stdlib.h>
 # include <signal.h>
 # include <errno.h>
-# include <fcntl.h>
+# include <fcntl.h> 
+# include <readline/readline.h>
+# include <readline/history.h>
 
 # define CONJ_NULL	0
 # define CONJ_PIPE	1
 # define CONJ_AND	2
 # define CONJ_OR	3
+
+# define OPT_NULL	0
+# define OPT_PIPE	1
+# define OPT_AND	2
+# define OPT_OR		3
 
 /* redirect flag in t_cmd */
 # define FROM		1 // <  
@@ -63,6 +70,14 @@ typedef struct s_cmd
 	int		redir;
 }	t_cmd;
 
+typedef struct s_token
+{
+	char	*token;
+	char	*file;
+	int		opt;
+	int		redir;
+}	t_token;
+
 /**
  * @brief struct for entire shell programe
  */
@@ -70,6 +85,7 @@ typedef struct	s_shell
 {
 	char	*line;
 	t_cmd	*cmds;
+	t_token	*tokens;
 	int		cmd_amount;
 }	t_shell;
 
@@ -79,8 +95,16 @@ extern char	**environ;
 int		string_compare(char *str1, char *str2);
 int		character_search(char *str, char c, int mode);
 int		ft_lencount(char *str, char **strs, int mode);
-void	*ft_calloc(int count, int size);
-char	**ft_split(char *str, char c, int mode);
-char	*ft_strjoin(char *str1, char *str2, char c);
+// void	*ft_calloc(int count, int size);
+char	**ft_split_mode(char *str, char c, int mode);
+char	*ft_midjoin(char *str1, char *str2, char c);
+
+char	**split_input(char *line);
+
+// utility
+void	print_arr(char **str);
+int		is_opt(char *str);
+int		is_spt(char c);
+int		is_end_quote(char c);
 
 #endif

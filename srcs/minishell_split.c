@@ -94,7 +94,7 @@ char	**split_strtranfer(char **result, char *str, char c)
 
 // function split string str by c charactor with mode//
 // (mode) FREE: free string str | BOUND: keep string str //:
-char	**ft_split(char *str, char c, int mode)
+char	**ft_split_mode(char *str, char c, int mode)
 {
 	char	**result;
 	int		index;

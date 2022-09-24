@@ -1,3 +1,4 @@
 *.o
 minishell
 *.txt
+.vscode

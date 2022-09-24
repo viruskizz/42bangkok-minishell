@@ -12,22 +12,22 @@
 
 #include "minishell.h"
 
-void	*ft_calloc(int count, int size)
-{
-	void	*result;
-	int		index;
+// void	*ft_calloc(int count, int size)
+// {
+// 	void	*result;
+// 	int		index;
 
-	index = 0;
-	result = malloc(count * size);
-	if (result == NULL)
-		return (0);
-	while (index < (count * size))
-	{
-		((char *)result)[index] = '\0';
-		index++;
-	}
-	return (result);
-}
+// 	index = 0;
+// 	result = malloc(count * size);
+// 	if (result == NULL)
+// 		return (0);
+// 	while (index < (count * size))
+// 	{
+// 		((char *)result)[index] = '\0';
+// 		index++;
+// 	}
+// 	return (result);
+// }
 // function compare two strings //
 	//return:1 strings are same | return:0 string aren't same //
 int	string_compare(char *str1, char *str2)
@@ -96,7 +96,7 @@ int	ft_lencount(char *str, char **strs, int mode)
 
 // function join string and add charactor c in the middle //
 // example: "1111" + "aa" + '/' = "1111/aa"
-char	*ft_strjoin(char *str1, char *str2, char c)
+char	*ft_midjoin(char *str1, char *str2, char c)
 {
 	char	*result;
 	int		index;

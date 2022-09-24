@@ -90,7 +90,7 @@ int	cmd_execution(t_shell *shell)
 	count = 0;
 	while (count < shell->cmd_amount)
 	{	
-		command = ft_split(shell->cmds[count].cmd, ' ', BOUND);
+		command = ft_split_mode(shell->cmds[count].cmd, ' ', BOUND);
 		if (command == NULL)
 			return (-1);
 
@@ -103,12 +103,12 @@ int	cmd_execution(t_shell *shell)
 		{
 			// TODO status = execute_envpath()
 			// add "free(str)" in the split //
-			env_path = ft_split(getenv("PATH"), ':', BOUND);  //? FREE ?? //
+			env_path = ft_split_mode(getenv("PATH"), ':', BOUND);  //? FREE ?? //
 			// access: check path //
 			index = 0;
 			while (env_path[index] != NULL)
 			{
-				path = ft_strjoin(env_path[index++], command[0], '/');
+				path = ft_midjoin(env_path[index++], command[0], '/');
 				//* command is exist and can execute */
 				if (access(path, F_OK | R_OK | X_OK) == 0)
 				{
@@ -154,7 +154,7 @@ int	main(void)
 	// unlink("/Users/shivarakii/Documents/42_coding/real_minishell/test.c");
 	// printf("%s\n",getcwd(dir, 100));
 	// printf("dir = %s | size = %lu\n", dir, sizeof(dir));
-	// dir_path = ft_strjoin(dir, "test/", '/');
+	// dir_path = ft_midjoin(dir, "test/", '/');
 	// printf("=> %s\n", dir_path);
 	// printf("return %d\n", chdir(dir_path));
 	// printf("%s\n",getcwd(dir, 100));
