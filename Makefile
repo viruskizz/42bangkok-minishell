@@ -25,6 +25,8 @@ $(OBJS): $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
+re: fclean all
+
 clean:
 	$(RM) -rf $(BUILD_DIR)
 
