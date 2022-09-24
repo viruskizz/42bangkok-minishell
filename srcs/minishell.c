@@ -196,7 +196,7 @@ int	cmd_execution(t_shell *shell)
 	return (0);
 }
 
-int	main(void)
+int	test_exe(void)
 {
 	// line = ls -la | wc -l
 	t_shell		*shell;
@@ -226,7 +226,6 @@ int	main(void)
 	
 	cmd_execution(shell);
  	printf("%s\n",getcwd(dir, 100));
-
 	return (EXIT_SUCCESS);
 }
 /*
