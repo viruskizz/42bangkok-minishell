@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 22:58:34 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/09/24 03:45:01 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/09/24 05:26:20 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,19 +32,19 @@
 # define TO			3 // >
 # define TTO		4 // >>
 
-// mode in count_word //
+/* mode in count_word */
 # define WORD	1
 # define LETTER	2
 
-// mode in ft_split //
+/* mode in ft_split */
 # define FREE	111
 # define BOUND	222
 
-// mode in ft_strchar //
+/* mode in ft_strchar */
 # define FRONT	1111
 # define BACK	2222
 
-// mode in ft_lencount //
+/* mode in ft_lencount */
 # define STR	1
 # define STRS	2
 

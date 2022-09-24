@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 22:48:33 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/09/23 13:06:10 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/09/24 14:08:38 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	ft_lencount(char *str, char **strs, int mode)
 	}
 	else if (mode == STRS)
 	{
-		while (strs != NULL)
+		while (strs[count] != NULL)
 			count++;
 	}
 	return (count);

@@ -6,11 +6,34 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 00:28:26 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/09/24 04:46:23 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/09/24 22:33:22 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	child_signal_register(void)
+{
+	struct sigaction	sigint;
+	struct sigaction	sigkill;
+	struct sigaction	endfile;
+	
+
+	// sigemptyset(&sigint.sa_mask);
+	// sigint.sa_flags = 0;
+	// sigint.sa_handler = SIGINT;
+	// sigaction(SIGINT, &sigint, NULL);
+	// sigemptyset(&sigkill.sa_mask);
+	// sigkill.sa_flags = 0;
+	// sigkill.sa_handler = SIGKILL;
+	// sigaction(SIGKILL, &sigkill, NULL);
+	// endfile.sa_flags = 0;
+	// endgile.sa_handler = SIGKILL;
+	// sigaction(SIGKILL, &endfile, NULL);
+	
+
+	
+}
 
 int	execute_now(t_shell *shell, char *path, char **command, int index)
 {
@@ -26,14 +49,22 @@ int	execute_now(t_shell *shell, char *path, char **command, int index)
 		return (-1);
 	else if (pid == 0)
 	{
-		// file_fd = open("test.txt", O_RDONLY); //* redirect with <
-		// dup2(file_fd, 0);
-		// close(file_fd);
 		if (shell->cmds[index].redir == FROM)
 		{
 			from_fd = open(shell->cmds[index].file, O_RDWR);
 			dup2(from_fd, 0);
 			close(from_fd);
+		}
+		else if (shell->cmds[index].redir == FFROM)
+		{
+			// char **line;
+			// int count = 0;
+			// while(string_compare(shell->cmds[index].file, line) == 0)
+			// {
+			// 	// get_next_lin from so_long;
+			// 	//
+				
+			// }
 		}
 		if (shell->cmds[index].redir == TO || shell->cmds[index].redir == TTO)
 		{
@@ -88,15 +119,36 @@ int	cmd_execution(t_shell *shell)
 	int		status;
 
 	count = 0;
+	status = 0;
 	while (count < shell->cmd_amount)
 	{	
 		command = ft_split(shell->cmds[count].cmd, ' ', BOUND);
 		if (command == NULL)
 			return (-1);
+		//* bashing command $? show the return command */
+		if (string_compare(shell->cmds[count].cmd, "$?") == 1)
+			printf("minishell: command not found: %d\n", status);
+		//* bashing command cd changing directory */
+		else if (string_compare(command[0], "cd") == 1)
+		{
+			char *user;
 
+			user = ft_strjoin("~", getenv("USER"), '\0');
+			if (ft_lencount(NULL, command, STRS) == 3)
+				printf("cd: the option isn't avalable\n");
+			else if (ft_lencount(NULL, command, STRS) == 1 || string_compare(command[1], "~") == 1 || string_compare(command[1], user) == 1)
+				chdir(getenv("HOME"));
+			else if (string_compare(command[1], "-") == 1)
+				chdir(getenv("OLDPWD"));
+			else if (ft_lencount(NULL, command, STRS) == 2)
+				chdir(command[1]);
+			else
+				printf("cd: too many agurmwnts");
+			free(user);
+		}
 		//* bashing command section */
 			//* check and execute abslute path */
-		if (access(command[0], F_OK | R_OK | X_OK) == 0)
+		else if (access(command[0], F_OK | R_OK | X_OK) == 0)
 			status = execute_now(shell, command[0], command, count);
 			//* check and execute from env_path */
 		else
@@ -151,15 +203,6 @@ int	main(void)
 	char		dir[100];
 	char		*dir_path;
 
-	// unlink("/Users/shivarakii/Documents/42_coding/real_minishell/test.c");
-	// printf("%s\n",getcwd(dir, 100));
-	// printf("dir = %s | size = %lu\n", dir, sizeof(dir));
-	// dir_path = ft_strjoin(dir, "test/", '/');
-	// printf("=> %s\n", dir_path);
-	// printf("return %d\n", chdir(dir_path));
-	// printf("%s\n",getcwd(dir, 100));
-	// exit (0);
-
 	// * ls -l | wc -l 
 	shell = (t_shell *)ft_calloc(sizeof(t_shell), 1);
 	if (shell == NULL)
@@ -167,7 +210,7 @@ int	main(void)
 	shell->cmds = (t_cmd *)ft_calloc(sizeof(t_cmd), 3);
 	if (shell->cmds == NULL)
 		return (0);
-	shell->cmds[0].cmd = ft_stringvalue("wc -l");
+	shell->cmds[0].cmd = ft_stringvalue("cd ~shivarakii dfdf");
 	shell->cmds[0].conj = CONJ_PIPE;
 	shell->cmds[0].redir = FROM;
 	shell->cmds[0].file = "test_from.txt";
@@ -179,10 +222,10 @@ int	main(void)
 	shell->cmds[2].conj = CONJ_NULL;
 	shell->cmds[2].redir = TTO;
 	shell->cmds[2].file = "test_tto.txt";
-	shell->cmd_amount = 3;
+	shell->cmd_amount = 1;
 	
 	cmd_execution(shell);
-
+ 	printf("%s\n",getcwd(dir, 100));
 
 	return (EXIT_SUCCESS);
 }
