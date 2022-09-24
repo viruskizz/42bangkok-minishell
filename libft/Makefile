@@ -5,6 +5,7 @@ SRCS =	ft_isalnum.c \
 				ft_putchar_fd.c \
 				ft_split.c \
 				ft_strlcat.c \
+				ft_strcmp.c \
 				ft_strncmp.c \
 				ft_substr.c \
 				ft_atoi.c \
