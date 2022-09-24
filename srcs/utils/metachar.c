@@ -15,11 +15,11 @@ int	is_opt(char *str)
 	len = ft_strlen(str);
 	if (len > 2 || len == 0)
 		return (OPT_NULL);
-	if (strcmp(str, "&&"))
+	if (ft_strcmp(str, "&&"))
 		return (OPT_AND);
-	if (strcmp(str, "||"))
+	if (ft_strcmp(str, "||"))
 		return (OPT_OR);
-	if (strcmp(str, "|"))
+	if (ft_strcmp(str, "|"))
 		return (OPT_PIPE);
 	return (OPT_NULL);
 }
