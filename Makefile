@@ -12,6 +12,8 @@ LIBS = -lreadline \
 
 SRC_DIR = srcs
 SRCS = main.c \
+	minishell.c \
+	minishell_redirect.c \
 	minishell_split.c \
 	minishell_util1.c \
 	split_input.c \

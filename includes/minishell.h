@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 22:58:34 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/09/24 05:26:20 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/09/26 02:14:29 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # define OPT_OR		3
 
 /* redirect flag in t_cmd */
+# define REDI_NULL	0 // no redirect;
 # define FROM		1 // <  
 # define FFROM		2 // <<
 # define TO			3 // >
@@ -50,6 +51,7 @@
 # define STR	1
 # define STRS	2
 
+# define HERE_DOC ".temporary_file_for_heredoc_u_can_not_see_this_please_saatoo"
 /**
  * @brief struct for single command with conjuction
  * exmaple input: ls -l && wc -l
@@ -92,6 +94,10 @@ int		ft_lencount(char *str, char **strs, int mode);
 // void	*ft_calloc(int count, int size);
 char	**ft_split_mode(char *str, char c, int mode);
 char	*ft_midjoin(char *str1, char *str2, char c);
+int		test_execution(void);
+
+// excution part //
+int		minishell_redirect(t_shell *shell, int *fd, int index);
 
 char	**split_input(char *line);
 
