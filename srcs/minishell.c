@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 00:28:26 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/09/26 02:15:07 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/09/26 21:04:25 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	signal_defualt(void)
 	sigaction(SIGQUIT, &signal, NULL);
 }
 
-int	execute_now(t_shell *shell, char *path, char **command, int index)
+int	execution_token(t_shell *shell, char *path, char **command, int index)
 {
 	pid_t	pid;
 	int		status;
@@ -127,6 +127,73 @@ int	execute_now(t_shell *shell, char *path, char **command, int index)
 	return (status);
 }
 
+int	execution_cdirectory(char **command)
+{
+	char	*user;
+	int		exit_status;
+
+	exit_status = 0;
+	user = ft_midjoin("~", getenv("USER"), '\0');
+	if (ft_lencount(NULL, command, STRS) == 3)
+		printf("cd: the option isn't avalable\n");
+	else if (ft_lencount(NULL, command, STRS) == 1 || string_compare(command[1], "~") == 1 || string_compare(command[1], user) == 1)
+		exit_status = chdir(getenv("HOME"));
+	else if (string_compare(command[1], "-") == 1)
+		exit_status = chdir(getenv("OLDPWD"));
+	else if (ft_lencount(NULL, command, STRS) == 2)
+		exit_status = chdir(command[1]);
+	else
+		printf("cd: too many agurments");
+	free(user);
+	return (exit_status);
+}
+
+int	execution_envpath(t_shell *shell, char **command, int count, int status)
+{
+	int		index;
+	char	*path;
+	char	**env_path;
+
+	index = 0;
+	env_path = ft_split_mode(getenv("PATH"), ':', BOUND);
+	if (env_path == NULL)
+		//error;
+	while (env_path[index] != NULL)
+	{
+		path = ft_midjoin(env_path[index++], command[0], '/');
+		//* command is exist and can execute */
+		if (access(path, F_OK | R_OK | X_OK) == 0)
+		{
+			status = execution_token(shell, path, command, count);
+			if (status == -1)
+			{
+				//error free and exit;
+			}
+			//free section//
+			// TODO void	make_it_free
+			for (int i = 0; command[i] != NULL; i++)
+				free(command[i]);
+			free(command);
+			for (int i = 0; env_path[i] != NULL; i++)
+				free(env_path[i]);
+			free(env_path);
+			free(path);
+			break ;
+		}
+		//* command is not exist and can't execute */
+		else if (env_path[index + 1] == NULL)
+		{
+			//perror("minishell");
+			printf("minishell: command not found: %s\n", command[0]);
+			return (-1);
+			// command not exite : error section//
+			// free section //
+		}
+		//free(path);
+	}
+	return(0);
+}
+
 char	*ft_stringvalue(char *str)
 {
 	int		index;
@@ -166,9 +233,9 @@ int	cmd_execution(t_shell *shell)
 			printf("minishell: command not found: %d\n", status);
 		//* bashing command cd changing directory */
 		else if (string_compare(command[0], "cd") == 1)
-		{
+			status = execution_cdirectory(command);
+		/*{
 			char *user;
-
 			user = ft_midjoin("~", getenv("USER"), '\0');
 			if (ft_lencount(NULL, command, STRS) == 3)
 				printf("cd: the option isn't avalable\n");
@@ -181,14 +248,15 @@ int	cmd_execution(t_shell *shell)
 			else
 				printf("cd: too many agurments");
 			free(user);
-		}
+		}*/
 		//* bashing command section */
-			//* check and execute abslute path */
+		//* check and bashing commnad from abslute path */
 		else if (access(command[0], F_OK | R_OK | X_OK) == 0)
-			status = execute_now(shell, command[0], command, count);
-			//* check and execute from env_path */
+			status = execution_token(shell, command[0], command, count);
+		//* check and bashing command from env_path */
 		else
 		{
+			// status = execution_envpath(shell, command, count, status);
 			// TODO status = execute_envpath()
 			// add "free(str)" in the split //
 			env_path = ft_split_mode(getenv("PATH"), ':', BOUND);  //? FREE ?? //
@@ -200,7 +268,7 @@ int	cmd_execution(t_shell *shell)
 				//* command is exist and can execute */
 				if (access(path, F_OK | R_OK | X_OK) == 0)
 				{
-					status = execute_now(shell, path, command, count);
+					status = execution_token(shell, path, command, count);
 					if (status == -1)
 					{
 						//error free and exit;
@@ -224,7 +292,6 @@ int	cmd_execution(t_shell *shell)
 					return (-1);
 					// command not exite : error section//
 					// free section //
-
 				}
 				//free(path);
 			}
@@ -251,42 +318,27 @@ int	test_execution(void)
 	shell->tokens = (t_token *)ft_calloc(sizeof(t_token), 3);
 	if (shell->tokens == NULL)
 		return (0);
-	shell->tokens[0].token = ft_stringvalue("echo $?");
-	shell->tokens[0].opt = OPT_NULL;
+	shell->tokens[0].token = ft_stringvalue("export");
+	shell->tokens[0].opt = OPT_PIPE;
 	shell->tokens[0].redir = 0;
 	shell->tokens[0].file = NULL;
 
-	shell->tokens[1].token = ft_stringvalue("wc -l");
+	shell->tokens[1].token = ft_stringvalue("printenv NONG");
 	shell->tokens[1].opt = OPT_PIPE;
+	shell->tokens[1].redir = 0;
+	shell->tokens[1].file = NULL;
 
-	shell->tokens[2].token = ft_stringvalue("wc -c");
+	shell->tokens[2].token = ft_stringvalue("unset NONG");
 	shell->tokens[2].opt = OPT_NULL;
-	shell->tokens[2].redir = TTO;
+	shell->tokens[2].redir = 0;
 	shell->tokens[2].file = "test_tto.txt";
 	shell->cmd_amount = 1;
 	
 	// while (1);
-	cmd_execution(shell);
+
+	for(int i = 0; environ[i] != NULL; i++)
+		printf("%s\n", environ[i++]);
+	//cmd_execution(shell);
  	printf("\ncurrent directory is \"%s\"\n",getcwd(dir, 100));
 	return (EXIT_SUCCESS);
 }
-/*
-int	main(void)
-{
-	char		*line;
-	char		*path;
-
-	line = (char *)ft_calloc(sizeof(char), 1000000);
-	if (line == NULL)
-		return (EXIT_FAILURE);
-	while(string_compare(line, "exit") == 0)
-	{
-		line = readline("\x1B[5m\033[0;35mMI\033[0;36mNI\033[0;34mS\033[0;32mH\033[0;33mE\033[48;5;208mL\033[0;31mL\033[0m--> \x1B[0m");
-		add_history(line);
-//		printf("%s\n", line);
-		ft_bash_command(line);
-		printf("ending\n");
-
-	}
-	return (EXIT_SUCCESS);
-}*/
