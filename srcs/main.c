@@ -1,56 +1,71 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: araiva <tsomsa@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/25 18:52:24 by araiva            #+#    #+#             */
+/*   Updated: 2022/09/25 18:52:26 by araiva           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	**merge_input(int argc, char *argv[]);
+static void		handling_signal(int signo);
+static t_shell	handling_input(char *input);
 
 int	main(int argc, char *argv[])
 {
-	char	*line;
-	char	**words;
+	char				*line;
+	char				*input;
+	t_shell				shell;
+	struct sigaction	sa;
 
-	if (line == NULL)
-		return (EXIT_FAILURE);
-	while(string_compare(line, "exit") == 0)
+	sa.sa_handler = handling_signal;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_RESTART;
+	sigaction(SIGINT, &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
+	while (true)
 	{
-		// line = readline("\x1B[5m\033[0;35mMI\033[0;36mNI\033[0;34mS\033[0;32mH\033[0;33mE\033[48;5;208mL\033[0;31mL\033[0m--> \x1B[0m");
-		line = readline("input command\n");
-		add_history(line);
-		words = split_input(line);
-		print_arr(words);
+		input = readline(PROMPT_MSG);
+		if (!input || ft_strcmp(input, "exit") == 0)
+			break ;
+		add_history(input);
+		shell = handling_input(input);
+		if (ft_strlen(shell.line) == 0 || !shell.tokens)
+			continue ;
 		// test_exe();
 		// cmd_execution(shell);
 	}
 	return (EXIT_SUCCESS);
 }
 
-// int	main(int argc, char *argv[])
-// {
-// 	char	*line;
-// 	char	**words;
-
-// 	printf("n = %d\n", argc);
-// 	if (argc == 1)
-// 	{
-// 		line = readline("input command\n");
-// 		words = split_input(line);
-// 	}
-// 	else
-// 	{
-// 		words = merge_input(argc, argv);
-// 	}
-// 	print_arr(words);
-// 	return (0);
-// }
-
-static char	**merge_input(int argc, char *argv[])
+static t_shell	handling_input(char *input)
 {
-	int		i;
+	t_shell	shell;
+	char	*line;
+	char	**tokens;
 	char	**words;
 
-	i = 0;
-	words = ft_calloc(sizeof(char *), argc);
-	while (++i < argc)
-		words[i - 1] = ft_strdup(argv[i]);
-	words[i] = NULL;
-	return (words);
+	line = ft_strtrim(input, " \t");
+	free(input);
+	shell.line = line;
+	if (ft_strlen(line) == 0)
+		return shell;
+	tokens = split_input(line);
+	words = parse_token(tokens);
+	shell.words = words;
+	print_arr(tokens);
+	return shell;
+}
+
+static void	handling_signal(int signo)
+{
+	if (signo == SIGINT)
+	{
+		ft_putchar_fd('\n', STDOUT_FILENO);
+		ft_putstr_fd(PROMPT_MSG, STDOUT_FILENO);
+	}
 }

@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include "libft.h"
+# include <stdbool.h>  
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
@@ -23,6 +24,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+# define PROMPT_MSG	"\033[1;33minput command: \033[0m"
 # define OPT_NULL	0
 # define OPT_PIPE	1
 # define OPT_AND	2
@@ -50,20 +52,11 @@
 # define STR	1
 # define STRS	2
 
-/**
- * @brief struct for single command with conjuction
- * exmaple input: ls -l && wc -l
- * for index 0
- * cmd = "ls -l"
- * conj = CONJ_AND
- */
-// typedef struct s_cmd
-// {
-// 	char	*cmd;
-// 	char	*file;
-// 	int		opt;
-// 	int		redir;
-// }	t_cmd;
+typedef struct s_word
+{
+	char	*word;
+	t_word	*next;
+}	t_word;
 
 typedef struct s_token
 {
@@ -79,6 +72,7 @@ typedef struct s_token
 typedef struct	s_shell
 {
 	char	*line;
+	t_word	*words;
 	t_token	*tokens;
 	int		cmd_amount;
 }	t_shell;
@@ -94,6 +88,7 @@ char	**ft_split_mode(char *str, char c, int mode);
 char	*ft_midjoin(char *str1, char *str2, char c);
 
 char	**split_input(char *line);
+char	**parse_token(char **token);
 
 // utility
 void	print_arr(char **str);

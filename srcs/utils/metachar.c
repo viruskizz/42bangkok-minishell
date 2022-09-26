@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   metachar.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: araiva <tsomsa@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/25 19:04:47 by araiva            #+#    #+#             */
+/*   Updated: 2022/09/25 19:04:49 by araiva           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-int	is_end_quote(char c)
+int	is_closing_quote(char c)
 {
 	if (c == '"' || c == '\'')
 		return (1);
@@ -26,7 +38,7 @@ int	is_opt(char *str)
 
 int	is_spt(char c)
 {
-	if (c == ' ' || c == '\n' || c == '\t')
+	if (c == ' ' || c == '\t')
 		return (1);
 	else
 		return (0);
