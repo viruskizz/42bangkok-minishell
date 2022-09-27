@@ -55,10 +55,10 @@ static t_shell	handling_input(char *input)
 	if (ft_strlen(line) == 0)
 		return shell;
 	tokens = split_input(line);
-	cmds = group_cmd(tokens);
+	print_lst(tokens);
+	// cmds = group_cmd(tokens);
 	// word = parse_token(tokens);
 	// print_arr(tokens);
-	// print_lst(word);
 	ft_lstclear(&tokens, &free_token);
 	return shell;
 }
