@@ -14,32 +14,43 @@
 
 static int	wordlen(char *str);
 static int	count_word(char *line);
+static int	add_token(t_list **token, char *line);
 
-char	**split_input(char *line)
+t_list	*split_input(char *line)
 {
-	int		i;
 	int		wlen;
-	int		cword;
-	char	**words;
+	t_list	*token;
 
-	i = 0;
-	cword = count_word(line);
-	if (cword < 0)
+	if (count_word(line) < 0)
 		return (NULL);
-	printf("cword: %d\n", cword);
-	words = ft_calloc(sizeof(char *), cword + 1);
+	token = NULL;
 	while (*line)
 	{
-		wlen = wordlen(line);
-		words[i] = ft_calloc(sizeof(char), wlen + 1);
-		ft_strlcpy(words[i++], line, wlen + 1);
+		wlen = add_token(&token, line);
 		line += wlen;
 		while (*line && ft_strchr(FIELDS, *(++line)))
 			if (!*line)
 				break ;
 	}
-	words[i] = NULL;
-	return (words);
+	return (token);
+}
+
+static int	add_token(t_list **token, char *line)
+{
+	int		wlen;
+	char	*word;
+	t_list	*new;
+
+	wlen = wordlen(line);
+	word = ft_calloc(sizeof(char), wlen + 1);
+	ft_strlcpy(word, line, wlen + 1);
+	new = ft_lstnew(word);
+	line += wlen;
+	if (!token)
+		*token = new;
+	else
+		ft_lstadd_back(token, new);
+	return (wlen);
 }
 
 static int	wordlen(char *str)
@@ -79,4 +90,10 @@ static int	count_word(char *s)
 				break ;
 	}
 	return (count);
+}
+
+
+void	free_token(void *content)
+{
+	free(content);
 }

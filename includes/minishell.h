@@ -71,13 +71,14 @@ typedef struct s_word
  * cmd = "ls -l"
  * conj = CONJ_AND
  */
-// typedef struct s_cmd
-// {
-// 	char	*cmd;
-// 	char	*file;
-// 	int		opt;
-// 	int		redir;
-// }	t_cmd;
+typedef struct s_cmd
+{
+	char	*token;
+	char	*file;
+	int		n;
+	int		opt;
+	int		redir;
+}	t_cmd;
 
 typedef struct s_token
 {
@@ -93,8 +94,8 @@ typedef struct s_token
 typedef struct	s_shell
 {
 	char	*line;
-	t_word	*words;
 	t_token	*tokens;
+	t_cmd	*cmds;
 	int		cmd_amount;
 }	t_shell;
 
@@ -112,14 +113,15 @@ int		test_execution(void);
 // excution part //
 int		minishell_redirect(t_shell *shell, int *fd, int index);
 
-char	**split_input(char *line);
+t_list	*split_input(char *line);
+t_cmd	*group_cmd(t_list *token);
 t_list	*parse_token(char **tokens);
+void	free_token(void *content);
 
 // utility
 void	print_arr(char **str);
 void	print_lst(t_list *lst);
 int		is_opt(char *str);
-int		is_spt(char c);
-int		is_closing_quote(char c);
+int	validate_opt(t_list *lst);
 
 #endif
