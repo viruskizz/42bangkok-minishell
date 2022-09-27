@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 22:48:33 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/09/24 14:08:38 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/09/26 02:21:47 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ int	character_search(char *str, char c, int mode)
 
 // function count len of char* and char** //
 	// (mode) STR: count len of char * | STRS count len of char ** //
-
 int	ft_lencount(char *str, char **strs, int mode)
 {
 	int	count;
@@ -101,13 +100,15 @@ char	*ft_midjoin(char *str1, char *str2, char c)
 	char	*result;
 	int		index;
 	int		xedni;
+	int		len;
 
 	index = 0;
 	xedni = 0;
 	if (c == '\0')
-		result = (char *)ft_calloc(sizeof(char), ft_lencount(str1, NULL, STR) + ft_lencount(str2, NULL, STR) + 1);
+		len = ft_lencount(str1, NULL, STR) + ft_lencount(str2, NULL, STR) + 1;
 	else
-		result = (char *)ft_calloc(sizeof(char), ft_lencount(str1, NULL, STR) + ft_lencount(str2, NULL, STR) + 2);
+		len = ft_lencount(str1, NULL, STR) + ft_lencount(str2, NULL, STR) + 2;
+	result = (char *)ft_calloc(sizeof(char), len);
 	if (result == NULL)
 		return (0);
 	while (str1[index] != '\0')

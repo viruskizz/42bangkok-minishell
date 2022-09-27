@@ -26,6 +26,7 @@ char	**split_input(char *line)
 	cword = count_word(line);
 	if (cword < 0)
 		return (NULL);
+	printf("cword: %d\n", cword);
 	words = ft_calloc(sizeof(char *), cword + 1);
 	while (*line)
 	{
@@ -33,7 +34,7 @@ char	**split_input(char *line)
 		words[i] = ft_calloc(sizeof(char), wlen + 1);
 		ft_strlcpy(words[i++], line, wlen + 1);
 		line += wlen;
-		while (*line && is_spt(*(++line)))
+		while (*line && ft_strchr(FIELDS, *(++line)))
 			if (!*line)
 				break ;
 	}
@@ -41,33 +42,20 @@ char	**split_input(char *line)
 	return (words);
 }
 
-char	**parse_token(char **tokens)
-{
-	while(*tokens)
-	{
-		// printf(">%s\n", *tokens);
-		if (*tokens == '"' && *(tokens + ft_strlen(*tokens) - 1) == '"')
-		// tokens++;
-	}
-	return (NULL);
-}
-
 static int	wordlen(char *str)
 {
 	int	i;
 
 	i = 0;
-	if (is_end_quote(str[i]))
+	if (ft_strchr(QUOTES, str[0]))
 	{
 		while (str[++i])
-		{
-			if (is_end_quote(str[i]))
+			if (ft_strchr(QUOTES, str[i]))
 				return (++i);
-		}
 		perror("token reconize error quoting");
 		return (-1);
 	}
-	while (str[i] && !is_spt(str[i]))
+	while (str[i] && !ft_strchr(FIELDS, str[i]))
 		i++;
 	return (i);
 }
@@ -86,7 +74,7 @@ static int	count_word(char *s)
 		s = s + wlen;
 		if (wlen > 0)
 			count++;
-		while (*s && is_spt(*(++s)))
+		while (*s && ft_strchr(FIELDS, *(++s)))
 			if (!*s)
 				break ;
 	}

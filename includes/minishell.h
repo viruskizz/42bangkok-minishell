@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 22:58:34 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/09/24 05:26:20 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/09/26 02:14:29 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 # define OPT_OR		3
 
 /* redirect flag in t_cmd */
+# define REDI_NULL	0 // no redirect;
 # define FROM		1 // <  
 # define FFROM		2 // <<
 # define TO			3 // >
@@ -52,11 +53,31 @@
 # define STR	1
 # define STRS	2
 
+# define FIELDS	" \t\n"
+# define QUOTES	"'\""
+
 typedef struct s_word
 {
-	char	*word;
-	t_word	*next;
+	char			*str;
+	struct s_word	*next;
 }	t_word;
+
+# define HERE_DOC ".temporary_file_for_heredoc_u_can_not_see_this_please_saatoo"
+
+/**
+ * @brief struct for single command with conjuction
+ * exmaple input: ls -l && wc -l
+ * for index 0
+ * cmd = "ls -l"
+ * conj = CONJ_AND
+ */
+// typedef struct s_cmd
+// {
+// 	char	*cmd;
+// 	char	*file;
+// 	int		opt;
+// 	int		redir;
+// }	t_cmd;
 
 typedef struct s_token
 {
@@ -86,14 +107,19 @@ int		ft_lencount(char *str, char **strs, int mode);
 // void	*ft_calloc(int count, int size);
 char	**ft_split_mode(char *str, char c, int mode);
 char	*ft_midjoin(char *str1, char *str2, char c);
+int		test_execution(void);
+
+// excution part //
+int		minishell_redirect(t_shell *shell, int *fd, int index);
 
 char	**split_input(char *line);
-char	**parse_token(char **token);
+t_list	*parse_token(char **tokens);
 
 // utility
 void	print_arr(char **str);
+void	print_lst(t_list *lst);
 int		is_opt(char *str);
 int		is_spt(char c);
-int		is_end_quote(char c);
+int		is_closing_quote(char c);
 
 #endif
