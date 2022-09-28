@@ -13,6 +13,7 @@
 #include "minishell.h"
 
 static void	parse_dq_quote(t_list *token);
+static void	parse_normal(t_list *lst);
 
 t_list	*parse_token(t_list *tokens)
 {
@@ -23,6 +24,8 @@ t_list	*parse_token(t_list *tokens)
 	{
 		if (is_dq_str(lst->content))
 			parse_dq_quote(lst);
+		if (!is_sq_str(lst->content))
+			parse_normal(lst);
 		lst = lst->next;
 	}
 	return (tokens);
@@ -48,6 +51,27 @@ static void	parse_dq_quote(t_list *lst)
 	}
 	s = ft_strdup("\"");
 	new = my_strcat(new, s);
+	free(lst->content);
+	lst->content = new;
+}
+
+static void	parse_normal(t_list *lst)
+{
+	char	*token;
+	char	*s;
+	char	*new;
+	int		wlen;
+
+	token = lst->content;
+	new = ft_calloc(1, sizeof(char));
+	while (*token && *token != '"')
+	{
+		if (*token == '$')
+			wlen = exp_env(token, &new);
+		else
+			wlen = exp_str(token, &new);
+		token += wlen;
+	}
 	free(lst->content);
 	lst->content = new;
 }

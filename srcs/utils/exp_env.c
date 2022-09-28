@@ -38,10 +38,10 @@ static int	var_len(char *s)
 	char	*pattern;
 
 	i = 0;
-	pattern = " $\"\t\0";
+	pattern = " $*\"\t\0";
 	if (*s != '$')
 		return (i);
-	while (!ft_strchr(pattern, s[++i]))
+	while (ft_isalnum(s[++i]))
 		;
 	return (i);
 }
