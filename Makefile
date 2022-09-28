@@ -17,8 +17,9 @@ SRCS = main.c \
 	minishell_split.c \
 	minishell_util1.c \
 	split_input.c \
-	group_cmd.c \
+	validate_token.c \
 	parse_token.c \
+	group_cmd.c \
 	utils/metachar.c \
 	utils/debug.c
 

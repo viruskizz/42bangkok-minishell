@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include "libft.h"
+# include "color.h"
 # include <stdbool.h>  
 # include <stdio.h>
 # include <unistd.h>
@@ -73,10 +74,10 @@ typedef struct s_word
  */
 typedef struct s_cmd
 {
-	char	*token;
-	char	*file;
-	int		n;
+	char	**tokens;
 	int		opt;
+	int		n;
+	char	*file;
 	int		redir;
 }	t_cmd;
 
@@ -95,7 +96,8 @@ typedef struct	s_shell
 {
 	char	*line;
 	t_token	*tokens;
-	t_cmd	*cmds;
+	// t_cmd	*cmds;
+	t_list	*cmds;
 	int		cmd_amount;
 }	t_shell;
 
@@ -114,13 +116,15 @@ int		test_execution(void);
 int		minishell_redirect(t_shell *shell, int *fd, int index);
 
 t_list	*split_input(char *line);
-t_cmd	*group_cmd(t_list *token);
+t_list	*group_cmd(t_list *token);
 t_list	*parse_token(char **tokens);
 void	free_token(void *content);
+int	validate_token(t_list **tokens);
 
 // utility
 void	print_arr(char **str);
 void	print_lst(t_list *lst);
+void	print_cmd_table(t_list *cmds);
 int		is_opt(char *str);
 int	validate_opt(t_list *lst);
 
