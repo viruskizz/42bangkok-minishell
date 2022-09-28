@@ -45,9 +45,9 @@ int	main(int argc, char *argv[])
 static t_shell	handling_input(char *input)
 {
 	t_shell	shell;
+	t_cmd	*cmds;
+	t_list	*tokens;
 	char	*line;
-	char	**tokens;
-	char	**words;
 
 	line = ft_strtrim(input, " \t");
 	free(input);
@@ -55,9 +55,11 @@ static t_shell	handling_input(char *input)
 	if (ft_strlen(line) == 0)
 		return shell;
 	tokens = split_input(line);
-	words = parse_token(tokens);
-	shell.words = words;
-	print_arr(tokens);
+	print_lst(tokens);
+	// cmds = group_cmd(tokens);
+	// word = parse_token(tokens);
+	// print_arr(tokens);
+	ft_lstclear(&tokens, &free_token);
 	return shell;
 }
 
