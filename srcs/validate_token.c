@@ -1,4 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   validate_token.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: araiva <tsomsa@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/28 16:54:51 by araiva            #+#    #+#             */
+/*   Updated: 2022/09/28 16:54:52 by araiva           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
+
+static int	validate_opt(t_list *lst);
 
 int	validate_token(t_list **tokens)
 {
@@ -20,7 +34,7 @@ int	validate_token(t_list **tokens)
  * @param lst 
  * @return int 0 is normal string, 1 is opt, -1 is invalid
  */
-int	validate_opt(t_list *lst)
+static int	validate_opt(t_list *lst)
 {
 	int	is_t;
 

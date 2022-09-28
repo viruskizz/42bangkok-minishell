@@ -13,7 +13,7 @@
 #include "minishell.h"
 
 static void	add_cmd(char **tokens, t_list **cmds);
-static int	count_cmds(t_list *token);
+static char	**set_cmd_tokens(t_list *lst, int ctoken);
 static int	count_tokens(t_list *token);
 
 t_list	*group_cmd(t_list *token)
@@ -24,27 +24,33 @@ t_list	*group_cmd(t_list *token)
 	t_list	*cmds;
 	char	**tokens;
 
-	// if (count_cmds(token) < 0)
-	// {
-	// 	printf("error token near syntax\n");
-	// 	return (NULL);
-	// }
 	lst = token;
 	cmds = NULL;
 	while (lst)
 	{
 		ctoken = count_tokens(lst);
-		tokens = ft_calloc(ctoken + 1, sizeof(char *));
-		i = 0;
-		while (i < ctoken)
-		{
-			tokens[i++] = ft_strdup((char *) lst->content);
+		tokens = set_cmd_tokens(lst, ctoken);
+		while (ctoken-- > 0)
 			lst = lst->next;
-		}
-		tokens[i] = NULL;
 		add_cmd(tokens, &cmds);
 	}
 	return (cmds);
+}
+
+static char	**set_cmd_tokens(t_list *lst, int ctoken)
+{
+	int		i;
+	char	**tokens;
+
+	tokens = ft_calloc(ctoken + 1, sizeof(char *));
+	i = 0;
+	while (i < ctoken)
+	{
+		tokens[i++] = ft_strdup((char *) lst->content);
+		lst = lst->next;
+	}
+	tokens[i] = NULL;
+	return (tokens);
 }
 
 static void	add_cmd(char **tokens, t_list **cmds)
@@ -55,32 +61,11 @@ static void	add_cmd(char **tokens, t_list **cmds)
 	cmd = malloc(sizeof(t_cmd));
 	cmd->tokens = tokens;
 	cmd->n = 0;
-	// cmd->n = ctoken;
 	new = ft_lstnew(cmd);
 	if (!cmds)
 		*cmds = new;
 	else
 		ft_lstadd_back(cmds, new);
-}
-
-static int	count_cmds(t_list *token)
-{
-	t_list	*lst;
-	int		opt;
-	int		count;
-
-	lst = token;
-	count = 0;
-	while (lst)
-	{
-		opt = validate_opt(lst);
-		if (opt == -1)
-			return (-1);
-		if (opt == 1)
-			count++;
-		lst = lst->next;
-	}
-	return (++count);
 }
 
 static int	count_tokens(t_list *token)

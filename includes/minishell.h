@@ -117,15 +117,19 @@ int		minishell_redirect(t_shell *shell, int *fd, int index);
 
 t_list	*split_input(char *line);
 t_list	*group_cmd(t_list *token);
-t_list	*parse_token(char **tokens);
+t_list	*parse_token(t_list *tokens);
 void	free_token(void *content);
-int	validate_token(t_list **tokens);
+int		validate_token(t_list **tokens);
+
+int	exp_env(char *token, char **str);
+
 
 // utility
 void	print_arr(char **str);
 void	print_lst(t_list *lst);
 void	print_cmd_table(t_list *cmds);
 int		is_opt(char *str);
-int	validate_opt(t_list *lst);
+int		is_sq_str(char	*s);
+int		is_dq_str(char	*s);
 
 #endif

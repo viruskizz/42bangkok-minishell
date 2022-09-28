@@ -61,10 +61,12 @@ static t_shell	handling_input(char *input)
 		ft_lstclear(&tokens, &free_token);
 		return (shell);
 	}
-	// print_lst(tokens);
+	printf("tokens: ");
+	print_lst(tokens);
+	parse_token(tokens);
+	printf("parsed: ");
+	print_lst(tokens);
 	cmds = group_cmd(tokens);
-	// word = parse_token(tokens);
-	// print_arr(tokens);
 	print_cmd_table(cmds);
 	ft_lstclear(&tokens, &free_token);
 	return shell;
