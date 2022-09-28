@@ -16,11 +16,12 @@ SRCS = main.c \
 	minishell_redirect.c \
 	minishell_split.c \
 	minishell_util1.c \
-	exp_env.c \
 	split_input.c \
 	validate_token.c \
 	parse_token.c \
 	group_cmd.c \
+	utils/exp_env.c \
+	utils/exp_str.c \
 	utils/quoting.c \
 	utils/metachar.c \
 	utils/debug.c

@@ -13,8 +13,6 @@
 #include "minishell.h"
 
 static void	parse_dq_quote(t_list *token);
-static int	word_len(char *token);
-static int	exp_str(char *token, char **str);
 
 t_list	*parse_token(t_list *tokens)
 {
@@ -52,31 +50,4 @@ static void	parse_dq_quote(t_list *lst)
 	new = my_strcat(new, s);
 	free(lst->content);
 	lst->content = new;
-}
-
-static int	exp_str(char *token, char **str)
-{
-	int		wlen;
-	char	*s;
-
-	wlen = word_len(token);
-	s = ft_calloc(wlen + 1, sizeof(char));
-	ft_strlcpy(s, token, wlen + 1);
-	*str = my_strcat(*str, s);
-	return (wlen);
-}
-
-/*
- * word length is including space char
- */
-static int	word_len(char *s)
-{
-	int		i;
-	char	*pattern;
-
-	i = 0;
-	pattern = "$\"\0";
-	while (!ft_strchr(pattern, s[++i]))
-		;
-	return (i);
 }

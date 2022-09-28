@@ -57,12 +57,6 @@
 # define FIELDS	" \t\n"
 # define QUOTES	"'\""
 
-typedef struct s_word
-{
-	char			*str;
-	struct s_word	*next;
-}	t_word;
-
 # define HERE_DOC ".temporary_file_for_heredoc_u_can_not_see_this_please_saatoo"
 
 /**
@@ -92,15 +86,13 @@ typedef struct s_token
 /**
  * @brief struct for entire shell programe
  */
-typedef struct	s_shell
+typedef struct s_shell
 {
 	char	*line;
 	t_token	*tokens;
-	// t_cmd	*cmds;
 	t_list	*cmds;
 	int		cmd_amount;
 }	t_shell;
-
 
 extern char	**environ;
 
@@ -121,15 +113,19 @@ t_list	*parse_token(t_list *tokens);
 void	free_token(void *content);
 int		validate_token(t_list **tokens);
 
-int	exp_env(char *token, char **str);
-
+int		exp_env(char *token, char **str);
+int		exp_str(char *token, char **str);
 
 // utility
-void	print_arr(char **str);
-void	print_lst(t_list *lst);
-void	print_cmd_table(t_list *cmds);
+int		exp_env(char *token, char **str);
+int		exp_str(char *token, char **str);
+
 int		is_opt(char *str);
 int		is_sq_str(char	*s);
 int		is_dq_str(char	*s);
+
+void	print_arr(char **str);
+void	print_lst(t_list *lst);
+void	print_cmd_table(t_list *cmds);
 
 #endif
