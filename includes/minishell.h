@@ -24,6 +24,7 @@
 # include <fcntl.h> 
 # include <readline/readline.h>
 # include <readline/history.h>
+#include <dirent.h>
 
 # define PROMPT_MSG	"\033[1;33minput command: \033[0m"
 # define OPT_NULL	0
@@ -113,16 +114,17 @@ t_list	*parse_token(t_list *tokens);
 void	free_token(void *content);
 int		validate_token(t_list **tokens);
 
-int		exp_env(char *token, char **str);
-int		exp_str(char *token, char **str);
-
 // utility
 int		exp_env(char *token, char **str);
 int		exp_str(char *token, char **str);
+int		exp_env_hom(char *token, char **str);
+t_list	*wild_paths(t_list *tokens);
 
 int		is_opt(char *str);
 int		is_sq_str(char	*s);
 int		is_dq_str(char	*s);
+int		is_exp_var(char *s);
+int		is_wild_var(char *s);
 
 void	print_arr(char **str);
 void	print_lst(t_list *lst);

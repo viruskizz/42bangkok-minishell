@@ -23,8 +23,30 @@ int	exp_env(char *token, char **str)
 
 	if (*token != '$')
 		return (0);
-	wlen = var_len(token);
-	var = var_val(token);
+	if (*(token + 1) == '?')
+	{
+		wlen = 2;
+		var = ft_strdup("0");
+	}
+	else
+	{
+		wlen = var_len(token);
+		var = var_val(token);
+	}
+	*str = my_strcat(*str, var);
+	return (wlen);
+}
+
+int	exp_env_hom(char *token, char **str)
+{
+	int		wlen;
+	char	*new;
+	char	*var;
+
+	if (*token != '~')
+		return (0);
+	wlen = 2;
+	var = var_val("HOME");
 	*str = my_strcat(*str, var);
 	return (wlen);
 }
