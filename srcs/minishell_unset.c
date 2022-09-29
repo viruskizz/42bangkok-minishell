@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 18:30:21 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/09/29 20:58:54 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/09/29 22:36:36 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	execution_unset_env(t_env **env, char *variable_name)
 	return (1);
 }
 
-void	envtironment_delete(t_env *env)
+void	environment_delete(t_env *env)
 {
 	free(env->name);
 	free(env->value);

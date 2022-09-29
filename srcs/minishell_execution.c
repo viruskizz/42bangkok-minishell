@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 20:38:04 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/09/29 22:04:57 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/09/29 22:35:22 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ int	execution_token(t_shell *shell, char *path, char **command, int index)
 		close(fd[1]);
 	}
 	return (status);
+}
 
 int	cmd_execution(t_shell *shell)
 {
@@ -146,9 +147,9 @@ int	cmd_execution(t_shell *shell)
 		
 		//* bashing command environment : export, unset, env */
 		else if (string_compare(command[0], "export") == 1)
-			status = execution_export_env(command);
+			status = execution_export_env(shell, command);
 		else if (string_compare(command[0], "unset") == 1)
-			status = execution_unset_env(shell, command);
+			status = execution_unset_env(&shell->env, command[1]);
 		else if (string_compare(command[0], "env") == 1)
 			status = execution_print_env(shell);
 

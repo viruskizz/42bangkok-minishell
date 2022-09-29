@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 22:58:34 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/09/29 22:22:01 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/09/29 22:37:03 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ int		environment_check_value(char *command, int quote, int qquote, int mode);
 int		environment_check_name(char *variable_name);
 
 int 	execution_unset_env(t_env **env, char *variable_name);
-void	envtironment_delete(t_env *env);
+void	environment_delete(t_env *env);
 
 int 	minishell_make_environment(t_shell *shell);
 t_env	*environment_new(char *env);
@@ -158,9 +158,10 @@ void	environment_add_back(t_env **env, t_env *new);
 void	environment_clear(t_env **env);
 int		execution_print_env(t_shell *shell);
 
+void	free_double_pointer(char **str1, char **str2, char **str3, char *str4);
+void	signal_defualt(void);
+int		execution_change_directory(char **command);
 
-char	**split_input(char *line);
-char	**parse_token(char **token);
 t_list	*split_input(char *line);
 t_list	*group_cmd(t_list *token);
 t_list	*parse_token(t_list *tokens);

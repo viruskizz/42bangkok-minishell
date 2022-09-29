@@ -34,7 +34,7 @@ void	print_lst(t_list *lst)
 	while (lst)
 	{
 		if (lst->content)
-			printf("%s", (char *)lst->content);
+			printf("%s", (char *) lst->content);
 		if (lst->next)
 			printf(", ");
 		lst = lst->next;
