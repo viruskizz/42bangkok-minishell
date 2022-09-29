@@ -6,28 +6,12 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 22:48:33 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/09/26 02:21:47 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/09/29 18:46:39 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// void	*ft_calloc(int count, int size)
-// {
-// 	void	*result;
-// 	int		index;
-
-// 	index = 0;
-// 	result = malloc(count * size);
-// 	if (result == NULL)
-// 		return (0);
-// 	while (index < (count * size))
-// 	{
-// 		((char *)result)[index] = '\0';
-// 		index++;
-// 	}
-// 	return (result);
-// }
 // function compare two strings //
 	//return:1 strings are same | return:0 string aren't same //
 int	string_compare(char *str1, char *str2)

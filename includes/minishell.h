@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 22:58:34 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/09/26 02:14:29 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/09/29 22:06:40 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include "libft.h"
+# include <stdbool.h>  
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
@@ -23,6 +24,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+# define PROMPT_MSG	"\033[1;33minput command: \033[0m"
 # define OPT_NULL	0
 # define OPT_PIPE	1
 # define OPT_AND	2
@@ -40,18 +42,27 @@
 # define LETTER	2
 
 /* mode in ft_split */
-# define FREE	111
-# define BOUND	222
+# define FREE	1
+# define BOUND	2
 
 /* mode in ft_strchar */
-# define FRONT	1111
-# define BACK	2222
+# define FRONT	1
+# define BACK	2
 
 /* mode in ft_lencount */
 # define STR	1
 # define STRS	2
 
-# define HERE_DOC ".temporary_file_for_heredoc_u_can_not_see_this_please_saatoo"
+/* mode in environment_check_value*/
+# define START	1
+# define QUOTE 2
+# define INDEX	3
+
+/* mode in environmant_get_name */
+# define ENVI	0
+# define COMM	1
+
+# define HERE_DOC "~/.temporary_file_for_heredoc_u_cannot_see_this_saatooooooo"
 /**
  * @brief struct for single command with conjuction
  * exmaple input: ls -l && wc -l
@@ -66,6 +77,19 @@
 // 	int		opt;
 // 	int		redir;
 // }	t_cmd;
+typedef struct s_env
+{
+	char					*name;
+	char					*value;
+	struct s_env			*next;
+}	t_env;
+
+
+typedef struct s_word
+{
+	char			*word;
+	struct s_word	*next;
+}	t_word;
 
 typedef struct s_token
 {
@@ -81,8 +105,11 @@ typedef struct s_token
 typedef struct	s_shell
 {
 	char	*line;
+	t_word	*words;
 	t_token	*tokens;
+	t_env	*env;
 	int		cmd_amount;
+
 }	t_shell;
 
 
@@ -97,14 +124,34 @@ char	*ft_midjoin(char *str1, char *str2, char c);
 int		test_execution(void);
 
 // excution part //
+int		cmd_execution(t_shell *shell);
+int		execution_token(t_shell *shell, char *path, char **command, int index);
 int		minishell_redirect(t_shell *shell, int *fd, int index);
 
+//	execution_export_env //
+int		execution_export_env(t_shell *shell, char **command);
+char	*environment_get_name(char **command, int mode);
+char	*environment_get_value(char **command, int mode);
+int		environment_check_value(char *command, int quote, int qquote, int mode);
+int		environment_check_name(char *variable_name);
+
+int 	execution_unset_env(t_env **env, char *variable_name);
+void	envtironment_delete(t_env *env);
+
+int 	minishell_make_environment(t_shell *shell);
+t_env	*environment_new(char *env);
+void	environment_add_back(t_env **env, t_env *new);
+void	environment_clear(t_env **env);
+int		execution_print_env(t_shell *shell);
+
+
 char	**split_input(char *line);
+char	**parse_token(char **token);
 
 // utility
 void	print_arr(char **str);
 int		is_opt(char *str);
 int		is_spt(char c);
-int		is_end_quote(char c);
+int		is_closing_quote(char c);
 
 #endif

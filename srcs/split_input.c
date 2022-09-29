@@ -1,40 +1,55 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   split_line.c                                       :+:      :+:    :+:   */
+/*   split_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araiva <tsomsa@student.42.fr>              +#+  +:+       +#+        */
+/*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/24 13:37:35 by araiva            #+#    #+#             */
-/*   Updated: 2022/09/24 13:37:36 by araiva           ###   ########.fr       */
+/*   Created: 2022/09/25 18:52:43 by araiva            #+#    #+#             */
+/*   Updated: 2022/09/26 21:21:11 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "minishell.h"
 
 static int	wordlen(char *str);
 static int	count_word(char *line);
 
-
 char	**split_input(char *line)
 {
-	int	i;
-	int	wlen;
-	char **words;
+	int		i;
+	int		wlen;
+	int		cword;
+	char	**words;
 
 	i = 0;
-	words = ft_calloc(sizeof(char *), count_word(line) + 1);
+	cword = count_word(line);
+	if (cword < 0)
+		return (NULL);
+	words = ft_calloc(sizeof(char *), cword + 1);
 	while (*line)
 	{
 		wlen = wordlen(line);
 		words[i] = ft_calloc(sizeof(char), wlen + 1);
 		ft_strlcpy(words[i++], line, wlen + 1);
 		line += wlen;
-		while (is_spt(*(++line)))
+		while (*line && is_spt(*(++line)))
 			if (!*line)
-				break;
+				break ;
 	}
 	words[i] = NULL;
 	return (words);
+}
+
+char	**parse_token(char **tokens)
+{
+	while(*tokens)
+	{
+		// printf(">%s\n", *tokens);
+		// if (*tokens == '"' && *(tokens + ft_strlen(*tokens) - 1) == '"')
+		tokens++;
+	}
+	return (NULL);
 }
 
 static int	wordlen(char *str)
@@ -42,15 +57,15 @@ static int	wordlen(char *str)
 	int	i;
 
 	i = 0;
-	if (is_end_quote(str[i]))
+	if (is_closing_quote(str[i]))
 	{
 		while (str[++i])
 		{
-			if(is_end_quote(str[i]))
-				return (i);
+			if (is_closing_quote(str[i]))
+				return (++i);
 		}
-		ft_putstr_fd("Unexpected token quoting\n", STDERR_FILENO);
-		exit(EXIT_FAILURE);
+		perror("token reconize error quoting");
+		return (-1);
 	}
 	while (str[i] && !is_spt(str[i]))
 		i++;
@@ -60,18 +75,20 @@ static int	wordlen(char *str)
 static int	count_word(char *s)
 {
 	int	count;
-	int wlen;
+	int	wlen;
 
 	count = 0;
 	while (*s)
 	{
 		wlen = wordlen(s);
+		if (wlen < 0)
+			return (-1);
 		s = s + wlen;
 		if (wlen > 0)
 			count++;
-		while (is_spt(*(++s)))
+		while (*s && is_spt(*(++s)))
 			if (!*s)
-				break;
+				break ;
 	}
 	return (count);
 }
