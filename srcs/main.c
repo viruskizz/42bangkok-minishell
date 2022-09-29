@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 18:52:24 by araiva            #+#    #+#             */
-/*   Updated: 2022/09/28 04:13:33 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/09/29 22:22:00 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,38 +17,37 @@ static t_shell	handling_input(char *input);
 
 int	main(int argc, char *argv[])
 {
-	// char				*line;
-	// char				*input;
-	// t_shell				shell;
-	// struct sigaction	sa;
+	char				*line;
+	char				*input;
+	t_shell				shell;
+	struct sigaction	sa;
 
-	// sa.sa_handler = handling_signal;
-	// sigemptyset(&sa.sa_mask);
-	// sa.sa_flags = SA_RESTART;
-	// sigaction(SIGINT, &sa, NULL);
-	// sigaction(SIGQUIT, &sa, NULL);
-	// while (true)
-	// {
-	// 	input = readline(PROMPT_MSG);
-	// 	if (!input || ft_strcmp(input, "exit") == 0)
-	// 		break ;
-	// 	add_history(input);
-	// 	shell = handling_input(input);
-	// 	if (ft_strlen(shell.line) == 0 || !shell.tokens)
-	// 		continue ;
-		 test_execution();
+	sa.sa_handler = handling_signal;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_RESTART;
+	sigaction(SIGINT, &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
+	while (true)
+	{
+		input = readline(PROMPT_MSG);
+		if (!input || ft_strcmp(input, "exit") == 0)
+			break ;
+		add_history(input);
+		shell = handling_input(input);
+		if (ft_strlen(shell.line) == 0 || !shell.tokens)
+			continue ;
+		// test_exe();
 		// cmd_execution(shell);
-	// }
-	// }
+	}
 	return (EXIT_SUCCESS);
 }
 
 static t_shell	handling_input(char *input)
 {
 	t_shell	shell;
+	t_list	*cmds;
+	t_list	*tokens;
 	char	*line;
-	char	**tokens;
-	char	**words;
 
 	line = ft_strtrim(input, " \t");
 	free(input);
@@ -56,9 +55,21 @@ static t_shell	handling_input(char *input)
 	if (ft_strlen(line) == 0)
 		return shell;
 	tokens = split_input(line);
-	words = parse_token(tokens);
-	shell.words = words;
-	print_arr(tokens);
+	if (!validate_token(&tokens))
+	{
+		printf("Error\n");
+		ft_lstclear(&tokens, &free_token);
+		return (shell);
+	}
+	printf("%stokens: %s", CYAN, RESET);
+	print_lst(tokens);
+	parse_token(tokens);
+	printf("%sparsed: %s", CYAN, RESET);
+	print_lst(tokens);
+	cmds = group_cmd(tokens);
+	printf("%stable command: %s\n", CYAN, RESET);
+	print_cmd_table(cmds);
+	ft_lstclear(&tokens, &free_token);
 	return shell;
 }
 

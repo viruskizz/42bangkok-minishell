@@ -17,13 +17,48 @@ void	print_arr(char **str)
 	int	i;
 
 	i = 0;
-	ft_putstr_fd("{", STDOUT_FILENO);
+	printf("[");
 	while (*str)
 	{
-		ft_putstr_fd(*str, STDOUT_FILENO);
+		printf("%s", *str);
 		if (*(str + 1))
-			ft_putstr_fd(", ", STDOUT_FILENO);
+			printf(", ");
 		str++;
 	}
-	ft_putstr_fd("}\n", STDOUT_FILENO);
+	printf("]\n");
+}
+
+void	print_lst(t_list *lst)
+{
+	printf("{");
+	while (lst)
+	{
+		if (lst->content)
+			printf("%s", (char *)lst->content);
+		if (lst->next)
+			printf(", ");
+		lst = lst->next;
+	}
+	printf("}\n");
+}
+
+void	print_cmd_table(t_list *cmds)
+{
+	t_cmd	*cmd;
+
+	printf("%s[\n%s", GREEN, RESET);
+	while (cmds)
+	{
+		if (cmds->content)
+		{
+			cmd = (t_cmd *) cmds->content;
+			printf("  {\n");
+			printf("    tokens: ");
+			print_arr(cmd->tokens);
+			printf("    n: %d\n", cmd->n);
+			printf("  },\n");
+		}
+		cmds = cmds->next;
+	}
+	printf("%s]\n%s", GREEN, RESET);
 }

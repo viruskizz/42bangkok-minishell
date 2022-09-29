@@ -21,7 +21,15 @@ SRCS = main.c \
 	minishell_split.c \
 	minishell_util1.c \
 	split_input.c \
+	validate_token.c \
+	parse_token.c \
+	group_cmd.c \
+	utils/exp_env.c \
+	utils/exp_str.c \
+	utils/wild_paths.c \
+	utils/quoting.c \
 	utils/metachar.c \
+	utils/parameter.c \
 	utils/debug.c
 
 BUILD_DIR = build
