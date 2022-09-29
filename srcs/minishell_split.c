@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_split.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sharnvon <sharnvon@student.42bangkok.co    +#+  +:+       +#+        */
+/*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 01:51:03 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/09/21 01:51:29 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/09/26 21:41:27 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		split_count(char *str, char c, int mode)
+int	split_count(char *str, char c, int mode)
 {
 	int	result;
 	int	index;
@@ -69,8 +69,7 @@ char	**split_wordmaker(char **result, char *str, char c)
 
 char	**split_strtranfer(char **result, char *str, char c)
 {
-
-	int index;
+	int	index;
 	int	xedni;
 	int	word;
 

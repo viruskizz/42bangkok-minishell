@@ -14,6 +14,10 @@ SRC_DIR = srcs
 SRCS = main.c \
 	minishell.c \
 	minishell_redirect.c \
+	minishell_environment.c \
+	minishell_execution.c \
+	minishell_export.c \
+	minishell_unset.c \
 	minishell_split.c \
 	minishell_util1.c \
 	split_input.c \
