@@ -93,10 +93,11 @@ typedef struct s_env
 typedef struct s_cmd
 {
 	char	**tokens;
+	char	**fg; // >
+	char	**fgg; // >>
+	char	**fls; // <<
+	char	**flsls; // <
 	int		opt;
-	int		n;
-	char	*file;
-	int		redir;
 }	t_cmd;
 
 typedef struct s_token
@@ -117,6 +118,7 @@ typedef struct s_shell
 	t_env	*env;
 	t_list	*envs;
 	t_list	*cmds;
+	int		exstat;
 	int		cmd_amount;
 
 }	t_shell;
