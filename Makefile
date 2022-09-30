@@ -20,10 +20,10 @@ SRCS = main.c \
 	minishell_unset.c \
 	minishell_split.c \
 	minishell_util1.c \
-	split_input.c \
-	validate_token.c \
-	parse_token.c \
-	group_cmd.c \
+	input_handling/split_input.c \
+	input_handling/validate_token.c \
+	input_handling/parse_token.c \
+	input_handling/group_cmd.c \
 	utils/exp_env.c \
 	utils/exp_str.c \
 	utils/wild_paths.c \

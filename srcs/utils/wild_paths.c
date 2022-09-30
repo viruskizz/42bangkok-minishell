@@ -14,13 +14,13 @@
 
 t_list	*wild_paths(t_list *tokens)
 {
-	t_list	*paths;
-	t_list	*new;
-	char	*dirname;
-	DIR *dir;
-	struct dirent *entry;
-	char	*basedir;
-	char	*srch;
+	t_list			*paths;
+	t_list			*new;
+	char			*dirname;
+	DIR				*dir;
+	struct dirent	*entry;
+	char			*basedir;
+	char			*srch;
 
 	paths = NULL;
 	srch = tokens->content;
@@ -28,7 +28,8 @@ t_list	*wild_paths(t_list *tokens)
 		basedir = ".";
 	if ((dir = opendir("srcs")) == NULL)
 		perror("opendir() error");
-	else {
+	else
+	{
 		while ((entry = readdir(dir)) != NULL)
 		{
 			dirname = ft_strdup(entry->d_name);

@@ -13,75 +13,76 @@
 #include "minishell.h"
 
 static void		handling_signal(int signo);
-static t_shell	handling_input(char *input);
+static char		*handling_input(char *input);
+static t_shell	parse_input(char *input);
 
-int	main(int argc, char *argv[])
-{
-	// char				*line;
-	// char				*input;
-	// t_shell				shell;
-	// struct sigaction	sa;
+// int	main(int argc, char *argv[])
+// {
+// 	char				*line;
+// 	char				*input;
+// 	t_shell				shell;
+// 	struct sigaction	sa;
 
-	// sa.sa_handler = handling_signal;
-	// sigemptyset(&sa.sa_mask);
-	// sa.sa_flags = SA_RESTART;
-	// sigaction(SIGINT, &sa, NULL);
-	// sigaction(SIGQUIT, &sa, NULL);
+// 	sa.sa_handler = handling_signal;
+// 	sigemptyset(&sa.sa_mask);
+// 	sa.sa_flags = SA_RESTART;
+// 	sigaction(SIGINT, &sa, NULL);
+// 	sigaction(SIGQUIT, &sa, NULL);
 
-	char *test = ft_strdup("aaa bb dd << a >> b | $HOME \" xx $HOME\"");
-	t_shell shell = handling_input(test);
-	free(shell.line);
-	if (shell.cmds)
-		ft_lstclear(&shell.cmds, &free_cmd);
-	return (0);
+// 	while (true)
+// 	{
+// 		input = readline(PROMPT_MSG);
+// 		if (!input || ft_strcmp(input, "exit") == 0)
+// 			break ;
+// 		add_history(input);
+// 		line = handling_input(input);
+// 		if (!line)
+// 			continue ;
+// 		shell = parse_input(line);
+// 		// test_exe();
+// 		// cmd_execution(shell);
+// 		free(line);
+// 		ft_lstclear(&shell.cmds, &free_cmd);
+// 	}
+// 	return (EXIT_SUCCESS);
+// }
 
-	// while (true)
-	// {
-	// 	input = readline(PROMPT_MSG);
-	// 	if (!input || ft_strcmp(input, "exit") == 0)
-	// 		break ;
-	// 	add_history(input);
-	// 	shell = handling_input(input);
-	// 	if (ft_strlen(shell.line) == 0 || !shell.tokens)
-	// 		continue ;
-	// 	// test_exe();
-	// 	// cmd_execution(shell);
-	// }
-	// return (EXIT_SUCCESS);
-}
-
-static t_shell	handling_input(char *input)
+static t_shell	parse_input(char *input)
 {
 	t_shell	shell;
 	t_list	*cmds;
 	t_list	*tokens;
-	char	*line;
 
-	line = ft_strtrim(input, " \t");
-	free(input);
-	shell.line = line;
-	if (ft_strlen(line) == 0)
-		return shell;
-	tokens = split_input(line);
+	printf("%sinput:%s: %s\n", CYAN, RESET, input);
+	tokens = split_input(input);
 	printf("%stokens: %s", CYAN, RESET);
 	print_lst(tokens);
 	if (!validate_token(&tokens))
 	{
-		printf("Error\n");
+		printf("Error unexpected token\n");
 		ft_lstclear(&tokens, &free_token);
 		return (shell);
 	}
 	parse_token(tokens);
 	printf("%sparsed: %s", CYAN, RESET);
 	print_lst(tokens);
-
 	cmds = group_cmd(tokens);
 	printf("%stable command: %s\n", CYAN, RESET);
 	print_cmd_table(cmds);
 	shell.cmds = cmds;
-	// shell.cmds = NULL;
 	ft_lstclear(&tokens, &free_token);
 	return shell;
+}
+
+static char	*handling_input(char *input)
+{
+	char	*line;
+
+	line = ft_strtrim(input, " \t");
+	free(input);
+	if (ft_strlen(line) == 0)
+		return (NULL);
+	return (line);
 }
 
 static void	handling_signal(int signo)
@@ -91,4 +92,21 @@ static void	handling_signal(int signo)
 		ft_putchar_fd('\n', STDOUT_FILENO);
 		ft_putstr_fd(PROMPT_MSG, STDOUT_FILENO);
 	}
+}
+
+
+// Testing main only
+int main()
+{
+	char *test;
+	char *line;
+	t_shell shell;
+
+	test = ft_strdup("aaa bb dd << a >> b | $HOME \" xx $HOME\"");
+	line = handling_input(test);
+	shell = parse_input(line);
+	free(line);
+	if (shell.cmds)
+		ft_lstclear(&shell.cmds, &free_cmd);
+	return (0);
 }
