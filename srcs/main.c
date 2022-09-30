@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 18:52:24 by araiva            #+#    #+#             */
-/*   Updated: 2022/09/29 22:22:00 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/09/30 20:45:24 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,28 +17,28 @@ static t_shell	handling_input(char *input);
 
 int	main(int argc, char *argv[])
 {
-	char				*line;
-	char				*input;
-	t_shell				shell;
-	struct sigaction	sa;
+	// char				*line;
+	// char				*input;
+	// t_shell				shell;
+	// struct sigaction	sa;
 
-	sa.sa_handler = handling_signal;
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = SA_RESTART;
-	sigaction(SIGINT, &sa, NULL);
-	sigaction(SIGQUIT, &sa, NULL);
-	while (true)
-	{
-		input = readline(PROMPT_MSG);
-		if (!input || ft_strcmp(input, "exit") == 0)
-			break ;
-		add_history(input);
-		shell = handling_input(input);
-		if (ft_strlen(shell.line) == 0 || !shell.tokens)
-			continue ;
-		// test_exe();
+	// sa.sa_handler = handling_signal;
+	// sigemptyset(&sa.sa_mask);
+	// sa.sa_flags = SA_RESTART;
+	// sigaction(SIGINT, &sa, NULL);
+	// sigaction(SIGQUIT, &sa, NULL);
+	// while (true)
+	// {
+	// 	input = readline(PROMPT_MSG);
+	// 	if (!input || ft_strcmp(input, "exit") == 0)
+	// 		break ;
+	// 	add_history(input);
+	// 	shell = handling_input(input);
+	// 	if (ft_strlen(shell.line) == 0 || !shell.tokens)
+	// 		continue ;
+		test_execution();
 		// cmd_execution(shell);
-	}
+	// }
 	return (EXIT_SUCCESS);
 }
 
