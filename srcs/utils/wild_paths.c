@@ -7,9 +7,14 @@ t_list	*wild_paths(t_list *tokens)
 	char	*dirname;
 	DIR *dir;
 	struct dirent *entry;
+	char	*basedir;
+	char	*srch;
 
 	paths = NULL;
-	if ((dir = opendir("/home/araiva/42bangkok/minishell/minishell")) == NULL)
+	srch = tokens->content;
+	if (*srch != '/')
+		basedir = ".";
+	if ((dir = opendir("srcs")) == NULL)
 		perror("opendir() error");
 	else {
 		while ((entry = readdir(dir)) != NULL)
@@ -25,3 +30,39 @@ t_list	*wild_paths(t_list *tokens)
 	}
 	return (paths);
 }
+
+// int	str_wildcards(char *str, char *srch)
+// {
+// 	while (*srch)
+// 	{
+// 		if (*srch == '*' && *srch++)
+// 		{
+// 			while (*str && *srch != *(++str));
+// 			if (!*srch)
+// 				return (1);
+// 		}
+// 		if (*srch != *str)
+// 			return (0);
+// 		str++;
+// 		srch++;
+// 	}
+// 	if (!*srch)
+// 		return (1);
+// 	else
+// 		return (0);
+// }
+
+// int main()
+// {
+// 	char *str = "aaabbccdef";
+// 	printf("search from str: %s\n", str);
+// 	printf("a*	> %d\n", str_wildcards(str, "a*"));
+// 	printf("ab*	> %d\n", str_wildcards(str, "ab*"));
+// 	printf("*f	> %d\n", str_wildcards(str, "*f"));
+// 	printf("a*f	> %d\n", str_wildcards(str, "*f"));
+// 	printf("a*d*f	> %d\n", str_wildcards(str, "*f"));
+// 	printf("a*d*ef	> %d\n", str_wildcards(str, "*f"));
+// 	printf("a*d*xf*	> %d\n", str_wildcards(str, "*f"));
+// 	printf("a*d*	> %d\n", str_wildcards(str, "*f"));
+// 	return (0);
+// }

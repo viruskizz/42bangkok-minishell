@@ -30,6 +30,7 @@ SRCS = main.c \
 	utils/quoting.c \
 	utils/metachar.c \
 	utils/parameter.c \
+	utils/arr_utils.c \
 	utils/debug.c
 
 BUILD_DIR = build

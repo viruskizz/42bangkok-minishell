@@ -69,9 +69,9 @@ static t_shell	handling_input(char *input)
 	print_lst(tokens);
 
 	cmds = group_cmd(tokens);
-	printf("%stable command: %s\n", CYAN, RESET);
-	print_cmd_table(cmds);
-	ft_lstclear(&tokens, &free_token);
+	// printf("%stable command: %s\n", CYAN, RESET);
+	// print_cmd_table(cmds);
+	// ft_lstclear(&tokens, &free_token);
 	return shell;
 }
 
