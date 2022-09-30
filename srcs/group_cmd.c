@@ -12,10 +12,9 @@
 
 #include "minishell.h"
 
-static int	set_cmd(t_list *lst, t_cmd **cmd);
-
-static char	**set_cmd_tokens(t_list *lst, int ctoken);
-static int	count_tokens(t_list *token);
+static t_list	*lst_rd_new(char *symbol, t_list *lst, int ctoken);
+static int		set_cmd(t_list *lst, t_cmd **cmd);
+static int		count_tokens(t_list *token);
 
 t_list	*group_cmd(t_list *lst)
 {
@@ -29,96 +28,66 @@ t_list	*group_cmd(t_list *lst)
 		ctoken = set_cmd(lst, &cmd);
 		if (!ctoken)
 			break ;
-		if (!cmds)
-			cmds = ft_lstnew(cmd);
-		else
-			ft_lstadd_back(&cmds, ft_lstnew(cmd));
-		while (ctoken-- > 0)
+		ft_lstadd_back(&cmds, ft_lstnew(cmd));
+		while (lst && ctoken-- > 0)
 			lst = lst->next;
 	}
 	return (cmds);
 }
-// aa bb cc << ii cc >> jjj || x y z
+
 static int	set_cmd(t_list *lst, t_cmd **cmd)
 {
 	int		i;
-	int		ctoken;
-	char	*str;
-	t_cmd	*new;
-	t_list	*tmp;
-	t_list	*tokens;
-	t_list	*inputs;
-	t_list	*outputs;
+	int		n;
 	int		opt;
+	t_cmd	*new;
 
-	ctoken = count_tokens(lst);
-	printf("ctoken: %d\n", ctoken);
 	i = 0;
+	n = count_tokens(lst);
+	new = malloc(sizeof(t_cmd));
+	new->fgt = lst_to_arr(lst_rd_new(">", lst, n));
+	new->fgtgt = lst_to_arr(lst_rd_new(">>", lst, n));
+	new->fls = lst_to_arr(lst_rd_new("<", lst, n));
+	new->flsls = lst_to_arr(lst_rd_new("<<", lst, n));
+	new->tokens = lst_to_arr(lst_rd_new(NULL, lst, n));
 	opt = 0;
-	tokens = NULL;
-	inputs = NULL;
-	outputs = NULL;
-	while (i < ctoken)
+	while (i++ < n)
 	{
-		str = lst->content;
-		// printf("%d: %s\n", i, str);
-		if (is_opt(str))
-		{
-			// printf("opt\n");
-			opt = parse_opt(str);
-		}
-		else if (!ft_strcmp(str, ">>"))
-		{
-			// printf("out\n");
-			i++;
-			lst = lst->next;
-			tmp = ft_lstnew(ft_strdup(lst->content));
-			ft_lstadd_back(&outputs, tmp);
-		}
-		else if (!ft_strcmp(str, "<<"))
-		{
-			// printf("in\n");
-			i++;
-			lst = lst->next;
-			tmp = ft_lstnew(ft_strdup(lst->content));
-			ft_lstadd_back(&inputs, tmp);
-		}
-		else
-		{
-			tmp = ft_lstnew(ft_strdup(str));
-			ft_lstadd_back(&tokens, tmp);
-		}
-		i++;
+		if (is_opt(lst->content))
+			opt = parse_opt(lst->content);
 		lst = lst->next;
 	}
-	new = malloc(sizeof(t_cmd));
-	printf("tokens:");
-	print_lst(tokens);
-	printf("inputs:");
-	print_lst(inputs);
-	printf("outputs:");
-	print_lst(outputs);
-	printf("opt: %d\n", opt);
+	new->opt = opt;
 	*cmd = new;
-	return (ctoken);
+	return (n);
 }
 
+static t_list	*lst_rd_new(char *smb, t_list *lst, int n)
+{
+	t_list	*dest;
+	t_list	*new;
+	char	*str;
 
-// static char	**set_cmd_tokens(t_list *lst, int ctoken)
-// {
-// 	int		i;
-// 	char	**tokens;
-
-// 	tokens = ft_calloc(ctoken + 1, sizeof(char *));
-// 	i = 0;
-// 	while (i < ctoken)
-// 	{
-// 		tokens[i++] = ft_strdup((char *) lst->content);
-// 		lst = lst->next;
-// 	}
-// 	tokens[i] = NULL;
-// 	return (tokens);
-// }
+	dest = NULL;
+	while (n > 0)
+	{
+		str = lst->content;
+		if (smb && !ft_strcmp(lst->content, smb) && n--)
+		{
+			lst = lst->next;
+			str = lst->content;
+			new = ft_lstnew(ft_strdup(str));
+			ft_lstadd_back(&dest, new);
+		}
+		else if (smb == NULL && is_redirect(str) && !is_opt(str) && n--)
+			lst = lst->next;
+		else if (smb == NULL && !is_redirect(str) && !is_opt(str))
+			ft_lstadd_back(&dest, ft_lstnew(ft_strdup(str)));
+		n--;
+		lst = lst->next;
+	}
+	return (dest);
+}
 
 static int	count_tokens(t_list *token)
 {
@@ -137,4 +106,17 @@ static int	count_tokens(t_list *token)
 		lst = lst->next;
 	}
 	return (i);
+}
+
+void	free_cmd(void *content)
+{
+	t_cmd	*cmd;
+
+	cmd = (t_cmd *) content;
+	free_arr(cmd->tokens);
+	free_arr(cmd->fgt);
+	free_arr(cmd->fgtgt);
+	free_arr(cmd->fls);
+	free_arr(cmd->flsls);
+	free(cmd);
 }

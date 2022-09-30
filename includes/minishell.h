@@ -85,20 +85,30 @@
 // }	t_cmd;
 typedef struct s_env
 {
-	char					*name;
-	char					*value;
-	struct s_env			*next;
+	char			*name;
+	char			*value;
+	struct s_env	*next;
 }	t_env;
 
 typedef struct s_cmd
 {
 	char	**tokens;
-	char	**fg; // >
-	char	**fgg; // >>
+	char	**fgt; // >
+	char	**fgtgt; // >>
 	char	**fls; // <<
 	char	**flsls; // <
 	int		opt;
 }	t_cmd;
+
+typedef struct s_lcmd
+{
+	t_list *tokens;
+	t_list *fgt; // >
+	t_list *fgtgt; // >>
+	t_list *fls; // <
+	t_list *flsls; // <<
+	int		opt;
+}	t_lcmd;
 
 typedef struct s_token
 {
@@ -158,11 +168,13 @@ void	free_double_pointer(char **str1, char **str2, char **str3, char *str4);
 void	signal_defualt(void);
 int		execution_change_directory(char **command);
 
+// main function
 t_list	*split_input(char *line);
-t_list	*group_cmd(t_list *token);
 t_list	*parse_token(t_list *tokens);
-void	free_token(void *content);
+t_list	*group_cmd(t_list *token);
 int		validate_token(t_list **tokens);
+void	free_cmd(void *content);
+void	free_token(void *content);
 
 // utility
 int		exp_env(char *token, char **str);
@@ -172,11 +184,18 @@ t_list	*wild_paths(t_list *tokens);
 
 int		is_opt(char *str);
 int		parse_opt(char *opt);
+char	*str_opt(int opt);
+int		is_redirect(char *str);
 int		is_sq_str(char	*s);
 int		is_dq_str(char	*s);
 int		is_exp_var(char *s);
 int		is_wild_var(char *s);
 
+char	**lst_to_arr(t_list *lst);
+int		arr_str_len(char **arr);
+void	free_arr(char **arr);
+
+// debug
 void	print_arr(char **str);
 void	print_lst(t_list *lst);
 void	print_cmd_table(t_list *cmds);

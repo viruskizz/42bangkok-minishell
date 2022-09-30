@@ -9,7 +9,19 @@
 /*   Updated: 2022/09/25 19:04:36 by araiva           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
+/**
+ * @file debug.c
+ * @author Araiva (viruskizz@github.io)
+ * @brief debug the data in minishell
+ * the symbol of result mean as below
+ * < linklist > : Linklist is in start and end with triangle bracket is 
+ * [ array ] : Array is in start and end with triangle bracket is 
+ * { struct } : Struct is in start and end with triangle bracket is 
+ * @version 0.1
+ * @date 2022-10-01
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include "minishell.h"
 
 void	print_arr(char **str)
@@ -17,7 +29,7 @@ void	print_arr(char **str)
 	int	i;
 
 	i = 0;
-	printf("[");
+	printf("[ ");
 	while (*str)
 	{
 		printf("%s", *str);
@@ -25,12 +37,12 @@ void	print_arr(char **str)
 			printf(", ");
 		str++;
 	}
-	printf("]\n");
+	printf(" ]\n");
 }
 
 void	print_lst(t_list *lst)
 {
-	printf("{");
+	printf("< ");
 	while (lst)
 	{
 		if (lst->content)
@@ -39,26 +51,35 @@ void	print_lst(t_list *lst)
 			printf(", ");
 		lst = lst->next;
 	}
-	printf("}\n");
+	printf(" >\n");
 }
 
 void	print_cmd_table(t_list *cmds)
 {
 	t_cmd	*cmd;
 
-	printf("%s[\n%s", GREEN, RESET);
+	printf("%s<\n%s", GREEN, RESET);
 	while (cmds)
 	{
 		if (cmds->content)
 		{
 			cmd = (t_cmd *) cmds->content;
 			printf("  {\n");
+			printf("    n: %d\n", arr_str_len(cmd->tokens));
 			printf("    tokens: ");
 			print_arr(cmd->tokens);
-			printf("    n: %d\n", cmd->n);
+			printf("    fgt: ");
+			print_arr(cmd->fgt);
+			printf("    fgtgt: ");
+			print_arr(cmd->fgtgt);
+			printf("    fls: ");
+			print_arr(cmd->fls);
+			printf("    flsls: ");
+			print_arr(cmd->flsls);
+			printf("    opt[%d]: %s\n", cmd->opt, str_opt(cmd->opt));
 			printf("  },\n");
 		}
 		cmds = cmds->next;
 	}
-	printf("%s]\n%s", GREEN, RESET);
+	printf("%s>\n%s", GREEN, RESET);
 }

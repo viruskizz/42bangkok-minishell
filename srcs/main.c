@@ -17,29 +17,37 @@ static t_shell	handling_input(char *input);
 
 int	main(int argc, char *argv[])
 {
-	char				*line;
-	char				*input;
-	t_shell				shell;
-	struct sigaction	sa;
+	// char				*line;
+	// char				*input;
+	// t_shell				shell;
+	// struct sigaction	sa;
 
-	sa.sa_handler = handling_signal;
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = SA_RESTART;
-	sigaction(SIGINT, &sa, NULL);
-	sigaction(SIGQUIT, &sa, NULL);
-	while (true)
-	{
-		input = readline(PROMPT_MSG);
-		if (!input || ft_strcmp(input, "exit") == 0)
-			break ;
-		add_history(input);
-		shell = handling_input(input);
-		if (ft_strlen(shell.line) == 0 || !shell.tokens)
-			continue ;
-		// test_exe();
-		// cmd_execution(shell);
-	}
-	return (EXIT_SUCCESS);
+	// sa.sa_handler = handling_signal;
+	// sigemptyset(&sa.sa_mask);
+	// sa.sa_flags = SA_RESTART;
+	// sigaction(SIGINT, &sa, NULL);
+	// sigaction(SIGQUIT, &sa, NULL);
+
+	char *test = ft_strdup("aaa bb dd << a >> b | $HOME \" xx $HOME\"");
+	t_shell shell = handling_input(test);
+	free(shell.line);
+	if (shell.cmds)
+		ft_lstclear(&shell.cmds, &free_cmd);
+	return (0);
+
+	// while (true)
+	// {
+	// 	input = readline(PROMPT_MSG);
+	// 	if (!input || ft_strcmp(input, "exit") == 0)
+	// 		break ;
+	// 	add_history(input);
+	// 	shell = handling_input(input);
+	// 	if (ft_strlen(shell.line) == 0 || !shell.tokens)
+	// 		continue ;
+	// 	// test_exe();
+	// 	// cmd_execution(shell);
+	// }
+	// return (EXIT_SUCCESS);
 }
 
 static t_shell	handling_input(char *input)
@@ -63,15 +71,16 @@ static t_shell	handling_input(char *input)
 		ft_lstclear(&tokens, &free_token);
 		return (shell);
 	}
-
 	parse_token(tokens);
 	printf("%sparsed: %s", CYAN, RESET);
 	print_lst(tokens);
 
 	cmds = group_cmd(tokens);
-	// printf("%stable command: %s\n", CYAN, RESET);
-	// print_cmd_table(cmds);
-	// ft_lstclear(&tokens, &free_token);
+	printf("%stable command: %s\n", CYAN, RESET);
+	print_cmd_table(cmds);
+	shell.cmds = cmds;
+	// shell.cmds = NULL;
+	ft_lstclear(&tokens, &free_token);
 	return shell;
 }
 

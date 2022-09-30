@@ -16,19 +16,6 @@ int	is_opt(char *s)
 {
 	int	len;
 
-	// if (!s)
-	// 	return (0);
-	// if (s[0] != '&' && s[0] != '|')
-	// 	return (0);
-	// len = ft_strlen(s);
-	// if (s[0] == '&' && s[1] == '&' && len == 2)
-	// 	return (1);
-	// else if (s[0] == '|' && s[1] == '|' && len == 2)
-	// 	return (1);
-	// else if (s[0] == '|' && len == 1)
-	// 	return (1);
-	// else
-	// 	return (-1);
 	if (!s)
 		return (0);
 	if (*s != '&' && *s != '|')
@@ -53,4 +40,27 @@ int	parse_opt(char *opt)
 		return (OPT_PIPE);
 	else
 		return (OPT_NULL);
+}
+
+char	*str_opt(int opt)
+{
+	if (opt == OPT_OR)
+		return ("||");
+	else if (opt == OPT_AND)
+		return ("&&");
+	else if (opt == OPT_PIPE)
+		return ("|");
+	else
+		return (NULL);
+}
+
+int	is_redirect(char *str)
+{
+	if (ft_strcmp(str, "<<") == 0
+		|| ft_strcmp(str, "<") == 0
+		|| ft_strcmp(str, ">") == 0
+		|| ft_strcmp(str, ">>") == 0)
+		return (1);
+	else
+		return (0);
 }
