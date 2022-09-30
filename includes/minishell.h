@@ -90,20 +90,14 @@ typedef struct s_env
 	struct s_env			*next;
 }	t_env;
 
-
-typedef struct s_word
-{
-	char			*word;
-	struct s_word	*next;
-}	t_word;
-
 typedef struct s_cmd
 {
 	char	**tokens;
+	char	**fg; // >
+	char	**fgg; // >>
+	char	**fls; // <<
+	char	**flsls; // <
 	int		opt;
-	int		n;
-	char	*file;
-	int		redir;
 }	t_cmd;
 
 typedef struct s_token
@@ -122,7 +116,9 @@ typedef struct s_shell
 	char	*line;
 	t_token	*tokens;
 	t_env	*env;
+	t_list	*envs;
 	t_list	*cmds;
+	int		exstat;
 	int		cmd_amount;
 
 }	t_shell;
@@ -175,6 +171,7 @@ int		exp_env_hom(char *token, char **str);
 t_list	*wild_paths(t_list *tokens);
 
 int		is_opt(char *str);
+int		parse_opt(char *opt);
 int		is_sq_str(char	*s);
 int		is_dq_str(char	*s);
 int		is_exp_var(char *s);
