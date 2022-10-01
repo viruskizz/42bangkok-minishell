@@ -15,6 +15,7 @@
 static void		parse_dq_quote(t_list *token);
 static void		parse_normal(t_list *lst);
 static t_list	*parse_wildcard(t_list **lst);
+static	void	quote_remove(t_list *token);
 
 t_list	*parse_token(t_list *tokens)
 {
@@ -29,6 +30,7 @@ t_list	*parse_token(t_list *tokens)
 			parse_normal(lst);
 		if (ft_strchr(lst->content, '*'))
 			lst = parse_wildcard(&lst);
+		quote_remove(lst);
 		lst = lst->next;
 	}
 	return (tokens);
@@ -95,4 +97,22 @@ static t_list	*parse_wildcard(t_list **tokens)
 		ft_lstadd_back(tokens, next);
 	}
 	return (*tokens);
+}
+
+static	void	quote_remove(t_list *token)
+{
+	char	*str;
+	char	*new;
+	int		len;
+
+	str = token->content;
+	len = ft_strlen(str);
+	if ((str[0] == '\'' && str[len - 1] == '\'')
+		|| str[0] == '"' && str[len - 1] == '"')
+	{
+		new = ft_calloc(len - 1, sizeof(char));
+		ft_strlcpy(new, str + 1, len - 1);
+		token->content = new;
+		free(str);
+	}
 }
