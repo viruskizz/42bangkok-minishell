@@ -50,7 +50,7 @@ int	main(int argc, char *argv[])
 	sigaction(SIGINT, &sa, NULL);
 	sigaction(SIGQUIT, &sa, NULL);
 
-	return (test_main(argv[1]));
+	// return (test_main(argv[1]));
 	while (true)
 	{
 		input = readline(PROMPT_MSG);

@@ -28,7 +28,9 @@ t_list	*parse_token(t_list *tokens)
 			parse_dq_quote(lst);
 		else if (!is_sq_str(lst->content))
 			parse_normal(lst);
-		if (ft_strchr(lst->content, '*'))
+		if (!is_dq_str(lst->content)
+			&& !is_sq_str(lst->content)
+			&& ft_strchr(lst->content, '*'))
 			lst = parse_wildcard(&lst);
 		quote_remove(lst);
 		lst = lst->next;
