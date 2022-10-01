@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 22:58:34 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/09/29 22:37:03 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/01 15:42:03 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,8 @@
 # define FIELDS	" \t\n"
 # define QUOTES	"'\""
 
-# define HERE_DOC ".temporary_file_for_heredoc_u_can_not_see_this_please_saatoo"
+# define HERE_DOC "~/.temporary_file_for_heredoc_u_can_not_see_this_saatoooooo"
+# define IN_FILE "~/.temporary_for_collecting_infile_u_cannot_see_this_3saatoo"
 
 /**
  * @brief struct for single command with conjuction
@@ -95,17 +96,19 @@ typedef struct s_cmd
 	char	**tokens;
 	char	**fg; // >
 	char	**fgg; // >>
-	char	**fls; // <<
-	char	**flsls; // <
+	char	**fls; // <
+	char	**flsls; // <<
 	int		opt;
 }	t_cmd;
 
 typedef struct s_token
 {
-	char	*token;
-	char	*file;
+	char	**tokens;
+	char	**fg; // >
+	char	**fgg; // >>
+	char	**fls; // <<
+	char	**flsls; // <
 	int		opt;
-	int		redir;
 }	t_token;
 
 /**

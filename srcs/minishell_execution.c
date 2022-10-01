@@ -6,13 +6,13 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 20:38:04 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/09/29 22:35:22 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/01 15:41:56 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	execution_path_command(t_shell *shell, char **command, int count, int status)
+int	execution_path_command(t_shell *shell, char **command, int count)
 {
 	int		index;
 	char	*path;
@@ -26,8 +26,8 @@ int	execution_path_command(t_shell *shell, char **command, int count, int status
 		//* command is exist and can execute */
 		if (access(path, F_OK | R_OK | X_OK) == 0)
 		{
-			status = execution_token(shell, path, command, count);
-			if (status == -1)
+			shell->exstat = execution_token(shell, path, command, count);
+			if (shell->exstat == -1)
 			{
 				//error free and exit;
 			}
@@ -77,58 +77,54 @@ void	free_double_pointer(char **str1, char **str2, char **str3, char *str4)
 		free(str4);
 }
 
-int	execution_token(t_shell *shell, char *path, char **command, int index)
-{
-	pid_t	pid;
-	int		status;
-	int 	fd[2];
+// int	execution_token(t_shell *shell, char *path, char **command, int index)
+// {
+// 	pid_t	pid;
+// 	int		shell->exstat;
+// 	int 	fd[2];
 
-	pipe(fd);
-	pid = fork();
-	if (pid < 0 )
-		return (-1);
-	else if (pid == 0)
-	{
-		signal_defualt();
-		if (minishell_redirect(shell, fd, index) == -1)
-			return (-1);
-		execve(path, command, environ);
-		printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
-	}
-	else if (pid > 0)
-	{
-		waitpid(-1, &status, 0);
-		if (shell->tokens[index].redir == FFROM)
-			unlink(HERE_DOC);
-		dup2(fd[0], 0);
-		close(fd[0]);
-		close(fd[1]);
-	}
-	return (status);
-}
+// 	pipe(fd);
+// 	pid = fork();
+// 	if (pid < 0 )
+// 		return (-1);
+// 	else if (pid == 0)
+// 	{
+// 		signal_defualt();
+// 		if (minishell_redirect(shell, fd, index) == -1)
+// 			return (-1);
+// 		execve(path, command, environ);
+// 		printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
+// 	}
+// 	else if (pid > 0)
+// 	{
+// 		waitpid(-1, &shell->exstat, 0);
+// 		if (shell->tokens[index].redir == FFROM)
+// 			unlink(HERE_DOC);
+// 		dup2(fd[0], 0);
+// 		close(fd[0]);
+// 		close(fd[1]);
+// 	}
+// 	return (shell->exstat);
+// }
 
 int	cmd_execution(t_shell *shell)
 {
-	char			**command;
-	int				count;
-	static int		status = 0;
+	char	**command;
+	t_list	*command;
 
-	count = 0;
-	while (count < shell->cmd_amount)
+	command = shell->cmds;
+	while (command != NULL)
 	{	
-		command = ft_split_mode(shell->tokens[count].token, ' ', BOUND);
-		if (command == NULL)
-			return (-1);
 		//* bashing command $? show the return command */ /* check command */
-		if (string_compare(shell->tokens[count].token, "$?") == 1)
+		if (string_compare((shell->cmds->content)->tokens[0], "$?") == 1) //! check agign //
 		{
-			printf("minishell: command not found: %d\n", status);
-			status = 127;
+			printf("minishell: command not found: %d\n", shell->exstat);
+			shell->exstat = 127;
 		}
 
 		//* bashing command cd changing directory */
-		else if (string_compare(command[0], "cd") == 1)
-			status = execution_change_directory(command);
+		else if (string_compare(shell->tokens->tokens[0], "cd") == 1)
+			shell->exstat = execution_change_directory(shell->tokens->tokens);
 		/*{
 			char *user;
 			user = ft_midjoin("~", getenv("USER"), '\0');
@@ -146,24 +142,24 @@ int	cmd_execution(t_shell *shell)
 		}*/
 		
 		//* bashing command environment : export, unset, env */
-		else if (string_compare(command[0], "export") == 1)
-			status = execution_export_env(shell, command);
+		else if (string_compare(shell->tokens->tokens[0], "export") == 1)
+			shell->exstat = execution_export_env(shell, command);
 		else if (string_compare(command[0], "unset") == 1)
-			status = execution_unset_env(&shell->env, command[1]);
+			shell->exstat = execution_unset_env(&shell->env, command[1]);
 		else if (string_compare(command[0], "env") == 1)
-			status = execution_print_env(shell);
+			shell->exstat = execution_print_env(shell);
 
 
 		//* bashing command section */
 		//* check and bashing commnad from abslute path */
 		else if (access(command[0], F_OK | R_OK | X_OK) == 0)
-			status = execution_token(shell, command[0], command, count);
+			shell->exstat = execution_token(shell, command[0], command, count);
 		//* check and bashing command from env_path */
 		else
 		{
-			status = execution_path_command(shell, command, count, status);
-			// // status = execution_envpath(shell, command, count, status);
-			// // TODO status = execute_envpath()
+			shell->exstat = execution_path_command(shell, command, count, shell->exstat);
+			// // shell->exstat = execution_envpath(shell, command, count, shell->exstat);
+			// // TODO shell->exstat = execute_envpath()
 			// // add "free(str)" in the split //
 			// env_path = ft_split_mode(getenv("PATH"), ':', BOUND);  //? FREE ?? //
 			// // access: check path //
@@ -174,8 +170,8 @@ int	cmd_execution(t_shell *shell)
 			// 	//* command is exist and can execute */
 			// 	if (access(path, F_OK | R_OK | X_OK) == 0)
 			// 	{
-			// 		status = execution_token(shell, path, command, count);
-			// 		if (status == -1)
+			// 		shell->exstat = execution_token(shell, path, command, count);
+			// 		if (shell->exstat == -1)
 			// 		{
 			// 			//error free and exit;
 			// 		}
@@ -201,9 +197,9 @@ int	cmd_execution(t_shell *shell)
 			// 	}
 			// 	//free(path);
 		}
-		if ((shell->tokens[count].opt == OPT_AND && status != 0) || (shell->tokens[count].opt == OPT_OR && status == 0))
+		if ((shell->tokens[count].opt == OPT_AND && shell->exstat != 0) || (shell->tokens[count].opt == OPT_OR && shell->exstat == 0))
 			break ;
-		count++;
+		count++; // shell->cmds = shell->cmds->next;
 	}
 	return (0);
 }

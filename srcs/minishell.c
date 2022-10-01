@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 00:28:26 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/09/30 20:45:12 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/01 15:41:53 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,24 +247,18 @@ int	test_execution(void)
 	shell = (t_shell *)ft_calloc(sizeof(t_shell), 1);
 	if (shell == NULL)
 		return (EXIT_FAILURE);
-	shell->tokens = (t_token *)ft_calloc(sizeof(t_token), 3);
+	shell->tokens = (t_token *)ft_calloc(sizeof(t_token), 1);
 	if (shell->tokens == NULL)
 		return (0);
-	shell->tokens[0].token = ft_stringvalue("wc -l");
-	shell->tokens[0].opt = OPT_PIPE;
-	shell->tokens[0]. = 0;
-	shell->tokens[0].file = NULL;
+	shell->tokens->token = (char **)ft_calloc(sizeof(char), 3);
+	if (shell->tokens->token == NULL)
+		return (0);
+	shell->tokens->token[0] = ft_stringvalue("wc -l");
+	shell->tokens->fg = NULL;
+	shell->tokens->fgg = NULL;
+	shell->tokens->fls = NULL;
+	shell->tokens->flsls = NULL;
 
-	shell->tokens[1].token = ft_stringvalue("printenv NONG");
-	shell->tokens[1].opt = OPT_PIPE;
-	shell->tokens[1].redir = 0;
-	shell->tokens[1].file = NULL;
-
-	shell->tokens[2].token = ft_stringvalue("unset NONG");
-	shell->tokens[2].opt = OPT_NULL;
-	shell->tokens[2].redir = 0;
-	shell->tokens[2].file = "test_tto.txt";
-	shell->cmd_amount = 1;
 
 	cmd_execution(shell);
  	printf("\ncurrent directory is \"%s\"\n",getcwd(dir, 100));
