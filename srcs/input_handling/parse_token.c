@@ -12,8 +12,8 @@
 
 #include "minishell.h"
 
-static void	parse_dq_quote(t_list *token);
-static void	parse_normal(t_list *lst);
+static void		parse_dq_quote(t_list *token);
+static void		parse_normal(t_list *lst);
 static t_list	*parse_wildcard(t_list **lst);
 
 t_list	*parse_token(t_list *tokens)

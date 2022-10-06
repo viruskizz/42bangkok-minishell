@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 22:48:33 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/09/29 18:46:39 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/04 23:13:36 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,20 @@
 
 // function compare two strings //
 	//return:1 strings are same | return:0 string aren't same //
-int	string_compare(char *str1, char *str2)
+int	string_compare(char *str1, char *str2, int len)
 {
 	int	index;
 
 	index = 0;
+	if (len > 0)
+	{
+		while (str1[index] == str2[index] && index <= len - 1)
+		{
+			if (index == len - 1)
+				return (1);
+			index++;
+		}
+	}
 	while (str1[index] == str2[index])
 	{
 		if (str1[index] == '\0' && str2[index] == '\0')
@@ -26,6 +35,33 @@ int	string_compare(char *str1, char *str2)
 		index++;
 	}
 	return (0);
+}
+
+char	*string_tranfer(char *str1, char *str2, int len)
+{
+	int	index;
+
+	index = 0;
+	if (str2 == NULL || str1 == NULL)
+		return (0);
+	if (len == NO_LEN)
+	{
+		while (str2[index] != '\0')
+		{
+			str1[index] = str2[index];
+			index++;
+		}
+	}
+	else
+	{
+		while (index < len)
+		{
+			str1[index] = str2[index];
+			index++;
+		}
+	}
+	str1[index] = '\0';
+	return (str1);
 }
 
 // function search character in string str //
@@ -66,12 +102,12 @@ int	ft_lencount(char *str, char **strs, int mode)
 	count = 0;
 	if (mode == STR)
 	{
-		while (str[count] != '\0')
+		while (str != NULL && str[count] != '\0')
 			count++;
 	}
 	else if (mode == STRS)
 	{
-		while (strs[count] != NULL)
+		while (strs != NULL && strs[count] != NULL)
 			count++;
 	}
 	return (count);

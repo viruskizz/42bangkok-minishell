@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 22:58:34 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/01 15:42:03 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/06 16:25:17 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,18 +57,21 @@
 
 /* mode in environment_check_value*/
 # define START	1
-# define QUOTE 2
+# define QUOTE	2
 # define INDEX	3
 
 /* mode in environmant_get_name */
 # define ENVI	0
 # define COMM	1
 
+/* mode in string_compare */
+# define NO_LEN	-42
+
 # define FIELDS	" \t\n"
 # define QUOTES	"'\""
 
-# define HERE_DOC "~/.temporary_file_for_heredoc_u_can_not_see_this_saatoooooo"
-# define IN_FILE "~/.temporary_for_collecting_infile_u_cannot_see_this_3saatoo"
+// # define HERE_DOC "~/.temporary_file_for_heredoc_u_can_not_see_this_saatoooooo"
+# define IN_FILE ".temporary_for_collecting_infile_u_cannot_see_this_3saatoooo"
 
 /**
  * @brief struct for single command with conjuction
@@ -86,9 +89,9 @@
 // }	t_cmd;
 typedef struct s_env
 {
-	char					*name;
-	char					*value;
-	struct s_env			*next;
+	char			*name;
+	char			*value;
+	struct s_env	*next;
 }	t_env;
 
 typedef struct s_cmd
@@ -100,6 +103,16 @@ typedef struct s_cmd
 	char	**flsls; // <<
 	int		opt;
 }	t_cmd;
+
+typedef struct s_lcmd
+{
+	t_list *tokens;
+	t_list *fgt; // >
+	t_list *fgtgt; // >>
+	t_list *fls; // <
+	t_list *flsls; // <<
+	int		opt;
+}	t_lcmd;
 
 typedef struct s_token
 {
@@ -128,17 +141,18 @@ typedef struct s_shell
 
 extern char	**environ;
 
-int		string_compare(char *str1, char *str2);
+char	*string_tranfer(char *str1, char *str2, int len);
+int		string_compare(char *str1, char *str2, int len);
 int		character_search(char *str, char c, int mode);
 int		ft_lencount(char *str, char **strs, int mode);
 // void	*ft_calloc(int count, int size);
 char	**ft_split_mode(char *str, char c, int mode);
 char	*ft_midjoin(char *str1, char *str2, char c);
-int		test_execution(void);
+char	**doublepointer_join(char **strs, char *str);
 
 // excution part //
 int		cmd_execution(t_shell *shell);
-int		execution_token(t_shell *shell, char *path, char **command, int index);
+int		execution_token(t_shell *shell, char *path, char **command);
 int		minishell_redirect(t_shell *shell, int *fd, int index);
 
 //	execution_export_env //
@@ -148,7 +162,7 @@ char	*environment_get_value(char **command, int mode);
 int		environment_check_value(char *command, int quote, int qquote, int mode);
 int		environment_check_name(char *variable_name);
 
-int 	execution_unset_env(t_env **env, char *variable_name);
+int 	execution_unset_env(t_env **env, char **variable_name);
 void	environment_delete(t_env *env);
 
 int 	minishell_make_environment(t_shell *shell);
@@ -157,15 +171,20 @@ void	environment_add_back(t_env **env, t_env *new);
 void	environment_clear(t_env **env);
 int		execution_print_env(t_shell *shell);
 
-void	free_double_pointer(char **str1, char **str2, char **str3, char *str4);
-void	signal_defualt(void);
-int		execution_change_directory(char **command);
+// redirect
+int		redirect_infile(t_shell *shell, t_cmd *cmds);
 
+void	free_double_pointer(char **str1, char **str2, char *str3);
+void	signal_defualt(void);
+int		execution_change_directory(t_shell *shell, char **command);
+
+// main function
 t_list	*split_input(char *line);
-t_list	*group_cmd(t_list *token);
 t_list	*parse_token(t_list *tokens);
-void	free_token(void *content);
+t_list	*group_cmd(t_list *token);
 int		validate_token(t_list **tokens);
+void	free_cmd(void *content);
+void	free_token(void *content);
 
 // utility
 int		exp_env(char *token, char **str);
@@ -175,11 +194,18 @@ t_list	*wild_paths(t_list *tokens);
 
 int		is_opt(char *str);
 int		parse_opt(char *opt);
+char	*str_opt(int opt);
+int		is_redirect(char *str);
 int		is_sq_str(char	*s);
 int		is_dq_str(char	*s);
 int		is_exp_var(char *s);
 int		is_wild_var(char *s);
 
+char	**lst_to_arr(t_list *lst);
+int		arr_str_len(char **arr);
+void	free_arr(char **arr);
+
+// debug
 void	print_arr(char **str);
 void	print_lst(t_list *lst);
 void	print_cmd_table(t_list *cmds);

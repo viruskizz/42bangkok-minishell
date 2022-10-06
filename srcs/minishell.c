@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 00:28:26 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/01 15:41:53 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/04 23:13:42 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,25 +101,29 @@ void	signal_defualt(void)
 // 	return (status);
 // }
 
-int	execution_change_directory(char **command)
+int	execution_change_directory(t_shell *shell, char **command)
 {
 	char	*user;
-	int		exit_status;
 
-	exit_status = 0;
 	user = ft_midjoin("~", getenv("USER"), '\0');
 	if (ft_lencount(NULL, command, STRS) == 3)
-		printf("cd: the option isn't avalable\n");
-	else if (ft_lencount(NULL, command, STRS) == 1 || string_compare(command[1], "~") == 1 || string_compare(command[1], user) == 1)
-		exit_status = chdir(getenv("HOME"));
-	else if (string_compare(command[1], "-") == 1)
-		exit_status = chdir(getenv("OLDPWD"));
+	{
+		printf("cd: string not in pwd: %s\n", command[1]);
+		shell->exstat = 1;
+	}
+	else if (ft_lencount(NULL, command, STRS) == 1 || string_compare(command[1], "~", NO_LEN) == 1 || string_compare(command[1], user, NO_LEN) == 1)
+		shell->exstat = chdir(getenv("HOME"));
+	else if (string_compare(command[1], "-", NO_LEN) == 1)
+		shell->exstat = chdir(getenv("OLDPWD"));
 	else if (ft_lencount(NULL, command, STRS) == 2)
-		exit_status = chdir(command[1]);
+		shell->exstat = chdir(command[1]);
 	else
+	{
 		printf("cd: too many agurments");
+		shell->exstat = 1;
+	}
 	free(user);
-	return (exit_status);
+	return (0);
 }
 
 char	*ft_stringvalue(char *str)
@@ -235,32 +239,56 @@ char	*ft_stringvalue(char *str)
 // 	return (0);
 // }
 
-int	test_execution(void)
-{
-	// line = ls -la | wc -l
-	t_shell		*shell;
-	char		dir[100];
-	char		*dir_path;
+// int	main(void)
+// {
+// 	// line = ls -la | wc -l
+// 	t_shell		*shell;
+// 	char		dir[100];
+// 	char		*dir_path;
 
-	// * ls -l | wc -l 
-	// signal_register();
-	shell = (t_shell *)ft_calloc(sizeof(t_shell), 1);
-	if (shell == NULL)
-		return (EXIT_FAILURE);
-	shell->tokens = (t_token *)ft_calloc(sizeof(t_token), 1);
-	if (shell->tokens == NULL)
-		return (0);
-	shell->tokens->token = (char **)ft_calloc(sizeof(char), 3);
-	if (shell->tokens->token == NULL)
-		return (0);
-	shell->tokens->token[0] = ft_stringvalue("wc -l");
-	shell->tokens->fg = NULL;
-	shell->tokens->fgg = NULL;
-	shell->tokens->fls = NULL;
-	shell->tokens->flsls = NULL;
+// 	// * wc -l < hello1 < hello2 < hello3
+// 	// signal_register();
+// 	// shell = (t_shell *)ft_calloc(sizeof(t_shell), 1);
+// 	// if (shell == NULL)
+// 	// 	return (EXIT_FAILURE);
+// 	// shell->tokens = (t_token *)ft_calloc(sizeof(t_token), 1);
+// 	// if (shell->tokens == NULL)
+// 	// 	return (0);
+// 	// shell->tokens->tokens = (char **)ft_calloc(sizeof(char), 3);
+// 	// if (shell->tokens->tokens == NULL)
+// 	// 	return (0);
+// 	// shell->tokens->tokens[0] = ft_stringvalue("wc -l");
+// 	// shell->tokens->fg = NULL;
+// 	// shell->tokens->fgg = NULL;
+// 	// shell->tokens->fls = NULL;
+// 	// shell->tokens->flsls = NULL;
+// 	// shell->tokens->opt = 0;
 
+// 	shell = (t_shell *)ft_calloc(sizeof(t_shell), 1);
+// 	if (shell == NULL)
+// 		return (EXIT_FAILURE);
+	
+// 	t_cmd	*new;
+// 	new = (t_cmd *)ft_calloc(sizeof(t_cmd), 1);
+// 	if (new == NULL)
+// 		return (0);
 
-	cmd_execution(shell);
- 	printf("\ncurrent directory is \"%s\"\n",getcwd(dir, 100));
-	return (EXIT_SUCCESS);
-}
+// 	new->tokens = (char **)ft_calloc(sizeof(char *), 3);
+// 	new->tokens[0] = ft_stringvalue("wc");
+// 	new->tokens[1] = ft_stringvalue("-l");
+// 	new->tokens[2] = NULL;
+// 	new->fg = NULL;
+// 	new->fgg = NULL;
+// 	new->fls = NULL;
+// 	new->flsls = NULL;
+// 	new->opt = 0;
+
+// 	ft_lstadd_back(&shell->cmds, ft_lstnew(new));
+// 	// printf("=> %s\n", ((char *)((t_lcmd *)shell->cmds->content)->tokens->content));//(char *)tmp->content);
+// 	// ((t_lcmd *)shell->cmds->content)->tokens = ((t_lcmd *)shell->cmds->content)->tokens->next;
+// 	// printf("=> %s\n", ((char *)((t_lcmd *)shell->cmds->content)->tokens->content));//(char *)tmp->content);
+
+// 	cmd_execution(shell);
+//  	printf("\ncurrent directory is \"%s\"\n",getcwd(dir, 100));
+// 	return (EXIT_SUCCESS);
+// }

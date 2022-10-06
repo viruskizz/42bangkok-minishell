@@ -6,43 +6,49 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 18:30:21 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/09/29 22:36:36 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/06 16:25:12 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	execution_unset_env(t_env **env, char *variable_name)
+int	execution_unset_env(t_env **env, char **variable_name)
 {
 	t_env	*current;
 	t_env	*check;
+	int		index;
 
+	index = 1;
 	current = *env;
 	check = *env;
-	if (string_compare((*env)->name, variable_name) == 1)
+	while (variable_name[index] != NULL)
 	{
-		*env = (*env)->next;
-		environment_delete(current);
-		// free(current->name);
-		// free(current->value);
-		// free(current);
-		return (0);
-	}
-	while (current != NULL)
-	{
-		check = check->next;
-		if (check != NULL && string_compare(check->name, variable_name) == 1)
+		if (string_compare((*env)->name, variable_name[index], NO_LEN) == 1)
 		{
-			current->next = check->next;
-			environment_delete(check);
-			// free(check->name);
-			// free(check->value);
-			// free(check);
-			return (0);
+			*env = (*env)->next;
+			environment_delete(current);
+			// free(current->name);
+			// free(current->value);
+			// free(current);
+			//return (0);
 		}
-		current = current->next;
+		while (current != NULL)
+		{
+			check = check->next;
+			if (check != NULL && string_compare(check->name, variable_name[index], NO_LEN) == 1)
+			{
+				current->next = check->next;
+				environment_delete(check);
+				// free(check->name);
+				// free(check->value);
+				// free(check);
+				//return (0);
+			}
+			current = current->next;
+		}
+		index++;
 	}
-	return (1);
+	return (0);
 }
 
 void	environment_delete(t_env *env)

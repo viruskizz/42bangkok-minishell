@@ -12,38 +12,26 @@
 
 #include "minishell.h"
 
-static int	validate_opt(t_list *lst);
-
 int	validate_token(t_list **tokens)
 {
 	t_list	*lst;
+	char	*s;
+	char	*ns;
 
 	lst = *tokens;
+	ns = NULL;
 	while (lst)
 	{
-		if (!validate_opt(lst))
+		s = lst->content;
+		if (lst->next)
+			ns = lst->next->content;
+		if ((is_opt(s) || is_redirect(s)) && !lst->next)
+			return (0);
+		else if (lst->next
+			&& (is_opt(s) || is_redirect(s))
+			&& (is_opt(ns) || is_redirect(ns)))
 			return (0);
 		lst = lst->next;
 	}
-	return (1);
-}
-
-/**
- * @brief 
- * 
- * @param lst 
- * @return int 0 is normal string, 1 is opt, -1 is invalid
- */
-static int	validate_opt(t_list *lst)
-{
-	int	is_t;
-
-	is_t = is_opt((char *) lst->content);
-	if (is_t < 0)
-		return (0);
-	if (is_t && !lst->next)
-		return (0);
-	if (is_t && is_opt((char *) lst->next->content))
-		return (0);
 	return (1);
 }
