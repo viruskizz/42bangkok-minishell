@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 18:52:47 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/09/29 22:03:23 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/09 23:04:03 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ t_env	*environment_new(char *env)
 	{
 		return (0);
 	}
-	result->name = environment_get_name(&env, ENVI);
-	result->value = environment_get_value(&env, ENVI);
+	result->name = environment_get_name(env);
+	result->value = environment_get_value(env);
 	result->next = NULL;
 	return (result);
 }
@@ -62,6 +62,7 @@ void	environment_clear(t_env **env)
 			temp = *env;
 		}
 	}
+
 }
 
 int	execution_print_env(t_shell *shell)
@@ -93,7 +94,7 @@ int	minishell_make_environment(t_shell *shell)
 		if (new == NULL)
 		{
 			environment_clear(&shell->env);
-			perror("ERROR: ");
+			perror("minishell: ");
 			return (-1); //exit//
 		}
 		environment_add_back(&shell->env, new);

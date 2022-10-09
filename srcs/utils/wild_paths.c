@@ -3,67 +3,114 @@
 /*                                                        :::      ::::::::   */
 /*   wild_paths.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araiva <tsomsa@student.42.fr>              +#+  +:+       +#+        */
+/*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 04:43:27 by araiva            #+#    #+#             */
-/*   Updated: 2022/10/01 04:43:28 by araiva           ###   ########.fr       */
+/*   Updated: 2022/10/09 09:20:58 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static int	is_match_path(char *srch, char *pattern);
+static void	*get_paths(char *dirname, char *srch, t_list **paths);
+static int	is_end_path(char *str);
+
 t_list	*wild_paths(t_list *tokens)
 {
-	t_list			*paths;
-	t_list			*new;
-	char			*dirname;
-	DIR				*dir;
-	struct dirent	*entry;
-	char			*basedir;
-	char			*srch;
+	t_list	*paths;
+	char	*dirname;
+	char	*srch;
 
 	paths = NULL;
 	srch = tokens->content;
-	if (*srch != '/')
-		basedir = ".";
-	if ((dir = opendir("srcs")) == NULL)
-		perror("opendir() error");
+	if (*srch == '.' && *(srch + 1) == '/')
+		srch += 2;
+	if (*srch == '/' && srch++)
+		get_paths("/", srch, &paths);
 	else
-	{
-		while ((entry = readdir(dir)) != NULL)
-		{
-			dirname = ft_strdup(entry->d_name);
-			new = ft_lstnew(dirname);
-			if (!paths)
-				paths = new;
-			else
-				ft_lstadd_back(&paths, new);
-		}
-		closedir(dir);
-	}
+		get_paths(".", srch, &paths);
+	printf("%spaths: %s", CYAN, RESET);
+	print_lst(paths);
 	return (paths);
 }
 
-// int	str_wildcards(char *str, char *srch)
-// {
-// 	while (*srch)
-// 	{
-// 		if (*srch == '*' && *srch++)
-// 		{
-// 			while (*str && *srch != *(++str));
-// 			if (!*srch)
-// 				return (1);
-// 		}
-// 		if (*srch != *str)
-// 			return (0);
-// 		str++;
-// 		srch++;
-// 	}
-// 	if (!*srch)
-// 		return (1);
-// 	else
-// 		return (0);
-// }
+static void	*get_paths(char *dirname, char *srch, t_list **paths)
+{
+	DIR	*dir;
+	struct dirent *entry;
+	char	*str;
+	t_list	*path;
+	int		is_mathch;
+
+	dir = opendir(dirname);
+	if (!dir)
+		return (NULL);
+	entry = readdir(dir);
+	while (entry)
+	{
+		str = entry->d_name;
+		is_mathch = is_match_path(str, srch);
+		// printf("%s[%d]: %s\n", srch, is_mathch, str);
+		if (is_mathch > 0)
+		{
+			// printf("next: %s > %s\n", srch + is_mathch + 1, str);
+			get_paths(str, srch + is_mathch + 1, paths);
+		}
+		else if (is_mathch == 0)
+		{
+			printf("%s[%d]: %s\n", srch, is_mathch, str);
+			ft_lstadd_back(paths, ft_lstnew(ft_strdup(str)));
+		}
+		entry = readdir(dir);
+	}
+	closedir(dir);
+}
+
+/**
+ * @brief 
+ * the mean of return value
+ * 0 is end of pattern string;
+ * -1 is not found search string fro
+ * @param str 
+ * @param srch 
+ * @return int 
+ */
+static int	is_match_path(char *str, char *srch)
+{
+	int i;
+
+	i = 0;
+	while (*srch)
+	{
+		if (*srch == '*' && *srch++ && ++i)
+		{
+			while (*str && *srch != *(++str));
+			if (is_end_path(srch))
+				return (0);
+		}
+		if (*srch == '/')
+			return (i);
+		if (*srch != *str)
+			return (-1);
+		i++;
+		str++;
+		srch++;
+	}
+	if (!*srch)
+		return (0);
+	else
+		return (-100);
+}
+
+static	int	is_end_path(char *str)
+{
+	if (!*str)
+		return (1);
+	if (*str == '/' && !*(str + 1))
+		return (1);
+	return (0);
+}
 
 // int main()
 // {

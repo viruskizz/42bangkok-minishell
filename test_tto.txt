@@ -1,6 +1,6 @@
-       9
-2
-2
-2
-2
-2
+after(dup_start)[0m
+
+      18
+after(dup_start)[0m
+
+      75

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   group_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araiva <tsomsa@student.42.fr>              +#+  +:+       +#+        */
+/*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 21:33:25 by araiva            #+#    #+#             */
-/*   Updated: 2022/09/27 21:33:26 by araiva           ###   ########.fr       */
+/*   Updated: 2022/10/07 21:08:22 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ static int	set_cmd(t_list *lst, t_cmd **cmd)
 
 	i = 0;
 	n = count_tokens(lst);
-	new = malloc(sizeof(t_cmd));
-	new->fgt = lst_to_arr(lst_rd_new(">", lst, n));
-	new->fgtgt = lst_to_arr(lst_rd_new(">>", lst, n));
+	new = ft_calloc(sizeof(t_cmd), 1);
+	new->fg = lst_to_arr(lst_rd_new(">", lst, n));
+	new->fgg = lst_to_arr(lst_rd_new(">>", lst, n));
 	new->fls = lst_to_arr(lst_rd_new("<", lst, n));
 	new->flsls = lst_to_arr(lst_rd_new("<<", lst, n));
 	new->tokens = lst_to_arr(lst_rd_new(NULL, lst, n));
@@ -114,8 +114,8 @@ void	free_cmd(void *content)
 
 	cmd = (t_cmd *) content;
 	free_arr(cmd->tokens);
-	free_arr(cmd->fgt);
-	free_arr(cmd->fgtgt);
+	free_arr(cmd->fg);
+	free_arr(cmd->fgg);
 	free_arr(cmd->fls);
 	free_arr(cmd->flsls);
 	free(cmd);

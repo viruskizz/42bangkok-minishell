@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   arr_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araiva <tsomsa@student.42.fr>              +#+  +:+       +#+        */
+/*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 04:41:45 by araiva            #+#    #+#             */
-/*   Updated: 2022/10/01 04:41:46 by araiva           ###   ########.fr       */
+/*   Updated: 2022/10/07 21:18:35 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ char	**lst_to_arr(t_list *lst)
 
 	i = 0;
 	n = ft_lstsize(lst);
+	if (n == 0)
+		return (0);
 	arr = ft_calloc(n + 1, sizeof(char *));
 	while (i < n)
 	{

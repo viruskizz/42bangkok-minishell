@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 22:58:34 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/06 16:25:17 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/09 23:42:15 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@
 # include <fcntl.h> 
 # include <readline/readline.h>
 # include <readline/history.h>
-#include <dirent.h>
+# include <dirent.h>
+# include <sys/stat.h>
 
 # define PROMPT_MSG	"\033[1;33minput command: \033[0m"
 # define OPT_NULL	0
@@ -124,6 +125,18 @@ typedef struct s_token
 	int		opt;
 }	t_token;
 
+typedef struct s_execute
+{
+	int			index;
+	int			xedni;
+	int			files;
+	int			execute;
+	int			fd[2];
+	pid_t		pid;
+	t_cmd		*cmds;
+	struct stat info;	
+}	t_execute;
+
 /**
  * @brief struct for entire shell programe
  */
@@ -132,10 +145,11 @@ typedef struct s_shell
 	char	*line;
 	t_token	*tokens;
 	t_env	*env;
-	t_list	*envs;
+	// t_list	*envs;
 	t_list	*cmds;
 	int		exstat;
-	int		cmd_amount;
+	int		sinput;
+	// int		cmd_amount;
 
 }	t_shell;
 
@@ -156,13 +170,13 @@ int		execution_token(t_shell *shell, char *path, char **command);
 int		minishell_redirect(t_shell *shell, int *fd, int index);
 
 //	execution_export_env //
-int		execution_export_env(t_shell *shell, char **command);
-char	*environment_get_name(char **command, int mode);
-char	*environment_get_value(char **command, int mode);
+int		execution_export_env(t_shell *shell, char **command, int index);
+char	*environment_get_name(char *command);
+char	*environment_get_value(char *command);
 int		environment_check_value(char *command, int quote, int qquote, int mode);
 int		environment_check_name(char *variable_name);
 
-int 	execution_unset_env(t_env **env, char **variable_name);
+int 	execution_unset_env(t_env **env, char **variable_name, int index);
 void	environment_delete(t_env *env);
 
 int 	minishell_make_environment(t_shell *shell);
