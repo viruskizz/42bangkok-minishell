@@ -5,10 +5,10 @@ CC = gcc
 LIBFT_DIR = libft
 
 INCLUDE_DIR	= includes
-INCLUDES =	-I$(INCLUDE_DIR) -I$(LIBFT_DIR)
+INCLUDES =	-I$(INCLUDE_DIR) -I$(LIBFT_DIR) -I /opt/homebrew/Cellar/readline/8.1.2/include/
 
 LIBS = -lreadline \
-	-L$(LIBFT_DIR) -lft
+	-L$(LIBFT_DIR) -lft -L /opt/homebrew/Cellar/readline/8.1.2/lib
 
 SRC_DIR = srcs
 SRCS = main.c \

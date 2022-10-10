@@ -6,13 +6,13 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 17:25:00 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/04 23:13:35 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/11 00:25:21 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_double_pointer(char **str1, char **str2, char *str3)
+void	free_double_pointer(char **str1, char **str2, void *str3)
 {
 	int	index;
 

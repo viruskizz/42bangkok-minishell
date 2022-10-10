@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 22:58:34 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/09 23:42:15 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/11 00:26:11 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <readline/history.h>
 # include <dirent.h>
 # include <sys/stat.h>
+# include <termios.h>
 
 # define PROMPT_MSG	"\033[1;33minput command: \033[0m"
 # define OPT_NULL	0
@@ -61,17 +62,12 @@
 # define QUOTE	2
 # define INDEX	3
 
-/* mode in environmant_get_name */
-# define ENVI	0
-# define COMM	1
-
 /* mode in string_compare */
 # define NO_LEN	-42
 
 # define FIELDS	" \t\n"
 # define QUOTES	"'\""
 
-// # define HERE_DOC "~/.temporary_file_for_heredoc_u_can_not_see_this_saatoooooo"
 # define IN_FILE ".temporary_for_collecting_infile_u_cannot_see_this_3saatoooo"
 
 /**
@@ -88,6 +84,7 @@
 // 	int		opt;
 // 	int		redir;
 // }	t_cmd;
+
 typedef struct s_env
 {
 	char			*name;
@@ -104,6 +101,18 @@ typedef struct s_cmd
 	char	**flsls; // <<
 	int		opt;
 }	t_cmd;
+
+typedef struct s_execute
+{
+	int			index;
+	int			xedni;
+	int			files;
+	int			execute;
+	int			fd[2];
+	pid_t		pid;
+	t_cmd		*cmds;
+	struct stat info;	
+}	t_execute;
 
 typedef struct s_lcmd
 {
@@ -125,31 +134,28 @@ typedef struct s_token
 	int		opt;
 }	t_token;
 
-typedef struct s_execute
+typedef struct s_terminal
 {
-	int			index;
-	int			xedni;
-	int			files;
-	int			execute;
-	int			fd[2];
-	pid_t		pid;
-	t_cmd		*cmds;
-	struct stat info;	
-}	t_execute;
+	struct termios	minishell;
+	struct termios	shell;
+	char 			**stty;
+
+}	t_terminal;
 
 /**
  * @brief struct for entire shell programe
  */
 typedef struct s_shell
 {
-	char	*line;
-	t_token	*tokens;
-	t_env	*env;
-	// t_list	*envs;
-	t_list	*cmds;
-	int		exstat;
-	int		sinput;
-	// int		cmd_amount;
+	char		*line;
+	t_token		*tokens;
+	t_env		*env;
+	t_list		*cmds;
+	t_terminal	*terminal;
+	int			exstat;
+	int			sinput;
+//	// t_list	*envs;
+//	// int		cmd_amount;
 
 }	t_shell;
 
@@ -168,6 +174,7 @@ char	**doublepointer_join(char **strs, char *str);
 int		cmd_execution(t_shell *shell);
 int		execution_token(t_shell *shell, char *path, char **command);
 int		minishell_redirect(t_shell *shell, int *fd, int index);
+int		execution_path_command(t_shell *shell, char **command);
 
 //	execution_export_env //
 int		execution_export_env(t_shell *shell, char **command, int index);
@@ -176,6 +183,7 @@ char	*environment_get_value(char *command);
 int		environment_check_value(char *command, int quote, int qquote, int mode);
 int		environment_check_name(char *variable_name);
 
+int		environment_export_env(t_shell *shell, char *name, char *value, char *cmd);
 int 	execution_unset_env(t_env **env, char **variable_name, int index);
 void	environment_delete(t_env *env);
 
@@ -188,7 +196,7 @@ int		execution_print_env(t_shell *shell);
 // redirect
 int		redirect_infile(t_shell *shell, t_cmd *cmds);
 
-void	free_double_pointer(char **str1, char **str2, char *str3);
+void	free_double_pointer(char **str1, char **str2, void *str3);
 void	signal_defualt(void);
 int		execution_change_directory(t_shell *shell, char **command);
 

@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 20:38:04 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/10 00:00:00 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/11 00:20:27 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,11 @@ int	execution_path_command(t_shell *shell, char **command)
 		//* command is exist and can execute */
 		if (access(path, F_OK | R_OK | X_OK) == 0)
 		{
+
 			execution_token(shell, path, command);
 			if (shell->exstat == -1)
 			{
-				free_double_pointer(command, env_path, path);
+				free_double_pointer(NULL, env_path, path);
 				return (-1);
 			}
 			break ;
@@ -43,7 +44,7 @@ int	execution_path_command(t_shell *shell, char **command)
 			shell->exstat = 127;		
 		}
 	}
-	free_double_pointer(command, env_path, path);
+	free_double_pointer(NULL, env_path, path);
 	return (0);
 }
 
