@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 22:58:34 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/11 00:26:11 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/11 21:50:58 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,15 @@
 /* mode in string_compare */
 # define NO_LEN	-42
 
+/* mode in execution_signal */
+# define CHILD		0
+# define PARENT_I	1
+# define PARENT_O	2
+
+# define INIT		1
+# define DEFUALT	2
+
+# define DELNL "\033[C"
 # define FIELDS	" \t\n"
 # define QUOTES	"'\""
 
@@ -138,7 +147,6 @@ typedef struct s_terminal
 {
 	struct termios	minishell;
 	struct termios	shell;
-	char 			**stty;
 
 }	t_terminal;
 
@@ -147,13 +155,16 @@ typedef struct s_terminal
  */
 typedef struct s_shell
 {
-	char		*line;
-	t_token		*tokens;
-	t_env		*env;
-	t_list		*cmds;
-	t_terminal	*terminal;
-	int			exstat;
-	int			sinput;
+	char				*line;
+	t_token				*tokens;
+	t_env				*env;
+	t_list				*cmds;
+	t_terminal			*terminal;
+	int					exstat;
+	int					sinput;
+	struct sigaction	sigint;
+	struct sigaction	sigquit;
+
 //	// t_list	*envs;
 //	// int		cmd_amount;
 
@@ -232,4 +243,5 @@ void	print_arr(char **str);
 void	print_lst(t_list *lst);
 void	print_cmd_table(t_list *cmds);
 
+void	handling_signal(int signo);
 #endif

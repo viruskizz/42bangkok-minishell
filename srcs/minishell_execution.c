@@ -6,11 +6,13 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 20:38:04 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/11 00:20:27 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/11 21:21:37 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+pid_t	ppid;
 
 int	execution_path_command(t_shell *shell, char **command)
 {
@@ -107,15 +109,47 @@ int	redirect_dup_start(t_shell *shell, t_execute *exe)
 	return (0);
 }
 
-void	signal_defualt(void)
+void	execution_signal_handler(int signum)
 {
-	struct sigaction	signal;
+	if (signum == SIGINT)
+	{
+		printf("\n");
+		exit(1);
+	}
+	else if (signum == SIGQUIT)
+	{
+		printf("\nQuit: 3\n");
+		exit(131);
+	}
+}
 
-	sigemptyset(&signal.sa_mask);
-	signal.sa_flags = 0;
-	signal.sa_handler = SIG_DFL;
-	sigaction(SIGINT, &signal, NULL);
-	sigaction(SIGQUIT, &signal, NULL);
+void	execution_signal(t_shell *shell, int mode)
+{
+	if (mode == CHILD)
+	{
+		sigemptyset(&shell->sigint.sa_mask);
+		shell->sigint.sa_flags = SA_RESTART;
+		shell->sigint.sa_handler = execution_signal_handler;
+		sigemptyset(&shell->sigquit.sa_mask);
+		shell->sigquit.sa_flags = SA_RESTART;
+		shell->sigquit.sa_handler = execution_signal_handler;
+		sigaction(SIGINT, &shell->sigint, NULL);
+	}
+	else if (mode == PARENT_I)
+	{
+		sigemptyset(&shell->sigint.sa_mask);
+		shell->sigint.sa_flags = SA_RESTART;
+		shell->sigint.sa_handler = SIG_IGN;
+		sigaction(SIGINT, &shell->sigint, NULL);
+	}
+	else if (mode == PARENT_O)
+	{
+		sigemptyset(&shell->sigint.sa_mask);
+		shell->sigint.sa_flags = SA_RESTART;
+		shell->sigint.sa_handler = handling_signal;
+		sigaction(SIGINT, &shell->sigint, NULL);
+		tcsetattr(STDIN_FILENO, TCSAFLUSH, &shell->terminal->minishell);
+	}
 }
 
 int	execution_change_directory(t_shell *shell, char **command)
@@ -143,45 +177,53 @@ int	execution_change_directory(t_shell *shell, char **command)
 	return (0);
 }
 
-char	*ft_stringvalue(char *str)
-{
-	int		index;
-	char	*result;
+// char	*ft_stringvalue(char *str)
+// {
+// 	int		index;
+// 	char	*result;
 
-	index = 0;
-	result = (char *)ft_calloc(sizeof(char), ft_lencount(str, NULL, STR) + 1);
-	if (result == NULL)
-		return (0);
-	while (str[index] != '\0')
-	{
-		result[index] = str[index];
-		index++;
-	}
-	result[index] = '\0';
-	return (result);
-}
+// 	index = 0;
+// 	result = (char *)ft_calloc(sizeof(char), ft_lencount(str, NULL, STR) + 1);
+// 	if (result == NULL)
+// 		return (0);
+// 	while (str[index] != '\0')
+// 	{
+// 		result[index] = str[index];
+// 		index++;
+// 	}
+// 	result[index] = '\0';
+// 	return (result);
+// }
 
 int	execution_command(t_shell *shell, t_execute *exe)
 {	
 	t_cmd	*cmds;
 
 	cmds = exe->cmds;
-	signal_defualt();
+	execution_signal(shell, CHILD);
+	if (exe->index == 0 && exe->xedni == 0)
+	{
+		if (redirect_infile(shell, exe->cmds) < 0)
+			return (-1);
+	}
+	tcsetattr(STDIN_FILENO, TCSAFLUSH, &shell->terminal->shell);
+	sigaction(SIGQUIT, &shell->sigquit, NULL);
 	redirect_dup_start(shell, exe);
 	// if (string_compare(cmds->tokens[0], "$?", NO_LEN) == 1) //! check agign //
 	// 	shell->exstat = 127;
 	if (string_compare(cmds->tokens[0], "cd", NO_LEN) == 1)
-		exit (EXIT_SUCCESS);
+		shell->exstat = 0;
 	else if (string_compare(cmds->tokens[0], "export", NO_LEN) == 1)
-		exit (EXIT_SUCCESS);
+		shell->exstat = 0;
 	else if (string_compare(cmds->tokens[0], "unset", NO_LEN) == 1)
-		exit (EXIT_SUCCESS);
+		shell->exstat = 0;
 	else if (string_compare(cmds->tokens[0], "env", NO_LEN) == 1)
 		shell->exstat = execution_print_env(shell);
 	else if (access(cmds->tokens[0], F_OK | R_OK | X_OK) == 0)
 		shell->exstat = execution_token(shell, cmds->tokens[0], cmds->tokens);
 	else
 		execution_path_command(shell, cmds->tokens);
+	tcsetattr(STDIN_FILENO, TCSAFLUSH, &shell->terminal->minishell);
 	exit(shell->exstat);
 }
 
@@ -227,11 +269,10 @@ int	cmd_execution(t_shell *shell)
 {
 	t_execute	exe;
 
+	execution_signal(shell, PARENT_I);
 	while (shell->cmds != NULL && exe.execute != -42)
 	{
 		executeion_inite(shell, &exe);
-		if (redirect_infile(shell, exe.cmds) < 0)
-			return (-1);
 		while (exe.index + exe.xedni < exe.files || exe.execute == 0)
 		{
 			if (pipe(exe.fd) < 0)
@@ -249,5 +290,6 @@ int	cmd_execution(t_shell *shell)
 			break ;
 		shell->cmds = shell->cmds->next;
 	}
+	execution_signal(shell, PARENT_O);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 18:52:47 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/09 23:04:03 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/11 00:32:39 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,8 @@ int	minishell_make_environment(t_shell *shell)
 		if (new == NULL)
 		{
 			environment_clear(&shell->env);
-			perror("minishell: ");
-			return (-1); //exit//
+			perror("minishell");
+			exit (1);
 		}
 		environment_add_back(&shell->env, new);
 		index++;

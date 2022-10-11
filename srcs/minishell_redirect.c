@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 00:09:42 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/08 20:39:51 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/11 19:04:49 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,26 +72,54 @@ char	*heredoc_convert_env(t_env *envs, char *buff, int index, int xedni)
 int	heredoc_inputpassing(t_shell *shell, int infile, char *delimiter)
 {
 	int		read_byte;
-	char	*buff;
+	char	*line;
 	t_env	*env;
 
-	buff = (char *)ft_calloc(sizeof(char), 10000);
-	if (buff == NULL)
+	line = (char *)ft_calloc(sizeof(char), 10000);
+	if (line == NULL)
 		return (-1);
-	while (1)
+	while (true)
 	{
 		env = shell->env;
-		write(1, "(heredoc)-> ", 12);
-		read_byte = read(0, buff, 9999);
-		buff[read_byte] = '\0';
-		if (string_compare(buff, delimiter, NO_LEN) == 1)
+		line = readline("> ");
+		if (line == NULL)
 			break ;
-		heredoc_convert_env(shell->env, buff, 0, 0);
-		ft_putstr_fd(buff, infile);
+		line[ft_lencount(line, NULL, STR)] = '\n';
+		line[ft_lencount(line, NULL, STR) + 1] = '\n';
+		if (string_compare(line, delimiter, NO_LEN) == 1)
+			break ;
+		heredoc_convert_env(shell->env, line, 0, 0);
+		ft_putstr_fd(line, infile);
 	}
-	free(buff);
+	free(line);
 	return (0);
 }
+
+// int	heredoc_inputpassing(t_shell *shell, int infile, char *delimiter)
+// {
+// 	int		read_byte;
+// 	char	*buff;
+// 	t_env	*env;
+
+// 	buff = (char *)ft_calloc(sizeof(char), 10000);
+// 	if (buff == NULL)
+// 		return (-1);
+// 	while (1)
+// 	{
+// 		env = shell->env;
+// 		write(1, "(heredoc)-> ", 12);
+// 		read_byte = read(0, buff, 9999);
+// 		buff[read_byte] = '\0';
+// 		if (read_byte == 0)
+// 			printf("\n");
+// 		if (read_byte == 0 || string_compare(buff, delimiter, NO_LEN) == 1)
+// 			break ;
+// 		heredoc_convert_env(shell->env, buff, 0, 0);
+// 		ft_putstr_fd(buff, infile);
+// 	}
+// 	free(buff);
+// 	return (0);
+// }
 
 int	redirect_read_heredoc(t_shell *shell, char **files, int infile)
 {
