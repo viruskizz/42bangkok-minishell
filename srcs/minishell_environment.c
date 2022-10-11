@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 18:52:47 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/11 00:32:39 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/11 23:13:07 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ void	environment_clear(t_env **env)
 			temp = *env;
 		}
 	}
-
 }
 
 int	execution_print_env(t_shell *shell)

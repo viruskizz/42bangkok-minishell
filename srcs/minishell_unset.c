@@ -6,12 +6,13 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 18:30:21 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/10 00:06:05 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/11 23:11:29 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/* unset ther environment in t_env can do more than one time*/
 int	execution_unset_env(t_env **env, char **variable_name, int index)
 {
 	t_env	*current;
@@ -40,6 +41,7 @@ int	execution_unset_env(t_env **env, char **variable_name, int index)
 	return (0);
 }
 
+/* helper of environment_upset_env */
 void	environment_delete(t_env *env)
 {
 	free(env->name);
@@ -47,6 +49,8 @@ void	environment_delete(t_env *env)
 	free(env);
 }
 
+/* function get the value of t_env */
+/* funntion working same with getenv() */
 char	*environment_getenv(char *variable_name, t_shell *shell)
 {
 	while (shell->env != NULL)

@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 17:25:00 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/11 00:25:21 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/11 23:13:04 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ char	**doublepointer_join_copy(char **result, char **strs, int *index)
 	return (result);
 }
 
+/* function join a string into a double pointer */
 char	**doublepointer_join(char **strs, char *str)
 {
 	char    **result;
@@ -95,8 +96,6 @@ char	**doublepointer_join(char **strs, char *str)
 	free_double_pointer(strs, NULL, NULL);
 	return(result);
 }
-
-
 
 // int main (void)
 // {

@@ -6,15 +6,21 @@ LIBFT_DIR = libft
 
 INCLUDE_DIR	= includes
 INCLUDES =	-I$(INCLUDE_DIR) -I$(LIBFT_DIR) -I /opt/homebrew/Cellar/readline/8.1.2/include/
+# INCLUDES =	-I$(INCLUDE_DIR) -I$(LIBFT_DIR)
 
 LIBS = -lreadline \
-	-L$(LIBFT_DIR) -lft -L /opt/homebrew/Cellar/readline/8.1.2/lib
+	-L$(LIBFT_DIR) -lft \
+	-L /opt/homebrew/Cellar/readline/8.1.2/lib
+# LIBS = -lreadline \
+# 	-L$(LIBFT_DIR) -lft
 
 SRC_DIR = srcs
 SRCS = main.c \
 	minishell_redirect.c \
 	minishell_environment.c \
 	minishell_execution.c \
+	minishell_execution_command.c \
+	minishell_commands.c \
 	minishell_export.c \
 	minishell_unset.c \
 	minishell_split.c \

@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 00:09:42 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/11 19:04:49 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/11 23:16:41 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	heredoc_inputpassing(t_shell *shell, int infile, char *delimiter)
 	while (true)
 	{
 		env = shell->env;
-		line = readline("> ");
+		line = readline("(heredoc)> ");
 		if (line == NULL)
 			break ;
 		line[ft_lencount(line, NULL, STR)] = '\n';
@@ -94,32 +94,6 @@ int	heredoc_inputpassing(t_shell *shell, int infile, char *delimiter)
 	free(line);
 	return (0);
 }
-
-// int	heredoc_inputpassing(t_shell *shell, int infile, char *delimiter)
-// {
-// 	int		read_byte;
-// 	char	*buff;
-// 	t_env	*env;
-
-// 	buff = (char *)ft_calloc(sizeof(char), 10000);
-// 	if (buff == NULL)
-// 		return (-1);
-// 	while (1)
-// 	{
-// 		env = shell->env;
-// 		write(1, "(heredoc)-> ", 12);
-// 		read_byte = read(0, buff, 9999);
-// 		buff[read_byte] = '\0';
-// 		if (read_byte == 0)
-// 			printf("\n");
-// 		if (read_byte == 0 || string_compare(buff, delimiter, NO_LEN) == 1)
-// 			break ;
-// 		heredoc_convert_env(shell->env, buff, 0, 0);
-// 		ft_putstr_fd(buff, infile);
-// 	}
-// 	free(buff);
-// 	return (0);
-// }
 
 int	redirect_read_heredoc(t_shell *shell, char **files, int infile)
 {
@@ -184,18 +158,18 @@ int	redirect_infile(t_shell *shell, t_cmd *cmds)
 	infile = open(IN_FILE, O_RDWR | O_CREAT | O_APPEND, 0644);
 	if (infile < 0)
 	{
-		perror("minishell: ");
+		perror("minishell");
 		return (-1);
 	}
 	if (redirect_read_file(cmds->fls, infile, 0, 0) == -1)
 	{
-		perror("minishell: ");
+		perror("minishell");
 		close(infile);
 		return (-1);
 	}
 	if (redirect_read_heredoc(shell, cmds->flsls, infile) == -1)
 	{
-		perror("minishell: ");
+		perror("minishell");
 		close(infile);
 		return (-1);
 	}

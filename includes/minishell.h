@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 22:58:34 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/11 21:50:58 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/11 23:42:36 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,9 +180,11 @@ int		ft_lencount(char *str, char **strs, int mode);
 char	**ft_split_mode(char *str, char c, int mode);
 char	*ft_midjoin(char *str1, char *str2, char c);
 char	**doublepointer_join(char **strs, char *str);
-
+int		redirect_dup_start(t_shell *shell, t_execute *exe);
+void	execution_signal(t_shell *shell, int mode);
 // excution part //
 int		cmd_execution(t_shell *shell);
+int		execution_command(t_shell *shell, t_execute *exe);
 int		execution_token(t_shell *shell, char *path, char **command);
 int		minishell_redirect(t_shell *shell, int *fd, int index);
 int		execution_path_command(t_shell *shell, char **command);
