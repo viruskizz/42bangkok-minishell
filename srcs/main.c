@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 18:52:24 by araiva            #+#    #+#             */
-/*   Updated: 2022/10/11 21:52:04 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/11 21:55:40 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,24 +85,8 @@ int	main(int argc, char *argv[])
 	char				*line;
 	char				*input;
 	t_shell				shell;
-	// struct sigaction	sa;
-
-	// shell.sinput = dup(0);
-	// shell.exstat = 0;
-	// minishell_make_environment(&shell);
+	
 	minishell_init(&shell);
-	// if (minishell_terminal_init(&shell) < 0)
-	// {
-	// 	perror("minishell");
-	// 	environment_clear(&shell.env);
-	// 	return (EXIT_FAILURE);
-	// }
-	// sa.sa_handler = handling_signal;
-	// sigemptyset(&sa.sa_mask);
-	// sa.sa_flags = SA_RESTART;
-	// sigaction(SIGINT, &sa, NULL);
-	// sigaction(SIGQUIT, &sa, NULL);
-
 	// return (test_main(argv[1]));
 	while (true)
 	{
