@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 04:43:27 by araiva            #+#    #+#             */
-/*   Updated: 2022/10/09 09:20:58 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/13 22:40:45 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ static void	*get_paths(char *dirname, char *srch, t_list **paths)
 		entry = readdir(dir);
 	}
 	closedir(dir);
+	return (NULL);
 }
 
 /**

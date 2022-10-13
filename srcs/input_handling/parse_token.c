@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   parse_token.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araiva <tsomsa@student.42.fr>              +#+  +:+       +#+        */
+/*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 16:53:08 by araiva            #+#    #+#             */
-/*   Updated: 2022/09/28 16:53:10 by araiva           ###   ########.fr       */
+/*   Updated: 2022/10/13 22:52:33 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void		parse_dq_quote(t_list *token);
-static void		parse_normal(t_list *lst);
+static void		parse_dq_quote(t_list *token, t_shell *shell);
+static void		parse_normal(t_list *lst, t_shell *shell);
 static t_list	*parse_wildcard(t_list **lst);
 static	void	quote_remove(t_list *token);
 
-t_list	*parse_token(t_list *tokens)
+t_list	*parse_token(t_list *tokens, t_shell *shell)
 {
 	t_list	*lst;
 
@@ -25,9 +25,9 @@ t_list	*parse_token(t_list *tokens)
 	while (lst)
 	{
 		if (is_dq_str(lst->content))
-			parse_dq_quote(lst);
+			parse_dq_quote(lst, shell);
 		else if (!is_sq_str(lst->content))
-			parse_normal(lst);
+			parse_normal(lst, shell);
 		if (!is_dq_str(lst->content)
 			&& !is_sq_str(lst->content)
 			&& ft_strchr(lst->content, '*'))
@@ -38,7 +38,7 @@ t_list	*parse_token(t_list *tokens)
 	return (tokens);
 }
 
-static void	parse_dq_quote(t_list *lst)
+static void	parse_dq_quote(t_list *lst, t_shell *shell)
 {
 	char	*token;
 	char	*s;
@@ -51,7 +51,7 @@ static void	parse_dq_quote(t_list *lst)
 	while (*token && *token != '"')
 	{
 		if (*token == '$')
-			wlen = exp_env(token, &new);
+			wlen = exp_env(token, &new, shell);
 		else
 			wlen = exp_str(token, &new);
 		token += wlen;
@@ -62,7 +62,7 @@ static void	parse_dq_quote(t_list *lst)
 	lst->content = new;
 }
 
-static void	parse_normal(t_list *lst)
+static void	parse_normal(t_list *lst, t_shell *shell)
 {
 	char	*token;
 	char	*s;
@@ -74,9 +74,9 @@ static void	parse_normal(t_list *lst)
 	while (*token && *token != '"')
 	{
 		if (*token == '~')
-			wlen = exp_env_hom(token, &new);
+			wlen = exp_env_hom(token, &new, shell);
 		else if (*token == '$')
-			wlen = exp_env(token, &new);
+			wlen = exp_env(token, &new, shell);
 		else
 			wlen = exp_str(token, &new);
 		token += wlen;

@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   exp_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araiva <tsomsa@student.42.fr>              +#+  +:+       +#+        */
+/*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 16:51:30 by araiva            #+#    #+#             */
-/*   Updated: 2022/09/28 16:51:31 by araiva           ###   ########.fr       */
+/*   Updated: 2022/10/13 23:13:48 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*var_val(char *str);
+static char	*var_val(char *str, t_shell *shell);
 static int	var_len(char *s);
 
-int	exp_env(char *token, char **str)
+int	exp_env(char *token, char **str, t_shell *shell)
 {
 	int		wlen;
 	char	*new;
@@ -25,19 +25,19 @@ int	exp_env(char *token, char **str)
 		return (0);
 	if (*(token + 1) == '?')
 	{
-		wlen = 2;
-		var = ft_strdup("0");
+		var = ft_itoa(shell->exstat);
+		wlen = ft_strlen(var);
 	}
 	else
 	{
 		wlen = var_len(token);
-		var = var_val(token);
+		var = var_val(token, shell);
 	}
 	*str = my_strcat(*str, var);
 	return (wlen);
 }
 
-int	exp_env_hom(char *token, char **str)
+int	exp_env_hom(char *token, char **str, t_shell *shell)
 {
 	int		wlen;
 	char	*new;
@@ -45,9 +45,14 @@ int	exp_env_hom(char *token, char **str)
 
 	if (*token != '~')
 		return (0);
-	wlen = 2;
-	var = var_val("HOME");
-	*str = my_strcat(*str, var);
+	if (ft_strcmp(token + 1, environment_getenv("USER", shell)))
+		wlen = 1;
+	else
+		wlen = ft_strlen(token);
+	var = environment_getenv("HOME", shell);
+	printf("=> |%s|\n", var);
+	*str = my_strcat(*str, ft_strdup(var));
+	*str = my_strcat(*str, ft_strdup("/"));
 	return (wlen);
 }
 
@@ -68,7 +73,7 @@ static int	var_len(char *s)
 	return (i);
 }
 
-static char	*var_val(char *str)
+static char	*var_val(char *str, t_shell *shell)
 {
 	int		vlen;
 	char	*var;
@@ -77,8 +82,8 @@ static char	*var_val(char *str)
 	vlen = var_len(str);
 	var = ft_calloc(vlen + 1, sizeof(char));
 	ft_strlcpy(var, str, vlen + 1);
-	if (getenv(var + 1))
-		val = ft_strdup(getenv(var + 1));
+	if (environment_getenv(var + 1, shell))
+		val = ft_strdup(environment_getenv(var + 1, shell));
 	else
 		val = ft_calloc(1, sizeof(char));
 	free(var);

@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 22:58:34 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/13 19:12:11 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/13 22:39:04 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,16 +219,16 @@ int		execution_change_directory(t_shell *shell, char **command);
 
 // main function
 t_list	*split_input(char *line);
-t_list	*parse_token(t_list *tokens);
+t_list	*parse_token(t_list *tokens, t_shell *shell);
 t_list	*group_cmd(t_list *token);
 int		validate_token(t_list **tokens);
 void	free_cmd(void *content);
 void	free_token(void *content);
 
 // utility
-int		exp_env(char *token, char **str);
+int		exp_env(char *token, char **str, t_shell *shell);
 int		exp_str(char *token, char **str);
-int		exp_env_hom(char *token, char **str);
+int		exp_env_hom(char *token, char **str, t_shell *shell);
 t_list	*wild_paths(t_list *tokens);
 
 int		is_opt(char *str);

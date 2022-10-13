@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 18:52:24 by araiva            #+#    #+#             */
-/*   Updated: 2022/10/13 21:59:24 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/13 22:29:30 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,7 @@ static int	parse_input(char *input, t_shell *shell)
 		ft_lstclear(&tokens, &free_token);
 		return (-1);
 	}
-	tokens = parse_token(tokens);
+	tokens = parse_token(tokens, shell);
 	printf("%sparsed: %s", CYAN, RESET);
 	print_lst(tokens);
 	cmds = group_cmd(tokens);
