@@ -1,94 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell_redirect.c                               :+:      :+:    :+:   */
+/*   minishell_redirect_infile.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 00:09:42 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/11 23:16:41 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/13 01:34:24 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_env	*convert_env_find(t_env *environment, char *str, int *i)
-{
-	char	*env_name;
-	t_env	*env;
-	int		len;
-
-	env = environment;
-	while (ft_isalnum(str[(*i + 1) + len]) == 1 || str[(*i + 1) + len] == '_')
-		len++;
-	env_name = (char *)ft_calloc(sizeof(char), len + 1);
-	if (env_name == NULL)
-		return (0);
-	env_name = string_tranfer(env_name, &str[(*i) + 1], len);
-	while (env != NULL)
-	{
-		if (string_compare(env_name, env->name, NO_LEN) == 1)
-		{
-			free(env_name);
-			return (env);
-		}
-		env = env->next;
-	}
-	while ((str[*i] < '\t' || str[*i] > '\r') && str[*i] != ' ')
-		(*i)++;
-	free(env_name);
-	return (NULL);
-}
-
-char	*heredoc_convert_env(t_env *envs, char *buff, int index, int xedni)
-{
-	t_env	*env;
-	int		count;
-	char	*str;
-
-	str = ft_strdup(buff);
-	ft_bzero((void *)buff, (size_t)ft_lencount(str, NULL, STR));
-	while (str[index] != '\0')
-	{
-		if (str[index] == '$')
-		{
-			env = convert_env_find(envs, str, &index);
-			if (env != NULL)
-			{
-				count = 0;
-				while (env->value[count] != '\0')
-					buff[xedni++] = env->value[count++];
-				index = index + ft_lencount(env->name, NULL, STR) + 1;
-			}
-		}
-		else
-			buff[xedni++] = str[index++];
-	}
-	buff[xedni] = '\0';
-	free_double_pointer(NULL, NULL, str);
-	return (buff);
-}
-
 int	heredoc_inputpassing(t_shell *shell, int infile, char *delimiter)
 {
 	int		read_byte;
 	char	*line;
-	t_env	*env;
+	char	*input;
 
 	line = (char *)ft_calloc(sizeof(char), 10000);
 	if (line == NULL)
 		return (-1);
 	while (true)
 	{
-		env = shell->env;
-		line = readline("(heredoc)> ");
-		if (line == NULL)
+		input = readline("(heredoc)> ");
+		if (input == NULL)
 			break ;
+		string_tranfer(line, input, NO_LEN);
+		line[ft_lencount(line, NULL, STR) + 1] = '\0';
 		line[ft_lencount(line, NULL, STR)] = '\n';
-		line[ft_lencount(line, NULL, STR) + 1] = '\n';
 		if (string_compare(line, delimiter, NO_LEN) == 1)
 			break ;
-		heredoc_convert_env(shell->env, line, 0, 0);
+		heredoc_convert_env(shell, line, 0, 0);
 		ft_putstr_fd(line, infile);
 	}
 	free(line);

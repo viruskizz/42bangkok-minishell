@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 18:52:24 by araiva            #+#    #+#             */
-/*   Updated: 2022/10/11 21:55:40 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/13 18:33:10 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ int	main(int argc, char *argv[])
 	}
 	minishell_terminal(&shell, DEFUALT);
 	environment_clear(&shell.env);
-	return (EXIT_SUCCESS);
+	exit(EXIT_SUCCESS);
 }
 
 /* fix add argument "shell" and change return value to int */

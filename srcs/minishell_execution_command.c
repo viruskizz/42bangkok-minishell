@@ -6,16 +6,14 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 23:26:59 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/12 01:08:34 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/13 18:02:57 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	execution_command(t_shell *shell, t_execute *exe)
+int	execution_command(t_shell *shell, t_execute *exe, t_cmd *cmds)
 {	
-	t_cmd	*cmds;
-
 	cmds = exe->cmds;
 	execution_signal(shell, CHILD);
 	if (exe->index == 0 && exe->xedni == 0)
@@ -37,25 +35,20 @@ int	execution_command(t_shell *shell, t_execute *exe)
 	else if (access(cmds->tokens[0], F_OK | R_OK | X_OK) == 0)
 		shell->exstat = execution_token(shell, cmds->tokens[0], cmds->tokens);
 	else
-		execution_path_command(shell, cmds->tokens);
+		execution_path_command(shell, cmds->tokens, 0);
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &shell->terminal->minishell);
 	exit(shell->exstat);
 }
 
-int	execution_path_command(t_shell *shell, char **command)
+int	execution_path_command(t_shell *shell, char **command, int index)
 {
-	int		index;
 	char	*path;
 	char	**env_path;
 
-// * check not real path should path in shell->env
-	env_path = ft_split_mode(getenv("PATH"), ':', BOUND);  //? FREE ?? //
-
-	index = 0;
+	env_path = ft_split_mode(environment_getenv("PATH", shell), ':', BOUND);
 	while (env_path[index] != NULL)
 	{
 		path = ft_midjoin(env_path[index++], command[0], '/');
-		//* command is exist and can execute */
 		if (access(path, F_OK | R_OK | X_OK) == 0)
 		{
 			execution_token(shell, path, command);
@@ -66,11 +59,10 @@ int	execution_path_command(t_shell *shell, char **command)
 			}
 			break ;
 		}
-		//* command is not exist and can't execute */
 		else if (env_path[index + 1] == NULL)
 		{
 			printf("minishell: command not found: %s\n", command[0]);
-			shell->exstat = 127;		
+			shell->exstat = 127;
 		}
 	}
 	free_double_pointer(NULL, env_path, path);

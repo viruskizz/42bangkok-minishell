@@ -6,25 +6,11 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 20:38:04 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/12 01:06:21 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/13 19:13:15 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	execution_signal_handler(int signum)
-{
-	if (signum == SIGINT)
-	{
-		printf("\n");
-		exit(1);
-	}
-	else if (signum == SIGQUIT)
-	{
-		printf("\nQuit: 3\n");
-		exit(131);
-	}
-}
 
 void	execution_signal(t_shell *shell, int mode)
 {
@@ -55,20 +41,22 @@ void	execution_signal(t_shell *shell, int mode)
 	}
 }
 
-void	execution_increasement(t_shell *shell,t_execute *exe)
+void	execution_increasement(t_shell *shell, t_execute *exe)
 {
-	t_cmd *cmd;
+	t_cmd	*cmd;
 
 	cmd = ((t_cmd *)shell->cmds->content);
-	if (cmd->fg != NULL && cmd->fg[exe->index] != NULL)
+	if (cmd->fg != NULL && cmd->fg[exe->index] != NULL
+		&& stat(cmd->fg[exe->index], &exe->info) == 0)
 	{
 		exe->index++;
 	}
-	else if ((cmd->fgg != NULL && cmd->fgg[exe->xedni] != NULL))
+	else if ((cmd->fgg != NULL && cmd->fgg[exe->xedni] != NULL)
+		&& stat(cmd->fg[exe->index], &exe->info) == 0)
 	{
 		exe->xedni++;
 	}
-	else
+	else if (cmd->fg != NULL && cmd->fgg != NULL)
 	{
 		exe->index++;
 	}
@@ -111,7 +99,6 @@ void	executeion_inite(t_shell *shell, t_execute *exe)
 	exe->cmds = (t_cmd *)shell->cmds->content;
 	exe->files = ft_lencount(NULL, exe->cmds->fg, STRS);
 	exe->files += ft_lencount(NULL, exe->cmds->fgg, STRS);
-	printf("files %d\n", exe->files);
 }
 
 int	cmd_execution(t_shell *shell)
@@ -128,7 +115,7 @@ int	cmd_execution(t_shell *shell)
 				return (-1);
 			exe.pid = fork();
 			if (exe.pid == 0)
-				execution_command(shell, &exe);
+				execution_command(shell, &exe, NULL);
 			else if (exe.pid > 0)
 				exe.execute = execution_waitpid(shell, &exe);
 		}

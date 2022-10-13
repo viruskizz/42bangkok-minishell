@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 17:25:00 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/11 23:13:04 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/13 19:11:53 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	free_double_pointer(char **str1, char **str2, void *str3)
 	index = 0;
 	if (str1 != NULL)
 	{
-		while(str1[index] != NULL)
+		while (str1[index] != NULL)
 			free(str1[index++]);
 		free(str1);
 		str1 = NULL;
@@ -27,7 +27,7 @@ void	free_double_pointer(char **str1, char **str2, void *str3)
 	index = 0;
 	if (str2 != NULL)
 	{
-		while(str2[index] != NULL)
+		while (str2[index] != NULL)
 			free(str2[index++]);
 		free(str2);
 		str2 = NULL;
@@ -36,6 +36,28 @@ void	free_double_pointer(char **str1, char **str2, void *str3)
 	{
 		free(str3);
 		str3 = NULL;
+	}
+}
+
+/* helper of environment_upset_env */
+void	environment_delete(t_env *env)
+{
+	free(env->name);
+	free(env->value);
+	free(env);
+}
+
+void	execution_signal_handler(int signum)
+{
+	if (signum == SIGINT)
+	{
+		printf("\n");
+		exit(1);
+	}
+	else if (signum == SIGQUIT)
+	{
+		printf("\nQuit: 3\n");
+		exit(131);
 	}
 }
 
@@ -71,15 +93,14 @@ char	**doublepointer_join_copy(char **result, char **strs, int *index)
 /* function join a string into a double pointer */
 char	**doublepointer_join(char **strs, char *str)
 {
-	char    **result;
-	int     index;
-	int     xedni;
+	char	**result;
+	int		index;
+	int		xedni;
 
 	index = 0;
 	result = doublepointer_join_copy(result, strs, &index);
-	printf("index = %d, lencount = %d\n", index, ft_lencount(NULL, result, STRS));
 	if (result == NULL)
-		return(0);
+		return (0);
 	xedni = 0;
 	result[index] = ft_calloc(sizeof(char), ft_lencount(str, NULL, STR) + 1);
 	if (result == NULL)
@@ -94,24 +115,5 @@ char	**doublepointer_join(char **strs, char *str)
 	}
 	result[++index] = NULL;
 	free_double_pointer(strs, NULL, NULL);
-	return(result);
+	return (result);
 }
-
-// int main (void)
-// {
-//     char *strs[] = {"hello1", "hello2", "hello3", "hello4", NULL};
-//     char **new;
-
-//     for (int i = 0; strs[i] != NULL; i++)
-//     {
-//         printf("=> %s\n", strs[i]);
-//     }
-
-//     new = doublepointer_join(strs, "newnewnew");
-//     printf("\n=======================\n\n");
-//     for (int i = 0; new[i] != NULL; i++)
-//     {
-//         printf("=> %s\n", new[i]);
-//     }
-//     return (0);
-// }

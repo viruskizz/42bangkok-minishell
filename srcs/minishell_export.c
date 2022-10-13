@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 04:07:40 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/10 00:19:02 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/13 19:13:11 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,23 +36,23 @@ char	*environment_get_name(char *command)
 }
 
 /* -1 is false | 0 is true */
-int	environment_check_name(char *variable_name)
+int	environment_check_name(char *variable_name, t_shell *shell)
 {
 	int	index;
 
 	index = 0;
-	/* check upper letter & digit & _ */
 	if (ft_isalpha(variable_name[0]) == 0 && variable_name[0] != '_')
 	{
 		printf("export: not an identifier: %s\n", variable_name);
+		shell->exstat = 1;
 		return (-1);
 	}
-	/* inside variable name must be alphabet or number */
 	while (variable_name[index] != '\0')
 	{
 		if (ft_isalnum(variable_name[index++]) == 0)
 		{
 			printf("export: not an identifier: %s\n", variable_name);
+			shell->exstat = 1;
 			return (-1);
 		}
 	}
@@ -70,8 +70,6 @@ int	environment_check_value(char *command, int quote, int qquote, int mode)
 	index = 0;
 	while (command[index] != '=' && command[index] != '\0')
 		index++;
-	// if (command[index] == '\0') // * may be not need //
-	// 	return (0);
 	start = index + 1;
 	index = 0;
 	while (command[start + index] != '\0')
@@ -134,41 +132,11 @@ int	environment_export_env(t_shell *shell, char *name, char *value, char *cmd)
 		{
 			free(count->value);
 			count->value = ft_strdup(value);
-			break ;
+			return (0);
 		}
 		count = count->next;
 	}
 	if (count == NULL)
 		environment_add_back(&shell->env, environment_new(cmd));
-	return (0);
-}
-
-int	execution_export_env(t_shell *shell, char **cmds, int index)
-{
-	char	*var_name;
-	char	*var_value;
-
-	shell->exstat = 0;
-	while (cmds != NULL && cmds[++index] != NULL)
-	{
-		var_name = environment_get_name(cmds[index]);
-		if (var_name == NULL)
-			return (-1);
-		if (environment_check_name(var_name) != 0)
-		{
-			free(var_name);
-			shell->exstat = 1;
-			continue ;
-		}
-		var_value = environment_get_value(cmds[index]);
-		if (var_value == NULL)
-		{
-			free(var_name);
-			return (-1);
-		}
-		environment_export_env(shell, var_name, var_value, cmds[index]);
-		free(var_value);
-		free(var_name);
-	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 22:58:34 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/11 23:42:36 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/13 19:12:11 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,20 +184,23 @@ int		redirect_dup_start(t_shell *shell, t_execute *exe);
 void	execution_signal(t_shell *shell, int mode);
 // excution part //
 int		cmd_execution(t_shell *shell);
-int		execution_command(t_shell *shell, t_execute *exe);
+int		execution_command(t_shell *shell, t_execute *exe, t_cmd * cmds);
+void	execution_signal_handler(int signum);
 int		execution_token(t_shell *shell, char *path, char **command);
 int		minishell_redirect(t_shell *shell, int *fd, int index);
-int		execution_path_command(t_shell *shell, char **command);
+int		execution_path_command(t_shell *shell, char **command, int index);
 
 //	execution_export_env //
 int		execution_export_env(t_shell *shell, char **command, int index);
 char	*environment_get_name(char *command);
 char	*environment_get_value(char *command);
 int		environment_check_value(char *command, int quote, int qquote, int mode);
-int		environment_check_name(char *variable_name);
+int		environment_check_name(char *variable_name, t_shell *shell);
+char	*environment_getenv(char *variable_name, t_shell *shell);
 
 int		environment_export_env(t_shell *shell, char *name, char *value, char *cmd);
 int 	execution_unset_env(t_env **env, char **variable_name, int index);
+void	environment_delete(t_env *env);
 void	environment_delete(t_env *env);
 
 int 	minishell_make_environment(t_shell *shell);
@@ -208,6 +211,7 @@ int		execution_print_env(t_shell *shell);
 
 // redirect
 int		redirect_infile(t_shell *shell, t_cmd *cmds);
+char	*heredoc_convert_env(t_shell *shell, char *buff, int index, int xedni);
 
 void	free_double_pointer(char **str1, char **str2, void *str3);
 void	signal_defualt(void);

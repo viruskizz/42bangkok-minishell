@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 18:52:47 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/11 23:13:07 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/13 19:13:39 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,17 +64,20 @@ void	environment_clear(t_env **env)
 	}
 }
 
-int	execution_print_env(t_shell *shell)
+/* function get the value of t_env */
+/* funntion working same with getenv() */
+char	*environment_getenv(char *variable_name, t_shell *shell)
 {
-	t_env	*environment;
+	t_env	*envs;
 
-	environment = shell->env;
-	if (environment == NULL)
-		return (1);
-	while (environment != NULL)
+	envs = shell->env;
+	while (envs != NULL)
 	{
-		printf("%s=%s\n", environment->name, environment->value);
-		environment = environment->next;
+		if (string_compare(variable_name, envs->name, NO_LEN) == 1)
+		{
+			return (envs->value);
+		}
+		envs = envs->next;
 	}
 	return (0);
 }

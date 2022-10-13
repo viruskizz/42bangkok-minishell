@@ -16,13 +16,13 @@ LIBS = -lreadline \
 
 SRC_DIR = srcs
 SRCS = main.c \
-	minishell_redirect.c \
+	minishell_redirect_infile.c \
+	minishell_heredoc_convert.c \
 	minishell_environment.c \
 	minishell_execution.c \
 	minishell_execution_command.c \
 	minishell_commands.c \
 	minishell_export.c \
-	minishell_unset.c \
 	minishell_split.c \
 	minishell_util1.c \
 	minishell_util2.c \
