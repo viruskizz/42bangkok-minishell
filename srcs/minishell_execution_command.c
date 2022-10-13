@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 23:26:59 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/13 18:02:57 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/13 21:48:30 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,10 @@ int	execution_command(t_shell *shell, t_execute *exe, t_cmd *cmds)
 	else if (access(cmds->tokens[0], F_OK | R_OK | X_OK) == 0)
 		shell->exstat = execution_token(shell, cmds->tokens[0], cmds->tokens);
 	else
+	{
+
 		execution_path_command(shell, cmds->tokens, 0);
+	}
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &shell->terminal->minishell);
 	exit(shell->exstat);
 }

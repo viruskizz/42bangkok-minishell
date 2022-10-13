@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 22:48:33 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/04 23:13:36 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/13 21:34:25 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ char	*ft_midjoin(char *str1, char *str2, char c)
 	result = (char *)ft_calloc(sizeof(char), len);
 	if (result == NULL)
 		return (0);
-	while (str1[index] != '\0')
+	while (str1 != NULL && str1[index] != '\0')
 	{
 		result[index] = str1[index];
 		index++;

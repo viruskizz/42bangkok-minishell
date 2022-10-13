@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 20:38:04 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/13 19:13:15 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/13 21:55:56 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,11 @@ void	execution_increasement(t_shell *shell, t_execute *exe)
 	t_cmd	*cmd;
 
 	cmd = ((t_cmd *)shell->cmds->content);
-	if (cmd->fg != NULL && cmd->fg[exe->index] != NULL
-		&& stat(cmd->fg[exe->index], &exe->info) == 0)
+	if (cmd->fg != NULL && cmd->fg[exe->index] != NULL)
 	{
 		exe->index++;
 	}
-	else if ((cmd->fgg != NULL && cmd->fgg[exe->xedni] != NULL)
-		&& stat(cmd->fg[exe->index], &exe->info) == 0)
+	else if ((cmd->fgg != NULL && cmd->fgg[exe->xedni] != NULL))
 	{
 		exe->xedni++;
 	}
