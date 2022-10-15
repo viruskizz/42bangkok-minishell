@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 17:25:00 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/13 19:11:53 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/14 23:30:34 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	execution_signal_handler(int signum)
 	}
 	else if (signum == SIGQUIT)
 	{
-		printf("\nQuit: 3\n");
+		printf("Quit: 3\n");
 		exit(131);
 	}
 }

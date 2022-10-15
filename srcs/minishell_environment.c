@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 18:52:47 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/13 19:13:39 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/14 23:27:04 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,23 +104,3 @@ int	minishell_make_environment(t_shell *shell)
 	}
 	return (0);
 }
-
-// int main(void)
-// {
-// 	t_shell *shell;
-
-// 	shell = (t_shell *)ft_calloc(sizeof(t_shell), 1);
-//     minishell_make_environment(shell);
-// 	execution_print_env(shell);
-// 	execution_unset_env(&shell->env, "USER");
-// 	printf("\n===============================================\n\n");
-// 	execution_print_env(shell);
-// 	execution_unset_env(&shell->env, "TERM");
-// 	printf("\n===============================================\n\n");
-// 	execution_print_env(shell);
-// 	execution_unset_env(&shell->env, "_");
-// 	printf("\n===============================================\n\n");
-// 	execution_print_env(shell);
-// 	printf("=> |%s|=|%s|\n", shell->env->name, shell->env->value);	
-//     return (0);
-// }
