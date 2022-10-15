@@ -41,14 +41,13 @@ t_list	*parse_token(t_list *tokens, t_shell *shell)
 static void	parse_dq_quote(t_list *lst, t_shell *shell)
 {
 	char	*token;
-	char	*s;
 	char	*new;
 	int		wlen;
 
 	token = lst->content;
-	token++;
 	new = ft_strdup("\"");
-	while (*token && *token != '"')
+	token++;
+	while (*token)
 	{
 		if (*token == '$')
 			wlen = exp_env(token, &new, shell);
@@ -56,8 +55,6 @@ static void	parse_dq_quote(t_list *lst, t_shell *shell)
 			wlen = exp_str(token, &new);
 		token += wlen;
 	}
-	s = ft_strdup("\"");
-	new = my_strcat(new, s);
 	free(lst->content);
 	lst->content = new;
 }
@@ -105,14 +102,21 @@ static	void	quote_remove(t_list *token)
 {
 	char	*str;
 	char	*new;
-	int		len;
+	int		i;
+	int		j;
 
 	str = token->content;
-	len = ft_strlen(str);
+	i = 0;
+	j = 0;
 	if (is_dq_str(str) || is_sq_str(str))
 	{
-		new = ft_calloc(len - 1, sizeof(char));
-		ft_strlcpy(new, str + 1, len - 1);
+		new = ft_calloc(ft_strlen(str), sizeof(char));
+		while(str[i])
+		{
+			if (!ft_strchr(QUOTES, str[i]))
+				new[j++] = str[i];
+			i++;
+		}
 		token->content = new;
 		free(str);
 	}
