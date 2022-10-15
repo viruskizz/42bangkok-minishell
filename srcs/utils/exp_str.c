@@ -36,7 +36,7 @@ static int	word_len(char *s)
 	char	*pattern;
 
 	i = 0;
-	pattern = "$\"\0";
+	pattern = "$\0";
 	while (!ft_strchr(pattern, s[++i]))
 		;
 	return (i);

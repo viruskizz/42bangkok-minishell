@@ -26,7 +26,7 @@ int	exp_env(char *token, char **str, t_shell *shell)
 	if (*(token + 1) == '?')
 	{
 		var = ft_itoa(shell->exstat);
-		wlen = ft_strlen(var);
+		wlen = 2;
 	}
 	else
 	{
@@ -50,7 +50,6 @@ int	exp_env_hom(char *token, char **str, t_shell *shell)
 	else
 		wlen = ft_strlen(token);
 	var = environment_getenv("HOME", shell);
-	printf("=> |%s|\n", var);
 	*str = my_strcat(*str, ft_strdup(var));
 	*str = my_strcat(*str, ft_strdup("/"));
 	return (wlen);

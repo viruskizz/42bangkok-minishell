@@ -12,6 +12,24 @@
 
 #include "minishell.h"
 
+// int	is_opt(char *s)
+// {
+// 	int	len;
+
+// 	if (!s)
+// 		return (0);
+// 	if (*s != '&' && *s != '|')
+// 		return (0);
+// 	if (!ft_strcmp(s, "||"))
+// 		return (2);
+// 	else if (!ft_strcmp(s, "&&"))
+// 		return (2);
+// 	else if (!ft_strcmp(s, "|"))
+// 		return (1);
+// 	else
+// 		return (-1);
+// }
+
 int	is_opt(char *s)
 {
 	int	len;
@@ -20,11 +38,11 @@ int	is_opt(char *s)
 		return (0);
 	if (*s != '&' && *s != '|')
 		return (0);
-	if (!ft_strcmp(s, "||"))
-		return (1);
-	else if (!ft_strcmp(s, "&&"))
-		return (1);
-	else if (!ft_strcmp(s, "|"))
+	if (!ft_strncmp(s, "||", 2))
+		return (2);
+	else if (!ft_strncmp(s, "&&", 2))
+		return (2);
+	else if (!ft_strncmp(s, "|", 1))
 		return (1);
 	else
 		return (-1);

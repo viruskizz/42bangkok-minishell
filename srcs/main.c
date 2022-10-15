@@ -30,7 +30,7 @@ static int		parse_input(char *input, t_shell *shell);
 // 	else
 // 		test = ft_strdup(src);
 // 	line = handling_input(test);
-// 	shell = parse_input(line);
+// 	parse_input(line, &shell);
 // 	free(line);
 // 	if (shell.cmds)
 // 		ft_lstclear(&shell.cmds, &free_cmd);

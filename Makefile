@@ -3,16 +3,16 @@ CC = gcc
 # CFLAGS = -Wextra -Wall -Werror
 
 LIBFT_DIR = libft
+LREAD_DIR = /opt/homebrew/Cellar/readline/8.1.2
 
 INCLUDE_DIR	= includes
-INCLUDES =	-I$(INCLUDE_DIR) -I$(LIBFT_DIR) -I /opt/homebrew/Cellar/readline/8.1.2/include/
-# INCLUDES =	-I$(INCLUDE_DIR) -I$(LIBFT_DIR)
+# INCLUDES =	-I$(INCLUDE_DIR) -I$(LIBFT_DIR) -I /opt/homebrew/Cellar/readline/8.1.2/include/
+INCLUDES =	-I$(INCLUDE_DIR) \
+			-I$(LIBFT_DIR) \
+			-I$(LREAD_DIR)/include
 
-LIBS = -lreadline \
-	-L$(LIBFT_DIR) -lft \
-	-L /opt/homebrew/Cellar/readline/8.1.2/lib
-# LIBS = -lreadline \
-# 	-L$(LIBFT_DIR) -lft
+LIBS =	-lreadline -L$(LREAD_DIR)/lib  \
+		-lft -L$(LIBFT_DIR) \
 
 SRC_DIR = srcs
 SRCS = main.c \
@@ -69,7 +69,5 @@ clean: cbuild
 fclean: clean
 	make fclean -C $(LIBFT_DIR)
 	$(RM) -f $(NAME)
-
-
 
 PHONY: all clean fclean re

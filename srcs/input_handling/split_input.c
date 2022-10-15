@@ -64,17 +64,9 @@ static int	wordlen(char *str)
 	int	i;
 
 	i = 0;
-	if (ft_strchr(QUOTES, str[0]))
-	{
-		while (str[++i])
-			if ((str[0] == '\'' && str[i] == '\'')
-				|| (str[0] == '"' && str[i] == '"'))
-				return (++i);
-		return (-1);
-	}
-	while (str[i]
-		&& !ft_strchr(FIELDS, str[i])
-		&& !ft_strchr(QUOTES, str[i]))
+	if (is_opt(str) > 0)
+		return (is_opt(str));
+	while (str[i] && !ft_strchr(FIELDS, str[i]))
 		i++;
 	return (i);
 }
