@@ -109,8 +109,7 @@ static	void	quote_remove(t_list *token)
 
 	str = token->content;
 	len = ft_strlen(str);
-	if ((str[0] == '\'' && str[len - 1] == '\'')
-		|| str[0] == '"' && str[len - 1] == '"')
+	if (is_dq_str(str) || is_sq_str(str))
 	{
 		new = ft_calloc(len - 1, sizeof(char));
 		ft_strlcpy(new, str + 1, len - 1);

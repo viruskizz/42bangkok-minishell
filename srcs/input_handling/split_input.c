@@ -31,8 +31,8 @@ t_list	*split_input(char *line)
 			return (NULL);
 		}
 		line += wlen;
-		if (!ft_strchr(FIELDS, *line))
-			continue ;
+		// if (!ft_strchr(FIELDS, *line))
+		// 	continue ;
 		while (*line && ft_strchr(FIELDS, *(++line)))
 			if (!*line)
 				break ;
@@ -47,6 +47,7 @@ static int	add_token(t_list **token, char *line)
 	t_list	*new;
 
 	wlen = wordlen(line);
+	printf("wlen: %d\n", wlen);
 	if (wlen < 0)
 		return (-1);
 	word = ft_calloc(sizeof(char), wlen + 1);
@@ -64,17 +65,20 @@ static int	wordlen(char *str)
 	int	i;
 
 	i = 0;
-	if (ft_strchr(QUOTES, str[0]))
-	{
-		while (str[++i])
-			if ((str[0] == '\'' && str[i] == '\'')
-				|| (str[0] == '"' && str[i] == '"'))
-				return (++i);
-		return (-1);
-	}
+	if (is_opt(str) > 0)
+		return (is_opt(str));
+	// if (ft_strchr(QUOTES, str[0]))
+	// {
+	// 	while (str[++i])
+	// 		if ((str[0] == '\'' && str[i] == '\'')
+	// 			|| (str[0] == '"' && str[i] == '"'))
+	// 			return (++i);
+	// 	return (-1);
+	// }
 	while (str[i]
 		&& !ft_strchr(FIELDS, str[i])
-		&& !ft_strchr(QUOTES, str[i]))
+		// && !ft_strchr(QUOTES, str[i])
+		)
 		i++;
 	return (i);
 }
