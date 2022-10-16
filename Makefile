@@ -5,7 +5,7 @@ CC = gcc
 LIBFT_DIR = libft
 LREAD_DIR = /opt/homebrew/Cellar/readline/8.1.2
 # on guacamole
-#LREAD_DIR = /usr/Cellar/readline/8.1.2
+#LREAD_DIR = /usr/local/Cellar/readline/8.1.2
 
 INCLUDE_DIR	= includes
 # INCLUDES =	-I$(INCLUDE_DIR) -I$(LIBFT_DIR) -I /opt/homebrew/Cellar/readline/8.1.2/include/
