@@ -47,20 +47,6 @@ void	environment_delete(t_env *env)
 	free(env);
 }
 
-void	execution_signal_handler(int signum)
-{
-	if (signum == SIGINT)
-	{
-		printf("\n");
-		exit(1);
-	}
-	else if (signum == SIGQUIT)
-	{
-		printf("Quit: 3\n");
-		exit(131);
-	}
-}
-
 char	**doublepointer_join_copy(char **result, char **strs, int *index)
 {
 	int	len;

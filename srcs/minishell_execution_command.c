@@ -63,7 +63,7 @@ int	execution_path_command(t_shell *shell, char **command, int index)
 		{
 			printf("minishell: command not found: %s\n", command[0]);
 			shell->exstat = 127;
-			break;
+			break ;
 		}
 		free(path);
 	}

@@ -52,7 +52,6 @@ void	free_arr(char **arr)
 	i = 0;
 	if (!arr)
 		return ;
-	printf("free\n");
 	while (arr[i])
 		free(arr[i++]);
 	free(arr[i]);

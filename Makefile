@@ -16,6 +16,8 @@ LIBS =	-lreadline -L$(LREAD_DIR)/lib  \
 
 SRC_DIR = srcs
 SRCS = main.c \
+	minishell_init.c \
+	signal_handling.c \
 	minishell_redirect_infile.c \
 	minishell_heredoc_convert.c \
 	minishell_environment.c \

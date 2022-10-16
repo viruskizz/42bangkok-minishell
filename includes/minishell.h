@@ -79,21 +79,6 @@
 
 # define IN_FILE ".temporary_for_collecting_infile_u_cannot_see_this_3saatoooo"
 
-/**
- * @brief struct for single command with conjuction
- * exmaple input: ls -l && wc -l
- * for index 0
- * cmd = "ls -l"
- * conj = CONJ_AND
- */
-// typedef struct s_cmd
-// {
-// 	char	*cmd;
-// 	char	*file;
-// 	int		opt;
-// 	int		redir;
-// }	t_cmd;
-
 typedef struct s_env
 {
 	char			*name;
@@ -104,10 +89,10 @@ typedef struct s_env
 typedef struct s_cmd
 {
 	char	**tokens;
-	char	**fg; // >
-	char	**fgg; // >>
-	char	**fls; // <
-	char	**flsls; // <<
+	char	**fg;
+	char	**fgg;
+	char	**fls;
+	char	**flsls;
 	int		opt;
 }	t_cmd;
 
@@ -120,26 +105,26 @@ typedef struct s_execute
 	int			fd[2];
 	pid_t		pid;
 	t_cmd		*cmds;
-	struct stat info;	
+	struct stat	info;
 }	t_execute;
 
 typedef struct s_lcmd
 {
-	t_list *tokens;
-	t_list *fgt; // >
-	t_list *fgtgt; // >>
-	t_list *fls; // <
-	t_list *flsls; // <<
+	t_list	*tokens;
+	t_list	*fgt;
+	t_list	*fgtgt;
+	t_list	*fls;
+	t_list	*flsls;
 	int		opt;
 }	t_lcmd;
 
 typedef struct s_token
 {
 	char	**tokens;
-	char	**fg; // >
-	char	**fgg; // >>
-	char	**fls; // <<
-	char	**flsls; // <
+	char	**fg;
+	char	**fgg;
+	char	**fls;
+	char	**flsls;
 	int		opt;
 }	t_token;
 
@@ -164,10 +149,6 @@ typedef struct s_shell
 	int					sinput;
 	struct sigaction	sigint;
 	struct sigaction	sigquit;
-
-//	// t_list	*envs;
-//	// int		cmd_amount;
-
 }	t_shell;
 
 extern char	**environ;
@@ -176,7 +157,7 @@ char	*string_tranfer(char *str1, char *str2, int len);
 int		string_compare(char *str1, char *str2, int len);
 int		character_search(char *str, char c, int mode);
 int		ft_lencount(char *str, char **strs, int mode);
-// void	*ft_calloc(int count, int size);
+
 char	**ft_split_mode(char *str, char c, int mode);
 char	*ft_midjoin(char *str1, char *str2, char c);
 char	**doublepointer_join(char **strs, char *str);
@@ -184,8 +165,7 @@ int		redirect_dup_start(t_shell *shell, t_execute *exe);
 void	execution_signal(t_shell *shell, int mode);
 // excution part //
 int		cmd_execution(t_shell *shell);
-int		execution_command(t_shell *shell, t_execute *exe, t_cmd * cmds);
-void	execution_signal_handler(int signum);
+int		execution_command(t_shell *shell, t_execute *exe, t_cmd *cmds);
 int		execution_token(t_shell *shell, char *path, char **command);
 int		minishell_redirect(t_shell *shell, int *fd, int index);
 int		execution_path_command(t_shell *shell, char **command, int index);
@@ -198,12 +178,13 @@ int		environment_check_value(char *command, int quote, int qquote, int mode);
 int		environment_check_name(char *variable_name, char *cmd, t_shell *shell);
 char	*environment_getenv(char *variable_name, t_shell *shell);
 
-int		environment_export_env(t_shell *shell, char *name, char *value, char *cmd);
-int 	execution_unset_env(t_env **env, char **variable_name, int index);
+int		environment_export_env(
+			t_shell *shell, char *name, char *value, char *cmd);
+int		execution_unset_env(t_env **env, char **variable_name, int index);
 void	environment_delete(t_env *env);
 void	environment_delete(t_env *env);
 
-int 	minishell_make_environment(t_shell *shell);
+int		minishell_make_environment(t_shell *shell);
 t_env	*environment_new(char *env);
 void	environment_add_back(t_env **env, t_env *new);
 void	environment_clear(t_env **env);
@@ -218,6 +199,8 @@ void	signal_defualt(void);
 int		execution_change_directory(t_shell *shell, char **command);
 
 // main function
+void	minishell_init(t_shell *shell);
+void	minishell_clear(t_shell *shell);
 t_list	*split_input(char *line);
 t_list	*parse_token(t_list *tokens, t_shell *shell);
 t_list	*group_cmd(t_list *token);
@@ -250,4 +233,5 @@ void	print_lst(t_list *lst);
 void	print_cmd_table(t_list *cmds);
 
 void	handling_signal(int signo);
+
 #endif

@@ -15,7 +15,7 @@
 static void		parse_dq_quote(t_list *token, t_shell *shell);
 static void		parse_normal(t_list *lst, t_shell *shell);
 static t_list	*parse_wildcard(t_list **lst);
-static	void	quote_remove(t_list *token);
+static void		quote_remove(t_list *token);
 
 t_list	*parse_token(t_list *tokens, t_shell *shell)
 {
@@ -87,7 +87,7 @@ static t_list	*parse_wildcard(t_list **tokens)
 	t_list	*paths;
 	t_list	*next;
 
-	paths = wild_paths(*tokens); 
+	paths = wild_paths(*tokens);
 	if (paths)
 	{
 		next = (*tokens)->next;
@@ -111,7 +111,7 @@ static	void	quote_remove(t_list *token)
 	if (is_dq_str(str) || is_sq_str(str))
 	{
 		new = ft_calloc(ft_strlen(str), sizeof(char));
-		while(str[i])
+		while (str[i])
 		{
 			if (!ft_strchr(QUOTES, str[i]))
 				new[j++] = str[i];
