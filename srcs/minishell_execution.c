@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 20:38:04 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/14 21:55:19 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/16 15:56:15 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	execution_waitpid(t_shell *shell, t_execute *exe)
 	}
 	else if (string_compare(cmds->tokens[0], "unset", NO_LEN) == 1)
 		shell->exstat = execution_unset_env(&shell->env, cmds->tokens, 0);
-	if (shell->cmds->next != NULL)
+	if (shell->cmds->next != NULL && ((t_cmd *)shell->cmds->content)->opt == 1)
 		dup2(exe->fd[0], 0);
 	else
 		dup2(shell->sinput, 0);
