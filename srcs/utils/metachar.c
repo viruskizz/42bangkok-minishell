@@ -74,11 +74,18 @@ char	*str_opt(int opt)
 
 int	is_redirect(char *str)
 {
-	if (ft_strcmp(str, "<<") == 0
-		|| ft_strcmp(str, "<") == 0
-		|| ft_strcmp(str, ">") == 0
-		|| ft_strcmp(str, ">>") == 0)
+	if (!str)
+		return (0);
+	if (*str != '<' && *str != '>')
+		return (0);
+	if (!ft_strncmp(str, "<<", 2))
+		return (2);
+	else if (!ft_strncmp(str, ">>", 2))
+		return (2);
+	else if (!ft_strncmp(str, "<", 1))
+		return (1);
+	else if (!ft_strncmp(str, ">", 1))
 		return (1);
 	else
-		return (0);
+		return (-1);
 }
