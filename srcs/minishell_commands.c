@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 23:33:02 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/13 19:16:12 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/14 23:29:02 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,11 @@ int	change_directory(t_shell *shell, char *directory)
 	}
 	getcwd(path_env, 999);
 	command = ft_midjoin("OLDPWD", path_env, '=');
-	shell->exstat = chdir(directory);
+	if (chdir(directory) != 0)
+	{
+		printf("minishell: cd: no such file or directory: %s\n", directory);
+		shell->exstat = 1;
+	}
 	environment_export_env(shell, "OLDPWD", path_env, command);
 	free(command);
 	getcwd(path_env, 999);
@@ -44,7 +48,7 @@ int	execution_change_directory(t_shell *shell, char **command)
 	user = ft_midjoin("~", environment_getenv("USER", shell), '\0');
 	if (ft_lencount(NULL, command, STRS) == 3)
 	{
-		printf("cd: string not in pwd: %s\n", command[1]);
+		printf("minishell: cd: string not in pwd: %s\n", command[1]);
 		shell->exstat = 1;
 	}
 	else if (ft_lencount(NULL, command, STRS) == 1
@@ -57,7 +61,7 @@ int	execution_change_directory(t_shell *shell, char **command)
 		change_directory(shell, command[1]);
 	else
 	{
-		printf("cd: too many agurments\n");
+		printf("minishell: cd: too many agurments\n");
 		shell->exstat = 1;
 	}
 	free(user);
@@ -120,7 +124,7 @@ int	execution_export_env(t_shell *shell, char **cmds, int index)
 		var_name = environment_get_name(cmds[index]);
 		if (var_name == NULL)
 			return (-1);
-		if (environment_check_name(var_name, shell) != 0)
+		if (environment_check_name(var_name, cmds[index], shell) != 0)
 		{
 			free(var_name);
 			continue ;

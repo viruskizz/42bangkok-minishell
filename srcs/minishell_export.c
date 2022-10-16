@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 04:07:40 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/13 19:13:11 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/14 22:28:29 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,14 @@ char	*environment_get_name(char *command)
 }
 
 /* -1 is false | 0 is true */
-int	environment_check_name(char *variable_name, t_shell *shell)
+int	environment_check_name(char *variable_name, char *cmd, t_shell *shell)
 {
 	int	index;
 
 	index = 0;
 	if (ft_isalpha(variable_name[0]) == 0 && variable_name[0] != '_')
 	{
-		printf("export: not an identifier: %s\n", variable_name);
+		printf("minishell: export: `%s\': not a valid identifier\n", cmd);
 		shell->exstat = 1;
 		return (-1);
 	}
@@ -51,7 +51,7 @@ int	environment_check_name(char *variable_name, t_shell *shell)
 	{
 		if (ft_isalnum(variable_name[index++]) == 0)
 		{
-			printf("export: not an identifier: %s\n", variable_name);
+			printf("minishell: export: `%s\': not a valid identifier\n", cmd);
 			shell->exstat = 1;
 			return (-1);
 		}

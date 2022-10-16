@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 23:26:59 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/13 21:48:30 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/16 15:56:36 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,7 @@ int	execution_command(t_shell *shell, t_execute *exe, t_cmd *cmds)
 	else if (access(cmds->tokens[0], F_OK | R_OK | X_OK) == 0)
 		shell->exstat = execution_token(shell, cmds->tokens[0], cmds->tokens);
 	else
-	{
-
 		execution_path_command(shell, cmds->tokens, 0);
-	}
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &shell->terminal->minishell);
 	exit(shell->exstat);
 }
@@ -114,7 +111,7 @@ int	redirect_dup_start(t_shell *shell, t_execute *exe)
 	file = 0;
 	cmd = (t_cmd *)shell->cmds->content;
 	redirect_dup_input(exe->fd);
-	if (cmd->fg == NULL && cmd->fgg == NULL && cmd->opt != 0)
+	if (cmd->fg == NULL && cmd->fgg == NULL && cmd->opt == OPT_PIPE)
 		dup2(exe->fd[1], 1);
 	else if (cmd->fg != NULL && cmd->fg[exe->index] != NULL)
 		file = open(cmd->fg[exe->index++], O_RDWR | O_CREAT, 0644);

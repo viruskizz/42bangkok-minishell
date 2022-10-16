@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 22:58:34 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/13 22:39:04 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/14 22:26:18 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,7 +195,7 @@ int		execution_export_env(t_shell *shell, char **command, int index);
 char	*environment_get_name(char *command);
 char	*environment_get_value(char *command);
 int		environment_check_value(char *command, int quote, int qquote, int mode);
-int		environment_check_name(char *variable_name, t_shell *shell);
+int		environment_check_name(char *variable_name, char *cmd, t_shell *shell);
 char	*environment_getenv(char *variable_name, t_shell *shell);
 
 int		environment_export_env(t_shell *shell, char *name, char *value, char *cmd);
