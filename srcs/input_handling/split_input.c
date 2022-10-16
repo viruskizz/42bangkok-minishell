@@ -67,7 +67,7 @@ static int	wordlen(char *str)
 	if (is_opt(str) > 0)
 		return (is_opt(str));
 	else if (is_redirect(str) > 0)
-		return (is_redirect(str) > 0);
+		return (is_redirect(str));
 	while (str[i] && !ft_strchr(FIELDS, str[i]))
 		i++;
 	return (i);
