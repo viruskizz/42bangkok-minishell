@@ -62,7 +62,6 @@ static void	parse_dq_quote(t_list *lst, t_shell *shell)
 static void	parse_normal(t_list *lst, t_shell *shell)
 {
 	char	*token;
-	char	*s;
 	char	*new;
 	int		wlen;
 

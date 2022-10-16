@@ -19,7 +19,6 @@ static int	is_end_path(char *str);
 t_list	*wild_paths(t_list *tokens)
 {
 	t_list	*paths;
-	char	*dirname;
 	char	*srch;
 
 	paths = NULL;
@@ -39,7 +38,6 @@ static void	*get_paths(char *dirname, char *srch, t_list **paths)
 	DIR				*dir;
 	struct dirent	*entry;
 	char			*str;
-	t_list			*path;
 	int				is_mathch;
 
 	dir = opendir(dirname);

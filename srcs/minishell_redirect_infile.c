@@ -14,7 +14,6 @@
 
 int	heredoc_inputpassing(t_shell *shell, int infile, char *delimiter)
 {
-	int		read_byte;
 	char	*line;
 	char	*input;
 
@@ -41,7 +40,6 @@ int	heredoc_inputpassing(t_shell *shell, int infile, char *delimiter)
 int	redirect_read_heredoc(t_shell *shell, char **files, int infile)
 {
 	char	*delimiter;
-	int		file;
 	int		index;
 
 	index = 0;

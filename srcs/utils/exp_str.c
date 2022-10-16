@@ -18,7 +18,6 @@ int	exp_str(char *token, char **str)
 {
 	int		wlen;
 	char	*s;
-	char	*tmp;
 
 	wlen = word_len(token);
 	s = ft_calloc(wlen + 1, sizeof(char));

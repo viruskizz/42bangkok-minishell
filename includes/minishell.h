@@ -27,6 +27,8 @@
 # include <dirent.h>
 # include <sys/stat.h>
 # include <termios.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 
 # define PROMPT_MSG	"\033[1;33minput command: \033[0m"
 # define OPT_NULL	0

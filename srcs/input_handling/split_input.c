@@ -13,7 +13,6 @@
 #include "minishell.h"
 
 static int	wordlen(char *str);
-static int	count_word(char *line);
 static int	add_token(t_list **token, char *line);
 
 t_list	*split_input(char *line)

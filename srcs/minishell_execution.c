@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 static int	exec_single_cmd(t_shell *shell, t_execute *exe);
 
 void	execution_increasement(t_shell *shell, t_execute *exe)
@@ -84,16 +85,6 @@ int	cmd_execution(t_shell *shell)
 		executeion_inite(shell, &exe);
 		if (exec_single_cmd(shell, &exe) < 0)
 			return (-1);
-		// while (exe.index + exe.xedni < exe.files || exe.execute == 0)
-		// {
-		// 	if (pipe(exe.fd) < 0)
-		// 		return (-1);
-		// 	exe.pid = fork();
-		// 	if (exe.pid == 0)
-		// 		execution_command(shell, &exe, NULL);
-		// 	else if (exe.pid > 0)
-		// 		exe.execute = execution_waitpid(shell, &exe);
-		// }
 		if (stat(IN_FILE, &exe.info) == 0)
 			unlink(IN_FILE);
 		if ((exe.cmds->opt == OPT_AND && shell->exstat != 0)

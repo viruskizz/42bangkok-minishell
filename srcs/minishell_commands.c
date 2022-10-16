@@ -43,7 +43,6 @@ int	change_directory(t_shell *shell, char *directory)
 int	execution_change_directory(t_shell *shell, char **command)
 {
 	char	*user;
-	t_env	*envs;
 
 	user = ft_midjoin("~", environment_getenv("USER", shell), '\0');
 	if (ft_lencount(NULL, command, STRS) == 3)

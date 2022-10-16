@@ -15,7 +15,7 @@
 static char		*handling_input(char *input);
 static int		parse_input(char *input, t_shell *shell);
 
-int	main(int argc, char *argv[])
+int	main(void)
 {
 	char				*line;
 	char				*input;

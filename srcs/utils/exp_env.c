@@ -18,7 +18,6 @@ static int	var_len(char *s);
 int	exp_env(char *token, char **str, t_shell *shell)
 {
 	int		wlen;
-	char	*new;
 	char	*var;
 
 	if (*token != '$')
@@ -40,7 +39,6 @@ int	exp_env(char *token, char **str, t_shell *shell)
 int	exp_env_hom(char *token, char **str, t_shell *shell)
 {
 	int		wlen;
-	char	*new;
 	char	*var;
 
 	if (*token != '~')
@@ -61,10 +59,8 @@ int	exp_env_hom(char *token, char **str, t_shell *shell)
 static int	var_len(char *s)
 {
 	int		i;
-	char	*pattern;
 
 	i = 0;
-	pattern = " $*\"\t\0";
 	if (*s != '$')
 		return (i);
 	while (ft_isalnum(s[++i]))
