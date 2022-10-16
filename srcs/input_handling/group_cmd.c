@@ -100,7 +100,7 @@ static int	count_tokens(t_list *token)
 	while (lst)
 	{
 		t = (char *) lst->content;
-		if (is_opt(t) == 1)
+		if (is_opt(t) > 0)
 			return (++i);
 		i++;
 		lst = lst->next;
