@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 23:26:59 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/16 20:46:34 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/16 21:33:25 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	execution_path_command(t_shell *shell, char **command, int index)
 	env_path = ft_split_mode(environment_getenv("PATH", shell), ':', BOUND);
 	while (env_path[index] != NULL)
 	{
-		path = ft_midjoin(env_path[index++], command[0], '/');
+		path = ft_midjoin(env_path[index], command[0], '/');
 		if (access(path, F_OK | R_OK | X_OK) == 0)
 		{
 			execution_token(shell, path, command);
@@ -65,6 +65,7 @@ int	execution_path_command(t_shell *shell, char **command, int index)
 			shell->exstat = 127;
 			break ;
 		}
+		index++;
 		free_double_pointer(NULL, NULL, path);
 	}
 	free_double_pointer(NULL, env_path, path); // invalid free
