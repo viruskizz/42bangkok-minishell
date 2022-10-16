@@ -18,24 +18,23 @@ static char		*handling_input(char *input);
 static int		parse_input(char *input, t_shell *shell);
 
 // Testing main only
-// static int	test_main(char *src)
-// {
-// 	char *line;
-// 	char *test;
-// 	t_shell shell;
+static int	test_main(char *src)
+{
+	char *line;
+	char *test;
+	t_shell shell;
 
-// 	// test = ft_strdup("aaa bb dd << a >> b | $HOME \" xx $HOME\"");
-// 	if (!src)
-// 		test = ft_strdup("\"*\"");
-// 	else
-// 		test = ft_strdup(src);
-// 	line = handling_input(test);
-// 	parse_input(line, &shell);
-// 	free(line);
-// 	if (shell.cmds)
-// 		ft_lstclear(&shell.cmds, &free_cmd);
-// 	return (0);
-// }
+	if (!src)
+		test = ft_strdup("echo x && echo y");
+	else
+		test = ft_strdup(src);
+	line = handling_input(test);
+	parse_input(line, &shell);
+	free(line);
+	if (shell.cmds)
+		ft_lstclear(&shell.cmds, &free_cmd);
+	return (0);
+}
 
 int	minishell_terminal(t_shell *shell, int mode)
 {
@@ -86,8 +85,8 @@ int	main(int argc, char *argv[])
 	char				*input;
 	t_shell				shell;
 	
-	minishell_init(&shell);
 	// return (test_main(argv[1]));
+	minishell_init(&shell);
 	if (argc > 1)
 	{
 		int		index = 1;
@@ -110,8 +109,8 @@ int	main(int argc, char *argv[])
 			return (0);
 		parse_input(line, &shell);
 		printf("===================================== execution part ============================================\n\n");
-		if (cmd_execution(&shell) < 0)
-			perror("minishell");
+		// if (cmd_execution(&shell) < 0)
+		// 	perror("minishell");
 		free(line);
 		ft_lstclear(&shell.cmds, &free_cmd);
 	}
@@ -131,6 +130,7 @@ int	main(int argc, char *argv[])
 			if (cmd_execution(&shell) < 0)
 				perror("minishell");
 			free(line);
+			printf("go clear\n");
 			ft_lstclear(&shell.cmds, &free_cmd);
 		}
 		// ! DONT FOGET DELETE IT OUT

@@ -113,6 +113,7 @@ void	free_cmd(void *content)
 	t_cmd	*cmd;
 
 	cmd = (t_cmd *) content;
+	printf("clear1\n");
 	free_arr(cmd->tokens);
 	free_arr(cmd->fg);
 	free_arr(cmd->fgg);
