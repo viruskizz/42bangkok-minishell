@@ -50,10 +50,7 @@ static int	parse_input(char *input, t_shell *shell)
 	t_list	*cmds;
 	t_list	*tokens;
 
-	printf("%sinput:%s: %s\n", CYAN, RESET, input);
 	tokens = split_input(input);
-	printf("%stokens: %s", CYAN, RESET);
-	print_lst(tokens);
 	if (!validate_token(&tokens))
 	{
 		printf("Error unexpected token\n");
@@ -61,11 +58,7 @@ static int	parse_input(char *input, t_shell *shell)
 		return (-1);
 	}
 	tokens = parse_token(tokens, shell);
-	printf("%sparsed: %s", CYAN, RESET);
-	print_lst(tokens);
 	cmds = group_cmd(tokens);
-	printf("%stable command: %s\n", CYAN, RESET);
-	print_cmd_table(cmds);
 	shell->cmds = cmds;
 	ft_lstclear(&tokens, &free_token);
 	return (0);

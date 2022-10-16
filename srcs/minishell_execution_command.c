@@ -52,11 +52,8 @@ int	execution_path_command(t_shell *shell, char **command, int index)
 		if (access(path, F_OK | R_OK | X_OK) == 0)
 		{
 			execution_token(shell, path, command);
-			if (shell->exstat == -1)
-			{
-				free_double_pointer(NULL, env_path, path);
+			if (shell->exstat == -1 && free_db_ptr(NULL, env_path, path))
 				return (-1);
-			}
 			break ;
 		}
 		else if (env_path[index + 1] == NULL)
@@ -67,7 +64,7 @@ int	execution_path_command(t_shell *shell, char **command, int index)
 		}
 		free(path);
 	}
-	free_double_pointer(NULL, env_path, path);
+	free_db_ptr(NULL, env_path, path);
 	return (0);
 }
 

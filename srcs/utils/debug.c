@@ -63,7 +63,7 @@ void	print_cmd_table(t_list *cmds)
 		{
 			cmd = (t_cmd *) cmds->content;
 			printf("  {\n");
-			printf("  {\n    n: %d\n", arr_str_len(cmd->tokens));
+			printf("    n: %d\n", arr_str_len(cmd->tokens));
 			printf("    tokens: ");
 			print_arr(cmd->tokens);
 			printf("    fgt: ");

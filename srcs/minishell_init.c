@@ -38,7 +38,7 @@ void	minishell_init(t_shell *shell)
 void	minishell_clear(t_shell *shell)
 {
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &shell->terminal->shell);
-	free_double_pointer(NULL, NULL, shell->terminal);
+	free_db_ptr(NULL, NULL, shell->terminal);
 }
 
 static int	minishell_terminal(t_shell *shell)

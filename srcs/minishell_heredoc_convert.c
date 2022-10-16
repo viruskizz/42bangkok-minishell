@@ -95,6 +95,6 @@ char	*heredoc_convert_env(t_shell *shell, char *buff, int index, int xedni)
 			buff[xedni++] = str[index++];
 	}
 	buff[xedni] = '\0';
-	free_double_pointer(NULL, NULL, str);
+	free_db_ptr(NULL, NULL, str);
 	return (buff);
 }

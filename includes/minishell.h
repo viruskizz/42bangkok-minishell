@@ -196,7 +196,7 @@ int		execution_print_env(t_shell *shell);
 int		redirect_infile(t_shell *shell, t_cmd *cmds);
 char	*heredoc_convert_env(t_shell *shell, char *buff, int index, int xedni);
 
-void	free_double_pointer(char **str1, char **str2, void *str3);
+int	free_db_ptr(char **str1, char **str2, void *str3);
 void	signal_defualt(void);
 int		execution_change_directory(t_shell *shell, char **command);
 

@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	free_double_pointer(char **str1, char **str2, void *str3)
+int	free_db_ptr(char **str1, char **str2, void *str3)
 {
 	int	index;
 
@@ -37,6 +37,7 @@ void	free_double_pointer(char **str1, char **str2, void *str3)
 		free(str3);
 		str3 = NULL;
 	}
+	return (1);
 }
 
 /* helper of environment_upset_env */
