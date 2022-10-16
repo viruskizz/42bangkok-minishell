@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 23:26:59 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/16 15:56:36 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/16 19:57:28 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ int	execution_path_command(t_shell *shell, char **command, int index)
 			printf("minishell: command not found: %s\n", command[0]);
 			shell->exstat = 127;
 		}
+		/** * add */
+		free(path);
 	}
 	free_double_pointer(NULL, env_path, path);
 	return (0);

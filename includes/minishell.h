@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 22:58:34 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/14 22:26:18 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/16 20:00:32 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,6 @@ typedef struct s_execute
 	int			index;
 	int			xedni;
 	int			files;
-	int			execute;
 	int			fd[2];
 	pid_t		pid;
 	t_cmd		*cmds;
@@ -183,7 +182,7 @@ char	**doublepointer_join(char **strs, char *str);
 int		redirect_dup_start(t_shell *shell, t_execute *exe);
 void	execution_signal(t_shell *shell, int mode);
 // excution part //
-int		cmd_execution(t_shell *shell);
+int		cmd_execution(t_shell *shell, int execution);
 int		execution_command(t_shell *shell, t_execute *exe, t_cmd * cmds);
 void	execution_signal_handler(int signum);
 int		execution_token(t_shell *shell, char *path, char **command);

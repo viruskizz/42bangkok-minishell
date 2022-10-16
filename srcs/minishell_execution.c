@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 20:38:04 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/16 15:56:15 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/16 19:59:50 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,21 +93,20 @@ void	executeion_inite(t_shell *shell, t_execute *exe)
 {
 	exe->index = 0;
 	exe->xedni = 0;
-	exe->execute = 0;
 	exe->cmds = (t_cmd *)shell->cmds->content;
 	exe->files = ft_lencount(NULL, exe->cmds->fg, STRS);
 	exe->files += ft_lencount(NULL, exe->cmds->fgg, STRS);
 }
 
-int	cmd_execution(t_shell *shell)
+int	cmd_execution(t_shell *shell, int execute)
 {
 	t_execute	exe;
 
 	execution_signal(shell, PARENT_I);
-	while (shell->cmds != NULL && exe.execute != -42)
+	while (shell->cmds != NULL && execute != -42)
 	{
 		executeion_inite(shell, &exe);
-		while (exe.index + exe.xedni < exe.files || exe.execute == 0)
+		while (exe.index + exe.xedni < exe.files || execute == 0)
 		{
 			if (pipe(exe.fd) < 0)
 				return (-1);
@@ -115,7 +114,7 @@ int	cmd_execution(t_shell *shell)
 			if (exe.pid == 0)
 				execution_command(shell, &exe, NULL);
 			else if (exe.pid > 0)
-				exe.execute = execution_waitpid(shell, &exe);
+				execute = execution_waitpid(shell, &exe);
 		}
 		if (stat(IN_FILE, &exe.info) == 0)
 			unlink(IN_FILE);

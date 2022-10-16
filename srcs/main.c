@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 18:52:24 by araiva            #+#    #+#             */
-/*   Updated: 2022/10/16 15:53:48 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/16 20:01:26 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,59 +88,29 @@ int	main(int argc, char *argv[])
 	
 	minishell_init(&shell);
 	// return (test_main(argv[1]));
-	if (argc > 1)
+	while (true)
 	{
-		int		index = 1;
-		char	*tmp = NULL;
-
-		while (argv[index] != NULL)
-		{
-			input = ft_midjoin(tmp, argv[index++], ' ');
-			if (tmp != NULL)
-				free(tmp);
-			tmp = ft_strdup(input);
-		}
-		free(tmp);
-		printf("input = %s\n", input);
+		input = readline(PROMPT_MSG);
 		if (!input || ft_strcmp(input, "exit") == 0)
-				return (0);
+			break ;
 		add_history(input);
 		line = handling_input(input);
 		if (!line)
-			return (0);
+			continue ;
 		parse_input(line, &shell);
 		printf("===================================== execution part ============================================\n\n");
-		if (cmd_execution(&shell) < 0)
+		if (cmd_execution(&shell, 0) < 0)
 			perror("minishell");
 		free(line);
 		ft_lstclear(&shell.cmds, &free_cmd);
 	}
-	else
+	// ! DONT FOGET DELETE IT OUT
+	if (input == NULL)
 	{
-		while (true)
-		{
-			input = readline(PROMPT_MSG);
-			if (!input || ft_strcmp(input, "exit") == 0)
-				break ;
-			add_history(input);
-			line = handling_input(input);
-			if (!line)
-				continue ;
-			parse_input(line, &shell);
-			printf("===================================== execution part ============================================\n\n");
-			if (cmd_execution(&shell) < 0)
-				perror("minishell");
-			free(line);
-			ft_lstclear(&shell.cmds, &free_cmd);
-		}
-		// ! DONT FOGET DELETE IT OUT
-		if (input == NULL)
-		{
-			printf("\033[A");
-			for (int i = 0; i < 15; i ++)
-				printf("%s", DELNL);
-			printf("exit\n");
-		}
+		printf("\033[A");
+		for (int i = 0; i < 15; i ++)
+			printf("%s", DELNL);
+		printf("exit\n");
 	}
 	minishell_terminal(&shell, DEFUALT);
 	environment_clear(&shell.env);
