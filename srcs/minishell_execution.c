@@ -102,7 +102,10 @@ void	executeion_inite(t_shell *shell, t_execute *exe)
 int	cmd_execution(t_shell *shell)
 {
 	t_execute	exe;
+	t_list		*cmd;
 
+	exe.execute = 0;
+	cmd = shell->cmds;
 	execution_signal(shell, PARENT_I);
 	while (shell->cmds != NULL && exe.execute != -42)
 	{
@@ -124,6 +127,39 @@ int	cmd_execution(t_shell *shell)
 			break ;
 		shell->cmds = shell->cmds->next;
 	}
+	shell->cmds = cmd;
 	execution_signal(shell, PARENT_O);
 	return (0);
 }
+
+// int	cmd_execution(t_shell *shell)
+// {
+// 	t_execute	exe;
+// 	t_list		*cmd;
+
+// 	exe.execute = 0;
+// 	cmd = shell->cmds;
+// 	execution_signal(shell, PARENT_I);
+// 	while (shell->cmds != NULL && exe.execute != -42)
+// 	{
+// 		executeion_inite(shell, &exe);
+// 		while (exe.index + exe.xedni < exe.files || exe.execute == 0)
+// 		{
+// 			if (pipe(exe.fd) < 0)
+// 				return (-1);
+// 			exe.pid = fork();
+// 			if (exe.pid == 0)
+// 				execution_command(shell, &exe, NULL);
+// 			else if (exe.pid > 0)
+// 				exe.execute = execution_waitpid(shell, &exe);
+// 		}
+// 		if (stat(IN_FILE, &exe.info) == 0)
+// 			unlink(IN_FILE);
+// 		if ((exe.cmds->opt == OPT_AND && shell->exstat != 0)
+// 			|| (exe.cmds->opt == OPT_OR && shell->exstat == 0))
+// 			break ;
+// 		shell->cmds = shell->cmds->next;
+// 	}
+// 	execution_signal(shell, PARENT_O);
+// 	return (0);
+// }

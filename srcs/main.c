@@ -109,8 +109,8 @@ int	main(int argc, char *argv[])
 			return (0);
 		parse_input(line, &shell);
 		printf("===================================== execution part ============================================\n\n");
-		// if (cmd_execution(&shell) < 0)
-		// 	perror("minishell");
+		if (cmd_execution(&shell) < 0)
+			perror("minishell");
 		free(line);
 		ft_lstclear(&shell.cmds, &free_cmd);
 	}
