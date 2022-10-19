@@ -14,17 +14,6 @@
 
 static void	child_signal_handler(int signum);
 
-void	handling_signal(int signo)
-{
-	if (signo == SIGINT)
-	{
-		ft_putchar_fd('\n', STDOUT_FILENO);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
-}
-
 void	execution_signal(t_shell *shell, int mode)
 {
 	if (mode == CHILD)
