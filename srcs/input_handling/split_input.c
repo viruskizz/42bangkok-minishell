@@ -81,8 +81,8 @@ static int	wordlen(char *str)
 
 static int	qlen(char *str)
 {
-	int	i;
-	char c;
+	int		i;
+	char	c;
 
 	c = *str;
 	if (c != '"' && c != '\'')
@@ -91,7 +91,8 @@ static int	qlen(char *str)
 	str++;
 	while (*(++str))
 	{
-		if ((ft_strchr(FIELDS, *str) || is_redirect(str) || is_opt(str)) && *(str - 1) == c)
+		if ((ft_strchr(FIELDS, *str) || is_redirect(str) || is_opt(str))
+			&& *(str - 1) == c)
 			break ;
 		i++;
 	}
