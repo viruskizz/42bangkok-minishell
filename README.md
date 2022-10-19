@@ -120,8 +120,8 @@ This table will show the example every input pattern. You can learn parsing toke
 | `echo x`            | { `echo`, `x` }                      | { `echo`, `x` }                    |
 | `echo $HOME`        | { `echo`, `$HOME` }                  | { `echo`, `/users/araiva` }        |
 | `echo t*`           | { `echo`, `t*` }                     | { `echo`, `test`, `ttt`, `t` }     |
-| `echo x | echo y`   | { `echo`, `x`, `|`, `echo`, `y` }    | { `echo`, `x`, `|`, `echo`, `y` }  |
-| `echo x ||echo y`   | { `echo`, `x`, `|`, `echo`, `y` }    | { `echo`, `x`, `|`, `echo`, `y` }  |
+| `echo x \| echo y`   | { `echo`, `x`, `\|`, `echo`, `y` }    | { `echo`, `x`, `\|`, `echo`, `y` }  |
+| `echo x \|\|echo y`   | { `echo`, `x`, `\|`, `echo`, `y` }    | { `echo`, `x`, `\|`, `echo`, `y` }  |
 | `echo x&& echo y`   | { `echo`, `x`, `&&`, `echo`, `y` }   | { `echo`, `x`, `&&`, `echo`, `y` } |
 | `echo x>>echo y`    | { `echo`, `x`, `>>`, `echo`, `y` }   | { `echo`, `x`, `>>`, `echo`, `y` } |
 
