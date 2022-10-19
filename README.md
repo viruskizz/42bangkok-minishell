@@ -120,34 +120,34 @@ This table will show the example every input pattern. You can learn parsing toke
 | `echo x`            | { `echo`, `x` }                      | { `echo`, `x` }                    |
 | `echo $HOME`        | { `echo`, `$HOME` }                  | { `echo`, `/users/araiva` }        |
 | `echo t*`           | { `echo`, `t*` }                     | { `echo`, `test`, `ttt`, `t` }     |
-| `echo x \| echo y`   | { `echo`, `x`, `\|`, `echo`, `y` }    | { `echo`, `x`, `\|`, `echo`, `y` }  |
-| `echo x \|\|echo y`   | { `echo`, `x`, `\|`, `echo`, `y` }    | { `echo`, `x`, `\|`, `echo`, `y` }  |
+| `echo x \| echo y`  | { `echo`, `x`, `\|`, `echo`, `y` }   | { `echo`, `x`, `\|`, `echo`, `y` } |
+| `echo x \|\|echo y` | { `echo`, `x`, `\|`, `echo`, `y` }   | { `echo`, `x`, `\|`, `echo`, `y` } |
 | `echo x&& echo y`   | { `echo`, `x`, `&&`, `echo`, `y` }   | { `echo`, `x`, `&&`, `echo`, `y` } |
 | `echo x>>echo y`    | { `echo`, `x`, `>>`, `echo`, `y` }   | { `echo`, `x`, `>>`, `echo`, `y` } |
 
 ##### _Single Quote token_
 
-| Input               | Splited                              | Parsed                             |
-| :------------------ | :----------------------------------- | :--------------------------------- |
-| `echo 'x'`          | { `echo`, `'x'` }                    | { `echo`, `x` }                    |
-| `echo ' "x" '`      | { `echo`, `' "x" '` }                | { `echo`, ` "x" ` }                |
-| `echo '$HOME'`      | { `echo`, `'$HOME'` }                | { `echo`, `t*` }                   |
-| `echo 't*'`         | { `echo`, `'t*'` }                   | { `echo`, `$HOME` }                |
-| `echo 'x' ||echo y` | { `echo`, `'x'`, `||`, `echo`, `y` } | { `echo`, `x`, `||`, `echo`, `y` } |
-| `echo 'x'&& echo y` | { `echo`, `'x'`, `&&`, `echo`, `y` } | { `echo`, `x`, `&&`, `echo`, `y` } |
-| `echo 'x'>>echo y`  | { `echo`, `'x'`, `>>`, `echo`, `y` } | { `echo`, `x`, `>>`, `echo`, `y` } |
+| Input                 | Splited                                | Parsed                               |
+| :-------------------- | :------------------------------------- | :----------------------------------- |
+| `echo 'x'`            | { `echo`, `'x'` }                      | { `echo`, `x` }                      |
+| `echo ' "x" '`        | { `echo`, `' "x" '` }                  | { `echo`, ` "x" ` }                  |
+| `echo '$HOME'`        | { `echo`, `'$HOME'` }                  | { `echo`, `t*` }                     |
+| `echo 't*'`           | { `echo`, `'t*'` }                     | { `echo`, `$HOME` }                  |
+| `echo 'x' \|\|echo y` | { `echo`, `'x'`, `\|\|`, `echo`, `y` } | { `echo`, `x`, `\|\|`, `echo`, `y` } |
+| `echo 'x'&& echo y`   | { `echo`, `'x'`, `&&`, `echo`, `y` }   | { `echo`, `x`, `&&`, `echo`, `y` }   |
+| `echo 'x'>>echo y`    | { `echo`, `'x'`, `>>`, `echo`, `y` }   | { `echo`, `x`, `>>`, `echo`, `y` }   |
 
 ##### _Double Quote token_
 
-| Input               | Splited                              | Parsed                             |
-| :------------------ | :----------------------------------- | :--------------------------------- |
-| `echo "x"`          | { `echo`, `"x"` }                    | { `echo`, `x` }                    |
-| `echo " 'x' "`      | { `echo`, `" 'x' "` }                | { `echo`, ` 'x' ` }                |
-| `echo "$HOME"`      | { `echo`, `"$HOME"` }                | { `echo`, `/users/araiva` }        |
-| `echo "t*"`         | { `echo`, `"t*"` }                   | { `echo`, `test`, `ttt`, `t` }     |
-| `echo "x" ||echo y` | { `echo`, `"x"`, `||`, `echo`, `y` } | { `echo`, `x`, `||`, `echo`, `y` } |
-| `echo "x"&& echo y` | { `echo`, `"x"`, `&&`, `echo`, `y` } | { `echo`, `x`, `&&`, `echo`, `y` } |
-| `echo "x">>echo y`  | { `echo`, `"x"`, `>>`, `echo`, `y` } | { `echo`, `x`, `>>`, `echo`, `y` } |
+| Input                 | Splited                                | Parsed                               |
+| :-------------------- | :------------------------------------- | :----------------------------------- |
+| `echo "x"`            | { `echo`, `"x"` }                      | { `echo`, `x` }                      |
+| `echo " 'x' "`        | { `echo`, `" 'x' "` }                  | { `echo`, ` 'x' ` }                  |
+| `echo "$HOME"`        | { `echo`, `"$HOME"` }                  | { `echo`, `/users/araiva` }          |
+| `echo "t*"`           | { `echo`, `"t*"` }                     | { `echo`, `test`, `ttt`, `t` }       |
+| `echo "x" \|\|echo y` | { `echo`, `"x"`, `\|\|`, `echo`, `y` } | { `echo`, `x`, `\|\|`, `echo`, `y` } |
+| `echo "x"&& echo y`   | { `echo`, `"x"`, `&&`, `echo`, `y` }   | { `echo`, `x`, `&&`, `echo`, `y` }   |
+| `echo "x">>echo y`    | { `echo`, `"x"`, `>>`, `echo`, `y` }   | { `echo`, `x`, `>>`, `echo`, `y` }   |
 
 ### PART 3: Command Execution
 
