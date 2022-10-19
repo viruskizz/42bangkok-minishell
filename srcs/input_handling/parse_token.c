@@ -24,7 +24,6 @@ t_list	*parse_token(t_list *tokens, t_shell *shell)
 	lst = tokens;
 	while (lst)
 	{
-		// printf("before parse quote: %s\n", (char *)lst->content);
 		if (is_dq_str(lst->content))
 			parse_dq_quote(lst, shell);
 		else if (!is_sq_str(lst->content))
@@ -33,7 +32,6 @@ t_list	*parse_token(t_list *tokens, t_shell *shell)
 			&& !is_sq_str(lst->content)
 			&& ft_strchr(lst->content, '*'))
 			lst = parse_wildcard(&lst);
-		// printf("before remove quote: %s\n", (char *)lst->content);
 		quote_remove(lst);
 		lst = lst->next;
 	}
@@ -114,7 +112,8 @@ static	void	quote_remove(t_list *token)
 		new = ft_calloc(ft_strlen(str), sizeof(char));
 		while (str[i])
 		{
-			if (!ft_strchr(QUOTES, str[i]))
+			// if (!ft_strchr(QUOTES, str[i]))
+			if (str[i] != str[0])
 				new[j++] = str[i];
 			i++;
 		}

@@ -71,22 +71,30 @@ static int	wordlen(char *str)
 		return (is_opt(str));
 	else if (is_redirect(str) > 0)
 		return (is_redirect(str));
-	while (str[i] && !ft_strchr(FIELDS, str[i]))
+	while (str[i]
+		&& !ft_strchr(FIELDS, str[i])
+		&& !is_redirect(&str[i])
+		&& !is_opt(&str[i]))
 		i++;
 	return (i);
 }
+
 static int	qlen(char *str)
 {
 	int	i;
+	char c;
 
-	if (*str != '"' && *str != '\'')
+	c = *str;
+	if (c != '"' && c != '\'')
 		return (0);
 	i = 1;
-	while (str[i + 1])
-		if (ft_strchr(FIELDS, str[i + 1]) && str[i] == str[0])
+	str++;
+	while (*(++str))
+	{
+		if ((ft_strchr(FIELDS, *str) || is_redirect(str) || is_opt(str)) && *(str - 1) == c)
 			break ;
-		else
-			i++;
+		i++;
+	}
 	return (++i);
 }
 

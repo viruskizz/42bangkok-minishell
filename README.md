@@ -59,7 +59,9 @@ The step to implement your `minishell` that can split into 3 path.
 
 ### PART 2: Handling Input
 
-2.1 Simple handing and validation input string with `NULL` `newline` `empty` `space` etc.
+#### 2.1 Simple cleaning
+
+Simple handing and validation input string with `NULL` `newline` `empty` `space` etc.
 **Input:**
 
 ```sh
@@ -67,8 +69,17 @@ The step to implement your `minishell` that can split into 3 path.
 $minishell: echo    testing $HOMEx      "path$HOME"        'single' && ls src* | wc -l
 ```
 
-2.2 Split string input to token by field (Lexical Analyzer).
-No need to split quoting metachar to single token. So important to still keep single and double quoting in string. Because we need to handle them after
+#### 2.2 Split input
+
+Split string input to token by field (Lexical Analyzer).
+The fields are handled.
+
+- Space ` `
+- Tab `\t`
+- Newline `\n`
+- End of string `\0`
+
+No need to split quoting metachar to single token. So important to still keep single and double quoting in string. Because we need to handle them after.
 
 **Result:**
 
@@ -76,14 +87,67 @@ No need to split quoting metachar to single token. So important to still keep si
 echo, testing, $HOMEx, "path$HOME", 'single', &&, ls, src*, |, wc, -l
 ```
 
-2.3 parse single to token that including with special parameter. by ordering
-    3.1 parse environment variable to string. The environment variable will starting with $ and following with alphabet (a-zA-Z0-9)
+#### 2.3 Paring token
+
+To parse single to token that including with special parameter. by ordering
+
+- parse environment variable to string. The environment variable will starting with $ and following with alphabet (a-zA-Z0-9)
 
 **Result:**
 
 ```c
 echo, testing, , "path/home/araiva", 'single', &&, ls, src*, |, wc, -l
 ```
+
+#### 2.4 Grouping command table
+
+After we parsed token, We will group all token to command table that are splited by operator or redirect metacharacter.
+The metacharater are handled
+
+- Pipe `|`
+- Or `||` _(bonus part)_
+- And `&&` _(bonus part)_
+- And `&&` _(bonus part)_
+
+#### Example
+
+This table will show the example every input pattern. You can learn parsing token step by step.
+
+##### _No Quote token_
+
+| Input               | Splited                              | Parsed                             |
+| :------------------ | :----------------------------------- | :--------------------------------- |
+| `echo x`            | { `echo`, `x` }                      | { `echo`, `x` }                    |
+| `echo $HOME`        | { `echo`, `$HOME` }                  | { `echo`, `/users/araiva` }        |
+| `echo t*`           | { `echo`, `t*` }                     | { `echo`, `test`, `ttt`, `t` }     |
+| `echo x | echo y`   | { `echo`, `x`, `|`, `echo`, `y` }    | { `echo`, `x`, `|`, `echo`, `y` }  |
+| `echo x ||echo y`   | { `echo`, `x`, `|`, `echo`, `y` }    | { `echo`, `x`, `|`, `echo`, `y` }  |
+| `echo x&& echo y`   | { `echo`, `x`, `&&`, `echo`, `y` }   | { `echo`, `x`, `&&`, `echo`, `y` } |
+| `echo x>>echo y`    | { `echo`, `x`, `>>`, `echo`, `y` }   | { `echo`, `x`, `>>`, `echo`, `y` } |
+
+##### _Single Quote token_
+
+| Input               | Splited                              | Parsed                             |
+| :------------------ | :----------------------------------- | :--------------------------------- |
+| `echo 'x'`          | { `echo`, `'x'` }                    | { `echo`, `x` }                    |
+| `echo ' "x" '`      | { `echo`, `' "x" '` }                | { `echo`, ` "x" ` }                |
+| `echo '$HOME'`      | { `echo`, `'$HOME'` }                | { `echo`, `t*` }                   |
+| `echo 't*'`         | { `echo`, `'t*'` }                   | { `echo`, `$HOME` }                |
+| `echo 'x' ||echo y` | { `echo`, `'x'`, `||`, `echo`, `y` } | { `echo`, `x`, `||`, `echo`, `y` } |
+| `echo 'x'&& echo y` | { `echo`, `'x'`, `&&`, `echo`, `y` } | { `echo`, `x`, `&&`, `echo`, `y` } |
+| `echo 'x'>>echo y`  | { `echo`, `'x'`, `>>`, `echo`, `y` } | { `echo`, `x`, `>>`, `echo`, `y` } |
+
+##### _Double Quote token_
+
+| Input               | Splited                              | Parsed                             |
+| :------------------ | :----------------------------------- | :--------------------------------- |
+| `echo "x"`          | { `echo`, `"x"` }                    | { `echo`, `x` }                    |
+| `echo " 'x' "`      | { `echo`, `" 'x' "` }                | { `echo`, ` 'x' ` }                |
+| `echo "$HOME"`      | { `echo`, `"$HOME"` }                | { `echo`, `/users/araiva` }        |
+| `echo "t*"`         | { `echo`, `"t*"` }                   | { `echo`, `test`, `ttt`, `t` }     |
+| `echo "x" ||echo y` | { `echo`, `"x"`, `||`, `echo`, `y` } | { `echo`, `x`, `||`, `echo`, `y` } |
+| `echo "x"&& echo y` | { `echo`, `"x"`, `&&`, `echo`, `y` } | { `echo`, `x`, `&&`, `echo`, `y` } |
+| `echo "x">>echo y`  | { `echo`, `"x"`, `>>`, `echo`, `y` } | { `echo`, `x`, `>>`, `echo`, `y` } |
 
 ### PART 3: Command Execution
 
