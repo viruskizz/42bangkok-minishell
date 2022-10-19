@@ -51,7 +51,7 @@ int	execution_path_command(t_shell *shell, char **command, int index)
 		path = ft_midjoin(env_path[index++], command[0], '/');
 		if (access(path, F_OK | R_OK | X_OK) == 0)
 		{
-			execution_token(shell, path, command);
+			shell->exstat = execution_token(shell, path, command);
 			if (shell->exstat == -1 && free_db_ptr(NULL, env_path, path))
 				return (-1);
 			break ;
@@ -82,6 +82,8 @@ int	execution_token(t_shell *shell, char *path, char **command)
 	else if (pid > 0)
 	{
 		waitpid(pid, &shell->exstat, 0);
+		if (shell->exstat == 256)
+			return (1);
 	}
 	return (0);
 }
