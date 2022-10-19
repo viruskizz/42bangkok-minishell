@@ -59,7 +59,7 @@ static void	child_signal_handler(int signum)
 	if (signum == SIGINT)
 	{
 		printf("\n");
-		exit(1);
+		exit(130);
 	}
 	else if (signum == SIGQUIT)
 	{
