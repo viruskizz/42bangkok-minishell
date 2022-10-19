@@ -76,7 +76,7 @@
 # define DEFUALT	2
 
 # define DELNL "\033[C"
-# define FIELDS	" \t\n"
+# define FIELDS	" \t\n\0"
 # define QUOTES	"'\""
 
 # define IN_FILE ".temporary_for_collecting_infile_u_cannot_see_this_3saatoooo"
