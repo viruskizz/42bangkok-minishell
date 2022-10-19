@@ -47,7 +47,6 @@ static int	add_token(t_list **token, char *line)
 	t_list	*new;
 
 	wlen = wordlen(line);
-	printf("[%d] %s\n", wlen, line);
 	if (wlen < 0)
 		return (-1);
 	word = ft_calloc(sizeof(char), wlen + 1);

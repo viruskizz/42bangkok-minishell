@@ -54,11 +54,11 @@ $(OBJS): $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-# norminette:
-#     @norminette -R CheckForbiddenSourceHeader $(LIBFT_DIR)/*.c
-#     @norminette -R CheckDefine $(LIBFT_DIR)/libft.h
-#     @norminette -R CheckForbiddenSourceHeader $(SRC_DIR)/*
-#     @norminette -R CheckDefine includes/minishell.h includes/color.h
+norminette:
+	@norminette -R CheckForbiddenSourceHeader $(LIBFT_DIR)/*.c
+	@norminette -R CheckDefine $(LIBFT_DIR)/libft.h
+	@norminette -R CheckForbiddenSourceHeader $(SRC_DIR)/*
+	@norminette -R CheckDefine includes/minishell.h includes/color.h
 
 libs:
 	@make -C $(LIBFT_DIR)

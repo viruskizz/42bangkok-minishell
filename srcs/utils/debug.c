@@ -52,32 +52,32 @@ void	print_lst(t_list *lst)
 	printf(" >\n");
 }
 
-void	print_cmd_table(t_list *cmds)
-{
-	t_cmd	*cmd;
+// void	print_cmd_table(t_list *cmds)
+// {
+// 	t_cmd	*cmd;
 
-	printf("<\n");
-	while (cmds)
-	{
-		if (cmds->content)
-		{
-			cmd = (t_cmd *) cmds->content;
-			printf("  {\n");
-			printf("    n: %d\n", arr_str_len(cmd->tokens));
-			printf("    tokens: ");
-			print_arr(cmd->tokens);
-			printf("    fgt: ");
-			print_arr(cmd->fg);
-			printf("    fgtgt: ");
-			print_arr(cmd->fgg);
-			printf("    fls: ");
-			print_arr(cmd->fls);
-			printf("    flsls: ");
-			print_arr(cmd->flsls);
-			printf("    opt[%d]: %s\n", cmd->opt, str_opt(cmd->opt));
-			printf("  },\n");
-		}
-		cmds = cmds->next;
-	}
-	printf(">\n");
-}
+// 	printf("<\n");
+// 	while (cmds)
+// 	{
+// 		if (cmds->content)
+// 		{
+// 			cmd = (t_cmd *) cmds->content;
+// 			printf("  {\n");
+// 			printf("    n: %d\n", arr_str_len(cmd->tokens));
+// 			printf("    tokens: ");
+// 			print_arr(cmd->tokens);
+// 			printf("    fgt: ");
+// 			print_arr(cmd->fg);
+// 			printf("    fgtgt: ");
+// 			print_arr(cmd->fgg);
+// 			printf("    fls: ");
+// 			print_arr(cmd->fls);
+// 			printf("    flsls: ");
+// 			print_arr(cmd->flsls);
+// 			printf("    opt[%d]: %s\n", cmd->opt, str_opt(cmd->opt));
+// 			printf("  },\n");
+// 		}
+// 		cmds = cmds->next;
+// 	}
+// 	printf(">\n");
+// }
