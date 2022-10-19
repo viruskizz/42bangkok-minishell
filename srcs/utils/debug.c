@@ -56,7 +56,7 @@ void	print_cmd_table(t_list *cmds)
 {
 	t_cmd	*cmd;
 
-	printf("%s<\n%s", GREEN, RESET);
+	printf("<\n");
 	while (cmds)
 	{
 		if (cmds->content)
@@ -79,5 +79,5 @@ void	print_cmd_table(t_list *cmds)
 		}
 		cmds = cmds->next;
 	}
-	printf("%s>\n%s", GREEN, RESET);
+	printf(">\n");
 }

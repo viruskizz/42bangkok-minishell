@@ -19,6 +19,7 @@ t_env	*convert_env_find(t_shell *shell, char *str, int *i)
 	int		len;
 
 	env = shell->env;
+	len = 0;
 	while (ft_isalnum(str[(*i + 1) + len]) == 1 || str[(*i + 1) + len] == '_')
 		len++;
 	env_name = (char *)ft_calloc(sizeof(char), len + 1);

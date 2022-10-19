@@ -25,7 +25,9 @@ int	validate_token(t_list **tokens)
 		s = lst->content;
 		if (lst->next)
 			ns = lst->next->content;
-		if ((is_opt(s) || is_redirect(s)) && !lst->next)
+		if (is_dq_str(s) == -1 || is_sq_str(s) == -1)
+			return (0);
+		else if ((is_opt(s) || is_redirect(s)) && !lst->next)
 			return (0);
 		else if (lst->next
 			&& (is_opt(s) || is_redirect(s))

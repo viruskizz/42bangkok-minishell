@@ -13,6 +13,7 @@
 #include "minishell.h"
 
 static int	wordlen(char *str);
+static int	qlen(char *str);
 static int	add_token(t_list **token, char *line);
 
 t_list	*split_input(char *line)
@@ -46,6 +47,7 @@ static int	add_token(t_list **token, char *line)
 	t_list	*new;
 
 	wlen = wordlen(line);
+	printf("[%d] %s\n", wlen, line);
 	if (wlen < 0)
 		return (-1);
 	word = ft_calloc(sizeof(char), wlen + 1);
@@ -63,13 +65,37 @@ static int	wordlen(char *str)
 	int	i;
 
 	i = 0;
-	if (is_opt(str) > 0)
+	if (*str == '\'' || *str == '"')
+		return (qlen(str));
+	else if (is_opt(str) > 0)
 		return (is_opt(str));
 	else if (is_redirect(str) > 0)
 		return (is_redirect(str));
-	while (str[i] && !ft_strchr(FIELDS, str[i]))
+	while (str[i]
+		&& !ft_strchr(FIELDS, str[i])
+		&& !is_redirect(&str[i])
+		&& !is_opt(&str[i]))
 		i++;
 	return (i);
+}
+
+static int	qlen(char *str)
+{
+	int	i;
+	char c;
+
+	c = *str;
+	if (c != '"' && c != '\'')
+		return (0);
+	i = 1;
+	str++;
+	while (*(++str))
+	{
+		if ((ft_strchr(FIELDS, *str) || is_redirect(str) || is_opt(str)) && *(str - 1) == c)
+			break ;
+		i++;
+	}
+	return (++i);
 }
 
 void	free_token(void *content)

@@ -112,7 +112,8 @@ static	void	quote_remove(t_list *token)
 		new = ft_calloc(ft_strlen(str), sizeof(char));
 		while (str[i])
 		{
-			if (!ft_strchr(QUOTES, str[i]))
+			// if (!ft_strchr(QUOTES, str[i]))
+			if (str[i] != str[0])
 				new[j++] = str[i];
 			i++;
 		}
