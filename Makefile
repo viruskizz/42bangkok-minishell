@@ -17,17 +17,13 @@ LIBS =	-lreadline -L$(LREAD_DIR)/lib  \
 SRC_DIR = srcs
 SRCS = main.c \
 	minishell_init.c \
-	signal_handling.c \
-	minishell_redirect_infile.c \
-	minishell_heredoc_convert.c \
-	minishell_environment.c \
-	minishell_execution.c \
-	minishell_execution_command.c \
-	minishell_commands.c \
-	minishell_export.c \
-	minishell_split.c \
-	minishell_util1.c \
-	minishell_util2.c \
+	execution/exec_cmd_table.c \
+	execution/exec_signal.c \
+	execution/exec_cmd.c \
+	execution/extra_cmd.c \
+	execution/exec_redirect.c \
+	execution/hdoc_convert.c \
+	execution/cmd_export.c \
 	input_handling/split_input.c \
 	input_handling/validate_token.c \
 	input_handling/parse_token.c \
@@ -38,7 +34,11 @@ SRCS = main.c \
 	utils/quoting.c \
 	utils/metachar.c \
 	utils/parameter.c \
+	utils/split_cmd.c \
+	utils/env_utils.c \
 	utils/arr_utils.c \
+	utils/str_utils.c \
+	utils/ptr_utils.c \
 	utils/debug.c
 
 BUILD_DIR = build
@@ -54,6 +54,12 @@ $(OBJS): $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
+norminette:
+	@norminette -R CheckForbiddenSourceHeader $(LIBFT_DIR)/*.c
+	@norminette -R CheckDefine $(LIBFT_DIR)/libft.h
+	@norminette -R CheckForbiddenSourceHeader $(SRC_DIR)/*
+	@norminette -R CheckDefine includes/minishell.h includes/color.h
+
 libs:
 	@make -C $(LIBFT_DIR)
 
@@ -68,8 +74,8 @@ cbuild:
 clean: cbuild
 	make clean -C $(LIBFT_DIR)
 
-fclean: clean
-	make fclean -C $(LIBFT_DIR)
+fclean: cbuild
+	@make fclean -C $(LIBFT_DIR)
 	$(RM) -f $(NAME)
 
-PHONY: all clean fclean re
+PHONY: all clean fclean re restart cbuild libs norminette

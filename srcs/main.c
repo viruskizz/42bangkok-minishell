@@ -12,8 +12,9 @@
 
 #include "minishell.h"
 
-static char		*handling_input(char *input);
-static int		parse_input(char *input, t_shell *shell);
+static char	*handling_input(char *input);
+static int	parse_input(char *input, t_shell *shell);
+static void	minishell_clear(t_shell *shell);
 
 int	main(void)
 {
@@ -51,8 +52,6 @@ static int	parse_input(char *input, t_shell *shell)
 	t_list	*tokens;
 
 	tokens = split_input(input);
-	printf("token: ");
-	print_lst(tokens);
 	if (!validate_token(&tokens))
 	{
 		printf("Error unexpected token\n");
@@ -60,11 +59,7 @@ static int	parse_input(char *input, t_shell *shell)
 		return (-1);
 	}
 	tokens = parse_token(tokens, shell);
-	printf("parse: ");
-	print_lst(tokens);
 	cmds = group_cmd(tokens);
-	printf("cmds: ");
-	print_cmd_table(cmds);
 	shell->cmds = cmds;
 	ft_lstclear(&tokens, &free_token);
 	return (0);
@@ -79,4 +74,11 @@ static char	*handling_input(char *input)
 	if (ft_strlen(line) == 0)
 		return (NULL);
 	return (line);
+}
+
+static void	minishell_clear(t_shell *shell)
+{
+	rl_clear_history();
+	tcsetattr(STDIN_FILENO, TCSAFLUSH, &shell->terminal->shell);
+	free_db_ptr(NULL, NULL, shell->terminal);
 }

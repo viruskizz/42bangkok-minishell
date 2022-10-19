@@ -202,7 +202,6 @@ int		execution_change_directory(t_shell *shell, char **command);
 
 // main function
 void	minishell_init(t_shell *shell);
-void	minishell_clear(t_shell *shell);
 t_list	*split_input(char *line);
 t_list	*parse_token(t_list *tokens, t_shell *shell);
 t_list	*group_cmd(t_list *token);
@@ -233,7 +232,6 @@ void	free_arr(char **arr);
 void	print_arr(char **str);
 void	print_lst(t_list *lst);
 void	print_cmd_table(t_list *cmds);
-
 void	handling_signal(int signo);
 
 #endif

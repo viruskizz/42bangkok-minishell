@@ -35,10 +35,15 @@ void	minishell_init(t_shell *shell)
 	}
 }
 
-void	minishell_clear(t_shell *shell)
+void	handling_signal(int signo)
 {
-	tcsetattr(STDIN_FILENO, TCSAFLUSH, &shell->terminal->shell);
-	free_db_ptr(NULL, NULL, shell->terminal);
+	if (signo == SIGINT)
+	{
+		ft_putchar_fd('\n', STDOUT_FILENO);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
 }
 
 static int	minishell_terminal(t_shell *shell)
