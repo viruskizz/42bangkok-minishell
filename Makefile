@@ -1,6 +1,6 @@
 NAME = minishell
 CC = gcc
-CFLAGS = -Wextra -Wall -Werror
+# CFLAGS = -Wextra -Wall -Werror
 
 LIBFT_DIR = libft
 LREAD_DIR = /opt/homebrew/Cellar/readline/8.1.2

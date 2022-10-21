@@ -15,7 +15,7 @@
 static void		parse_dq_quote(t_list *token, t_shell *shell);
 static void		parse_normal(t_list *lst, t_shell *shell);
 static t_list	*parse_wildcard(t_list **lst);
-static void		quote_remove(t_list *token);
+static int		quote_remove(t_list *token);
 
 t_list	*parse_token(t_list *tokens, t_shell *shell)
 {
@@ -97,26 +97,69 @@ static t_list	*parse_wildcard(t_list **tokens)
 	return (*tokens);
 }
 
-static	void	quote_remove(t_list *token)
+static int	strcpy_quote(char *src, char *dest);
+
+static	int	quote_remove(t_list *token)
 {
-	char	*str;
+	char	*s;
 	char	*new;
 	int		i;
 	int		j;
 
-	str = token->content;
+	s = token->content;
 	i = 0;
 	j = 0;
-	if (is_dq_str(str) || is_sq_str(str))
+	new = ft_calloc(ft_strlen(s), sizeof(char));
+	if (is_dq_str(s) || is_sq_str(s))
 	{
-		new = ft_calloc(ft_strlen(str), sizeof(char));
-		while (str[i])
+		new = ft_calloc(ft_strlen(s), sizeof(char));
+		while (s[i])
 		{
-			if (str[i] != str[0])
-				new[j++] = str[i];
+			if (s[i] != s[0])
+				new[j++] = s[i];
 			i++;
 		}
 		token->content = new;
-		free(str);
+		free(s);
 	}
+	// while (*s)
+	// {
+	// 	if (!ft_strchr(QUOTES, *s))
+	// 		new[i++] = *s++;
+	// 	else if (is_dq_str(s) < -1 || is_sq_str(s) < -1)
+	// 	{
+	// 		free(new);
+	// 		return (0);
+	// 	}
+	// 	else
+	// 	{
+	// 		i += strcpy_quote(s, &new[i]);
+	// 		s += i;
+	// 	}
+	// }
+	// new[i] = 0;
+	// s = token->content;
+	// token->content = new;
+	// free(s);
+	return (1);
+}
+
+static int	strcpy_quote(char *src, char *dest)
+{
+	int		i;
+	int		j;
+
+	i = 1;
+	j = 0;
+	printf("strcpy_quote\n");
+	if (!is_dq_str(src) && !is_sq_str(src))
+		return (0);
+	while (src[i])
+	{
+		if (src[i] != src[0])
+			dest[j++] = src[i];
+		i++;
+	}
+	printf("dest: %s\n", dest);
+	return (i);
 }
