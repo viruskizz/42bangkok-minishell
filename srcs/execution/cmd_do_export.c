@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell_export.c                                 :+:      :+:    :+:   */
+/*   cmd_export.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 04:07:40 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/16 19:26:30 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/14 22:28:29 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,6 @@ int	environment_check_name(char *variable_name, char *cmd, t_shell *shell)
 	int	index;
 
 	index = 0;
-	if (ft_strchr(cmd, '=') == 0)
-		return (-1);
 	if (ft_isalpha(variable_name[0]) == 0 && variable_name[0] != '_')
 	{
 		printf("minishell: export: `%s\': not a valid identifier\n", cmd);

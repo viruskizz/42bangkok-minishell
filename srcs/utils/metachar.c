@@ -32,8 +32,6 @@
 
 int	is_opt(char *s)
 {
-	int	len;
-
 	if (!s)
 		return (0);
 	if (*s != '&' && *s != '|')

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell_commands.c                               :+:      :+:    :+:   */
+/*   extra_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 23:33:02 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/14 23:29:02 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/21 15:11:54 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ int	change_directory(t_shell *shell, char *directory)
 int	execution_change_directory(t_shell *shell, char **command)
 {
 	char	*user;
-	t_env	*envs;
 
 	user = ft_midjoin("~", environment_getenv("USER", shell), '\0');
 	if (ft_lencount(NULL, command, STRS) == 3)
@@ -113,31 +112,10 @@ int	execution_unset_env(t_env **env, char **variable_name, int index)
 	return (0);
 }
 
-int	execution_export_env(t_shell *shell, char **cmds, int index)
+/* helper of environment_upset_env */
+void	environment_delete(t_env *env)
 {
-	char	*var_name;
-	char	*var_value;
-
-	shell->exstat = 0;
-	while (cmds != NULL && cmds[++index] != NULL)
-	{
-		var_name = environment_get_name(cmds[index]);
-		if (var_name == NULL)
-			return (-1);
-		if (environment_check_name(var_name, cmds[index], shell) != 0)
-		{
-			free(var_name);
-			continue ;
-		}
-		var_value = environment_get_value(cmds[index]);
-		if (var_value == NULL)
-		{
-			free(var_name);
-			return (-1);
-		}
-		environment_export_env(shell, var_name, var_value, cmds[index]);
-		free(var_value);
-		free(var_name);
-	}
-	return (0);
+	free(env->name);
+	free(env->value);
+	free(env);
 }

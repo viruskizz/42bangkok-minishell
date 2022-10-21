@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell_redirect_infile.c                        :+:      :+:    :+:   */
+/*   exec_redirect.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 00:09:42 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/13 01:34:24 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/20 03:52:41 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int	heredoc_inputpassing(t_shell *shell, int infile, char *delimiter)
 {
-	int		read_byte;
 	char	*line;
 	char	*input;
 
@@ -33,7 +32,9 @@ int	heredoc_inputpassing(t_shell *shell, int infile, char *delimiter)
 			break ;
 		heredoc_convert_env(shell, line, 0, 0);
 		ft_putstr_fd(line, infile);
+		free(input);
 	}
+	free(input);
 	free(line);
 	return (0);
 }
@@ -41,7 +42,6 @@ int	heredoc_inputpassing(t_shell *shell, int infile, char *delimiter)
 int	redirect_read_heredoc(t_shell *shell, char **files, int infile)
 {
 	char	*delimiter;
-	int		file;
 	int		index;
 
 	index = 0;

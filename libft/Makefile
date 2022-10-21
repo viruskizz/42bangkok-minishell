@@ -34,8 +34,7 @@ SRCS =	ft_isalnum.c \
 		ft_strmapi.c \
 		ft_strtrim.c \
 		ft_striteri.c \
-		my_strcat.c \
-		my_strmatch.c
+		my_strcat.c
 
 BONUS	 =	ft_lstadd_back.c \
 			ft_lstadd_front.c \

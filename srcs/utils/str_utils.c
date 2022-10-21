@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell_util1.c                                  :+:      :+:    :+:   */
+/*   str_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/15 22:48:33 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/13 21:34:25 by sharnvon         ###   ########.fr       */
+/*   Created: 2022/10/20 00:15:36 by araiva            #+#    #+#             */
+/*   Updated: 2022/10/21 01:19:00 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	character_search(char *str, char c, int mode)
 }
 
 // function count len of char* and char** //
-	// (mode) STR: count len of char * | STRS count len of char ** //
+// (mode) STR: count len of char * | STRS count len of char ** //
 int	ft_lencount(char *str, char **strs, int mode)
 {
 	int	count;
@@ -136,7 +136,7 @@ char	*ft_midjoin(char *str1, char *str2, char c)
 		result[index] = str1[index];
 		index++;
 	}
-	if (c != '\0')
+	if (str1 != NULL && c != '\0')
 		result[index++] = c;
 	while (str2[xedni] != '\0')
 		result[index++] = str2[xedni++];

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell_split.c                                  :+:      :+:    :+:   */
+/*   split_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -96,11 +96,7 @@ char	**split_strtranfer(char **result, char *str, char c)
 char	**ft_split_mode(char *str, char c, int mode)
 {
 	char	**result;
-	int		index;
-	int		xedni;
 
-	index = 0;
-	xedni = 0;
 	result = (char **)ft_calloc(sizeof(char *), split_count(str, c, WORD) + 1);
 	if (result == NULL)
 		return (0);
