@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static int	count_quote(char *str);
+static int	is_valid_quote(char *str);
 
 int	validate_token(t_list **tokens)
 {
@@ -27,7 +27,7 @@ int	validate_token(t_list **tokens)
 		s = lst->content;
 		if (lst->next)
 			ns = lst->next->content;
-		if (is_dq_str(s) == -1 || is_sq_str(s) == -1)
+		if (!is_valid_quote(s))
 			return (0);
 		else if ((is_opt(s) || is_redirect(s)) && !lst->next)
 			return (0);
@@ -40,7 +40,27 @@ int	validate_token(t_list **tokens)
 	return (1);
 }
 
-static int	count_quote(char *str)
+static int	is_valid_quote(char *str)
 {
-	
+	char	find;
+
+	find = 0;
+	while (*str)
+	{
+		if (*str == '"' || *str == '\'')
+		{
+			find = *str++;
+			while (*str)
+			{
+				if (*str == find)
+				{
+					find = 0;
+					break ;
+				}
+				str++;
+			}
+		}
+		str++;
+	}
+	return (find == 0);
 }

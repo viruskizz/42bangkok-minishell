@@ -50,7 +50,7 @@ OBJS = $(SRCS:%.c=$(BUILD_DIR)/%.o)
 
 
 $(NAME): libs $(OBJS)
-	@$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $(NAME)
 
 $(OBJS): $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(@D)

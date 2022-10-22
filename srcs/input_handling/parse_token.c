@@ -12,82 +12,82 @@
 
 #include "minishell.h"
 
-static void		parse_dq_quote(t_list *token, t_shell *shell);
-static void		parse_normal(t_list *lst, t_shell *shell);
+static char		*parser(char *str, t_shell *shell);
+static int		parse_dq_quote(char *str, char **new, t_shell *shell);
+static int		parse_normal(char *str, char **new, t_shell *shell);
 static t_list	*parse_wildcard(t_list **lst);
-static int		quote_remove(t_list *token);
 
 t_list	*parse_token(t_list *tokens, t_shell *shell)
 {
 	t_list	*lst;
-	int		wlen;
-	char	*str;
+	char	*new;
 
 	lst = tokens;
 	while (lst)
 	{
-		str = (char *) lst->content;
-		while (*str)
-		{
-			wlen = wordlen(str);
-			printf("wlen: %d: %s\n", wlen, str);
-			str++;
-		}
-		// if (is_dq_str(lst->content))
-		// 	parse_dq_quote(lst, shell);
-		// else if (!is_sq_str(lst->content))
-		// 	parse_normal(lst, shell);
-		// if (!is_dq_str(lst->content)
-		// 	&& !is_sq_str(lst->content)
-		// 	&& ft_strchr(lst->content, '*'))
-		// 	lst = parse_wildcard(&lst);
-		// quote_remove(lst);
+		new = parser(lst->content, shell);
+		free(lst->content);
+		lst->content = new;
+		if (ft_strchr(lst->content, '*'))
+			lst = parse_wildcard(&lst);
 		lst = lst->next;
 	}
 	return (tokens);
 }
 
-static void	parse_dq_quote(t_list *lst, t_shell *shell)
+static char	*parser(char *str, t_shell *shell)
 {
-	char	*token;
 	char	*new;
 	int		wlen;
 
-	token = lst->content;
-	new = ft_strdup("\"");
-	token++;
-	while (*token)
+	new = ft_calloc(1, sizeof(char));
+	if (*str == '~' && !ft_strchr(str, '"') && !ft_strchr(str, '\''))
+		str += exp_env_hom(str, &new, shell);
+	while (*str)
 	{
-		if (*token == '$')
-			wlen = exp_env(token, &new, shell);
+		if (*str == '\'')
+			wlen = exp_sq_str(str, &new);
+		else if (*str == '\"')
+			wlen = parse_dq_quote(str, &new, shell);
 		else
-			wlen = exp_str(token, &new);
-		token += wlen;
+			wlen = parse_normal(str, &new, shell);
+		str += wlen;
 	}
-	free(lst->content);
-	lst->content = new;
+	return (new);
 }
 
-static void	parse_normal(t_list *lst, t_shell *shell)
+static int	parse_normal(char *str, char **new, t_shell *shell)
 {
-	char	*token;
-	char	*new;
-	int		wlen;
+	int	wlen;
 
-	token = lst->content;
-	new = ft_calloc(1, sizeof(char));
-	while (*token && *token != '"')
+	if (ft_strchr(QUOTES, *str))
+		return (0);
+	if (*str == '$')
+		wlen = exp_env(str, new, shell);
+	else
+		wlen = exp_str(str, new);
+	return (wlen);
+}
+
+static int	parse_dq_quote(char *str, char **new, t_shell *shell)
+{
+	int	wlen;
+	int	len;
+
+	wlen = 1;
+	if (*str != '"')
+		return (0);
+	str++;
+	while (*str && *str != '"')
 	{
-		if (*token == '~')
-			wlen = exp_env_hom(token, &new, shell);
-		else if (*token == '$')
-			wlen = exp_env(token, &new, shell);
+		if (*str == '$')
+			len = exp_env(str, new, shell);
 		else
-			wlen = exp_str(token, &new);
-		token += wlen;
+			len = exp_dq_str(str, new);
+		str += len;
+		wlen += len;
 	}
-	free(lst->content);
-	lst->content = new;
+	return (wlen + 1);
 }
 
 static t_list	*parse_wildcard(t_list **tokens)
@@ -104,71 +104,4 @@ static t_list	*parse_wildcard(t_list **tokens)
 		ft_lstadd_back(tokens, next);
 	}
 	return (*tokens);
-}
-
-static int	strcpy_quote(char *src, char *dest);
-
-static	int	quote_remove(t_list *token)
-{
-	char	*s;
-	char	*new;
-	int		i;
-	int		j;
-
-	s = token->content;
-	i = 0;
-	j = 0;
-	new = ft_calloc(ft_strlen(s), sizeof(char));
-	if (is_dq_str(s) || is_sq_str(s))
-	{
-		new = ft_calloc(ft_strlen(s), sizeof(char));
-		while (s[i])
-		{
-			if (s[i] != s[0])
-				new[j++] = s[i];
-			i++;
-		}
-		token->content = new;
-		free(s);
-	}
-	// while (*s)
-	// {
-	// 	if (!ft_strchr(QUOTES, *s))
-	// 		new[i++] = *s++;
-	// 	else if (is_dq_str(s) < -1 || is_sq_str(s) < -1)
-	// 	{
-	// 		free(new);
-	// 		return (0);
-	// 	}
-	// 	else
-	// 	{
-	// 		i += strcpy_quote(s, &new[i]);
-	// 		s += i;
-	// 	}
-	// }
-	// new[i] = 0;
-	// s = token->content;
-	// token->content = new;
-	// free(s);
-	return (1);
-}
-
-static int	strcpy_quote(char *src, char *dest)
-{
-	int		i;
-	int		j;
-
-	i = 1;
-	j = 0;
-	printf("strcpy_quote\n");
-	if (!is_dq_str(src) && !is_sq_str(src))
-		return (0);
-	while (src[i])
-	{
-		if (src[i] != src[0])
-			dest[j++] = src[i];
-		i++;
-	}
-	printf("dest: %s\n", dest);
-	return (i);
 }
