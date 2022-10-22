@@ -29,7 +29,6 @@ t_list	*wild_paths(t_list *tokens)
 		get_paths("/", srch, &paths);
 	else
 		get_paths(".", srch, &paths);
-	print_lst(paths);
 	return (paths);
 }
 
@@ -50,7 +49,7 @@ static void	*get_paths(char *dirname, char *srch, t_list **paths)
 		is_mathch = is_match_path(str, srch);
 		if (is_mathch > 0)
 			get_paths(str, srch + is_mathch + 1, paths);
-		else if (is_mathch == 0)
+		else if (is_mathch == 0 && *str != '.')
 			ft_lstadd_back(paths, ft_lstnew(ft_strdup(str)));
 		entry = readdir(dir);
 	}

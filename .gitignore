@@ -4,6 +4,9 @@
 *.o
 *.txt
 
+*test*
+!test.sh
+
 minishell
 build
 libft/libft.a

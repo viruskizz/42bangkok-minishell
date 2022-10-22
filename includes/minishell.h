@@ -212,8 +212,11 @@ void	free_token(void *content);
 // utility
 int		exp_env(char *token, char **str, t_shell *shell);
 int		exp_str(char *token, char **str);
+int		exp_sq_str(char *token, char **str);
+int		exp_dq_str(char *token, char **str);
 int		exp_env_hom(char *token, char **str, t_shell *shell);
 t_list	*wild_paths(t_list *tokens);
+int		wordlen(char *str);
 
 int		is_opt(char *str);
 int		parse_opt(char *opt);
