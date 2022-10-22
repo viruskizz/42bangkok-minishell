@@ -20,28 +20,19 @@ static int		quote_remove(t_list *token);
 t_list	*parse_token(t_list *tokens, t_shell *shell)
 {
 	t_list	*lst;
-	int		wlen;
-	char	*str;
 
 	lst = tokens;
 	while (lst)
 	{
-		str = (char *) lst->content;
-		while (*str)
-		{
-			wlen = wordlen(str);
-			printf("wlen: %d: %s\n", wlen, str);
-			str++;
-		}
-		// if (is_dq_str(lst->content))
-		// 	parse_dq_quote(lst, shell);
-		// else if (!is_sq_str(lst->content))
-		// 	parse_normal(lst, shell);
-		// if (!is_dq_str(lst->content)
-		// 	&& !is_sq_str(lst->content)
-		// 	&& ft_strchr(lst->content, '*'))
-		// 	lst = parse_wildcard(&lst);
-		// quote_remove(lst);
+		if (is_dq_str(lst->content))
+			parse_dq_quote(lst, shell);
+		else if (!is_sq_str(lst->content))
+			parse_normal(lst, shell);
+		if (!is_dq_str(lst->content)
+			&& !is_sq_str(lst->content)
+			&& ft_strchr(lst->content, '*'))
+			lst = parse_wildcard(&lst);
+		quote_remove(lst);
 		lst = lst->next;
 	}
 	return (tokens);

@@ -33,9 +33,10 @@ int	main(void)
 		if (!line)
 			continue ;
 		parse_input(line, &shell);
+		free(line);
+		continue ;
 		if (cmd_execution(&shell) < 0)
 			perror("minishell");
-		free(line);
 		ft_lstclear(&shell.cmds, &free_cmd);
 	}
 	if (input == NULL)

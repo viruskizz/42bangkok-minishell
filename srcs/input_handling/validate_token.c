@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+static int	count_quote(char *str);
+
 int	validate_token(t_list **tokens)
 {
 	t_list	*lst;
@@ -36,4 +38,9 @@ int	validate_token(t_list **tokens)
 		lst = lst->next;
 	}
 	return (1);
+}
+
+static int	count_quote(char *str)
+{
+	
 }
