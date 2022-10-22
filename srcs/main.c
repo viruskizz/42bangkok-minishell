@@ -34,7 +34,6 @@ int	main(void)
 			continue ;
 		parse_input(line, &shell);
 		free(line);
-		continue ;
 		if (cmd_execution(&shell) < 0)
 			perror("minishell");
 		ft_lstclear(&shell.cmds, &free_cmd);
@@ -53,8 +52,6 @@ static int	parse_input(char *input, t_shell *shell)
 	t_list	*tokens;
 
 	tokens = split_input(input);
-	printf("split token: ");
-	print_lst(tokens);
 	if (!validate_token(&tokens))
 	{
 		printf("Error unexpected token\n");
@@ -62,8 +59,6 @@ static int	parse_input(char *input, t_shell *shell)
 		return (-1);
 	}
 	tokens = parse_token(tokens, shell);
-	printf("parsed token: ");
-	print_lst(tokens);
 	cmds = group_cmd(tokens);
 	shell->cmds = cmds;
 	ft_lstclear(&tokens, &free_token);
