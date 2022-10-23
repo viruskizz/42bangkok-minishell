@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell_environment.c                            :+:      :+:    :+:   */
+/*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 18:52:47 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/14 23:27:04 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/23 21:45:09 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_env	*environment_new(char *env)
 	{
 		return (0);
 	}
-	result->name = environment_get_name(env);
+	result->name = environment_get_name(NULL, env);
 	result->value = environment_get_value(env);
 	result->next = NULL;
 	return (result);

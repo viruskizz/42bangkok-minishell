@@ -12,31 +12,48 @@
 
 #include "minishell.h"
 
-static int	word_len(char *s);
-
 int	exp_str(char *token, char **str)
 {
 	int		wlen;
 	char	*s;
 
-	wlen = word_len(token);
+	wlen = 0;
+	while (!ft_strchr("$'\"\0", token[wlen]))
+		wlen++;
 	s = ft_calloc(wlen + 1, sizeof(char));
 	ft_strlcpy(s, token, wlen + 1);
 	*str = my_strcat(*str, s);
 	return (wlen);
 }
 
-/*
- * word length is including space char
- */
-static int	word_len(char *s)
+int	exp_sq_str(char *token, char **str)
 {
-	int		i;
-	char	*pattern;
+	int		wlen;
+	char	*s;
 
-	i = 0;
-	pattern = "$\0";
-	while (!ft_strchr(pattern, s[++i]))
-		;
-	return (i);
+	if (*token != '\'')
+		return (0);
+	wlen = 1;
+	while (token[wlen] != '\'')
+		wlen++;
+	s = ft_calloc(wlen, sizeof(char));
+	ft_strlcpy(s, token + 1, wlen);
+	*str = my_strcat(*str, s);
+	return (wlen + 1);
+}
+
+int	exp_dq_str(char *token, char **str)
+{
+	int		wlen;
+	char	*s;
+
+	wlen = 0;
+	if (*token == '"')
+		token++;
+	while (!ft_strchr("$\"\0", token[wlen]))
+		wlen++;
+	s = ft_calloc(wlen, sizeof(char));
+	ft_strlcpy(s, token, wlen + 1);
+	*str = my_strcat(*str, s);
+	return (wlen);
 }

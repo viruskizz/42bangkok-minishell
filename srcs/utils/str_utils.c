@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   str_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araiva <tsomsa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 00:15:36 by araiva            #+#    #+#             */
-/*   Updated: 2022/10/21 01:19:00 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/20 00:15:37 by araiva           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ char	*ft_midjoin(char *str1, char *str2, char c)
 		result[index] = str1[index];
 		index++;
 	}
-	if (str1 != NULL && c != '\0')
+	if (c != '\0')
 		result[index++] = c;
 	while (str2[xedni] != '\0')
 		result[index++] = str2[xedni++];

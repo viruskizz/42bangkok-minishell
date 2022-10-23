@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 18:52:24 by araiva            #+#    #+#             */
-/*   Updated: 2022/10/20 03:52:43 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/23 01:50:30 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,20 +26,19 @@ int	main(void)
 	while (true)
 	{
 		input = readline(PROMPT_MSG);
-		if (!input || ft_strcmp(input, "exit") == 0)
+		if (!input)
 			break ;
 		add_history(input);
 		line = handling_input(input);
 		if (!line)
 			continue ;
 		parse_input(line, &shell);
+		free(line);
 		if (cmd_execution(&shell) < 0)
 			perror("minishell");
-		free(line);
 		ft_lstclear(&shell.cmds, &free_cmd);
 	}
-	if (input == NULL)
-		printf("exit\n");
+	printf("exit\n");
 	minishell_clear(&shell);
 	environment_clear(&shell.env);
 	exit(EXIT_SUCCESS);
@@ -68,16 +67,7 @@ static int	parse_input(char *input, t_shell *shell)
 static char	*handling_input(char *input)
 {
 	char	*line;
-	int		index;
 
-	index = 0;
-	while ((input[index] >= 9 && input[index] <= 13) || input[index] == ' ')
-		index++;
-	if (input[index] == '\0')
-	{
-		free(input);
-		return (NULL);
-	}
 	line = ft_strtrim(input, " \t");
 	free(input);
 	if (ft_strlen(line) == 0)

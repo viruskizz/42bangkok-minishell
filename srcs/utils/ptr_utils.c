@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 00:16:33 by araiva            #+#    #+#             */
-/*   Updated: 2022/10/21 15:11:28 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/23 22:53:43 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,44 +40,38 @@ int	free_db_ptr(char **str1, char **str2, void *str3)
 	return (1);
 }
 
-char	*strtranfer_no_quote(char *str1, char *str2)
+/* helper of environment_upset_env */
+void	environment_delete(t_env *env)
 {
-	int	index;
-	int	xedni;
-	int	len;
-
-	len = 0;
-	index = 0;
-	xedni = 0;
-	while (str2[index] != '\0')
-	{
-		if (str2[index] != '\'' && str2[index] != '\"')
-			len++;
-		index++;
-	}
-	str1 = ft_calloc(sizeof(char), len + 1);
-	if (str1 == NULL)
-		return (0);
-	index = 0;
-	while (str2[index] != '\0')
-	{
-		if (str2[index] != '\'' && str2[index] != '\"')
-			str1[xedni++] = str2[index];
-		index++;
-	}
-	str1[xedni] = '\0';
-	return (str1);
+	free(env->name);
+	free(env->value);
+	free(env);
 }
 
-char	*midjoin_free(char *str1, char *str2, char c)
+/* print error */
+void	print_error(char *str, char *cmd, int mode)
 {
-	char	*result;
-
-	result = ft_midjoin(str1, str2, c);
-	if (result == NULL)
-		return (0);
-	if (str1 != NULL)
-		free(str1);
-	str1 = NULL;
-	return (result);
+	if (mode == ENV_NAME)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd, 2);
+		ft_putstr_fd(": `", 2);
+		ft_putstr_fd(str, 2);
+		ft_putstr_fd("\': not a valid identifier\n", 2);
+	}
+	else if (mode == CD_NODIR)
+	{
+		ft_putstr_fd("minishell: cd: no such file or directory: ", 2);
+		ft_putendl_fd(str, 2);
+	}
+	else if (mode == CD_PWD)
+	{
+		ft_putstr_fd("minishell: cd: string not in pwd: ", 2);
+		ft_putendl_fd(str, 2);
+	}
+	else if (mode == NO_CMD)
+	{
+		ft_putstr_fd("minishell: command not found: ", 2);
+		ft_putendl_fd (str, 2);
+	}
 }

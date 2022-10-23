@@ -1,99 +1,152 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmd_export1.c                                      :+:      :+:    :+:   */
+/*   cmd_export.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/21 15:06:18 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/21 15:10:30 by sharnvon         ###   ########.fr       */
+/*   Created: 2022/09/28 04:07:40 by sharnvon          #+#    #+#             */
+/*   Updated: 2022/10/23 21:47:51 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	do_export_env(t_shell *shell, char *cmd);
-static char	*parsing_export_cmd(char **cmds, int *index, int quote, int qquote);
-
-int	execution_export_env(t_shell *shell, char **cmds, int index)
+/* function find environment variable name malloc and return */
+/* mode:ENVI:0 use in make env | mode:COMM:1 use in export */
+char	*environment_get_name(t_shell *shell, char *command)
 {
-	char	*cmd;
-	int		xedni;
+	char	*variable_name;
+	int		index;
 
-	while (cmds != NULL && cmds[++index] != NULL)
+	index = 0;
+	if ( shell != NULL && ft_isalpha(command[0]) == 0 && command[0] != '_')
 	{
-		xedni = 0;
-		while (1 > 0)
+		print_error(command, ENV_NAME);
+		shell->exstat = 1;
+		return (0);
+	}
+	while (command[index] != '\0' && command[index] != '=')
+		index++;
+	if (command[index] == '\0')
+		return (0);
+	variable_name = (char *)ft_calloc(sizeof(char), (index + 1));
+	if (variable_name == NULL)
+		return (0);
+	index = 0;
+	while (command[index] != '\0' && command[index] != '=')
+	{
+		variable_name[index] = command[index];
+		index++;
+	}
+	variable_name[index] = '\0';
+	return (variable_name);
+}
+
+/* -1 is false | 0 is true */
+int	environment_check_name(char *variable_name, char *cmd, t_shell *shell)
+{
+	int	index;
+
+	index = 0;
+	if (ft_isalpha(variable_name[0]) == 0 && variable_name[0] != '_')
+	{
+		print_error(cmd, ENV_NAME);
+		// printf("minishell: export: `%s\': not a valid identifier\n", cmd);
+		shell->exstat = 1;
+		return (-1);
+	}
+	while (variable_name[index] != '\0')
+	{
+		if (ft_isalnum(variable_name[index++]) == 0)
 		{
-			if (cmds[index][xedni] == '\0')
-			{
-				cmd = ft_strdup(cmds[index]);
-				break ;
-			}
-			if (cmds[index][xedni] == '\'' || cmds[index][xedni] == '\"')
-			{
-				cmd = parsing_export_cmd(cmds, &index, 0, 0);
-				break ;
-			}
-			xedni++;
-		}
-		if (do_export_env(shell, cmd) == -1)
+			print_error(cmd, ENV_NAME);
+			// printf("minishell: export: `%s\': not a valid identifier\n", cmd);
+			shell->exstat = 1;
 			return (-1);
-		free_db_ptr(NULL, NULL, cmd);
+		}
 	}
 	return (0);
 }
 
-static char	*parsing_export_cmd(char **cmds, int *index, int quote, int qquote)
+/* function check start point and  pair of qoutes in environment value */
+/* mode:START return the start point | mode:QUOTES return amount of quote*/
+/* return 0 if no environment value && return -1 if quote or qquote % 2 != 0 */
+int	environment_check_value(char *command, int quote, int qquote, int mode)
 {
-	int		xedni;
-	char	*cmd;
+	int		index;
+	int		start;
 
-	cmd = NULL;
-	while (cmds[(*index)] != NULL)
+	index = 0;
+	while (command[index] != '=' && command[index] != '\0')
+		index++;
+	start = index + 1;
+	index = 0;
+	while (command[start + index] != '\0')
 	{
-		xedni = -1;
-		while (cmds[(*index)][++xedni] != '\0')
-		{
-			if (cmds[(*index)][xedni] == '\'')
-				quote++;
-			else if (cmds[(*index)][xedni] == '\"')
-				qquote++;
-		}
-		if (quote % 2 == 0 && qquote % 2 == 0)
-		{
-			if (cmd == NULL)
-				return (strtranfer_no_quote(cmd, cmds[(*index)]));
-			else
-				return (midjoin_free(cmd, cmds[(*index)], ' '));
-		}
-		else
-			cmd = midjoin_free(cmd, cmds[(*index)++], ' ');
+		if (command[start + index] == '\"')
+			qquote++;
+		if (command[start + index++] == '\'')
+			quote++;
 	}
-	return (cmd);
+	if (quote % 2 != 0 || qquote % 2 != 0)
+	{
+		ft_putstr_fd("minishell: invalid quotes\n", 2);
+		return (-1);
+	}
+	if (mode == START)
+		return (start);
+	if (mode == INDEX)
+		return (index);
+	return (qquote + quote);
 }
 
-static int	do_export_env(t_shell *shell, char *cmd)
+/* if environment_value doesn't existe return "" */
+/* if environment_value doesn't got pair of quote return NULL */
+char	*environment_get_value(char *command)
 {
-	char	*var_name;
-	char	*var_value;
+	char	*variable_value;
+	int		index;
+	int		start;
+	int		quote;
+	int		xedni;
 
-	var_name = environment_get_name(cmd);
-	if (var_name == NULL)
-		return (-1);
-	if (environment_check_name(var_name, cmd, shell) != 0)
+	start = environment_check_value(command, 0, 0, START);
+	if (start == -1)
+		return (0);
+	quote = environment_check_value(command, 0, 0, QUOTE);
+	index = environment_check_value(command, 0, 0, INDEX);
+	variable_value = (char *)ft_calloc(sizeof(char), ((index - quote) + 1));
+	if (variable_value == NULL)
+		return (0);
+	index = 0;
+	xedni = 0;
+	while (command[start + index] != '\0')
 	{
-		free(var_name);
-		return (1);
+		if (command[start + index] != '\"')
+			variable_value[xedni++] = command[start + index];
+		index++;
 	}
-	var_value = environment_get_value(cmd);
-	if (var_value == NULL)
+	variable_value[xedni] = '\0';
+	return (variable_value);
+}
+
+int	environment_export_env(t_shell *shell, char *name, char *value, char *cmd)
+{
+	t_env	*count;
+
+	count = shell->env;
+	while (count != NULL)
 	{
-		free(var_name);
-		return (1);
+		if (string_compare(count->name, name, NO_LEN) == 1)
+		{
+			free(count->value);
+			count->value = ft_strdup(value);
+			return (0);
+		}
+		count = count->next;
 	}
-	environment_export_env(shell, var_name, var_value, cmd);
-	free(var_value);
-	free(var_name);
+	if (count == NULL)
+		environment_add_back(&shell->env, environment_new(cmd));
 	return (0);
 }

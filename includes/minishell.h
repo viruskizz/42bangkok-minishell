@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 22:58:34 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/21 00:10:43 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/23 23:04:25 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,12 @@
 # define CHILD		0
 # define PARENT_I	1
 # define PARENT_O	2
+
+/* mode in printf error */
+# define NO_CMD		0
+# define ENV_NAME	1
+# define CD_NODIR	3
+# define CD_PWD		4
 
 # define INIT		1
 # define DEFUALT	2
@@ -159,10 +165,9 @@ char	*string_tranfer(char *str1, char *str2, int len);
 int		string_compare(char *str1, char *str2, int len);
 int		character_search(char *str, char c, int mode);
 int		ft_lencount(char *str, char **strs, int mode);
-char	*strtranfer_no_quote(char *str1, char *str2);
+
 char	**ft_split_mode(char *str, char c, int mode);
 char	*ft_midjoin(char *str1, char *str2, char c);
-char	*midjoin_free(char *str1, char *str2, char c);
 char	**doublepointer_join(char **strs, char *str);
 int		redirect_dup_start(t_shell *shell, t_execute *exe);
 void	execution_signal(t_shell *shell, int mode);
@@ -170,12 +175,13 @@ void	execution_signal(t_shell *shell, int mode);
 int		cmd_execution(t_shell *shell);
 int		execution_command(t_shell *shell, t_execute *exe, t_cmd *cmds);
 int		execution_token(t_shell *shell, char *path, char **command);
+int		execution_exit(t_shell *shell, char **cmds);
 int		minishell_redirect(t_shell *shell, int *fd, int index);
 int		execution_path_command(t_shell *shell, char **command, int index);
 
 //	execution_export_env //
 int		execution_export_env(t_shell *shell, char **command, int index);
-char	*environment_get_name(char *command);
+char	*environment_get_name(t_shell *shell, char *command);
 char	*environment_get_value(char *command);
 int		environment_check_value(char *command, int quote, int qquote, int mode);
 int		environment_check_name(char *variable_name, char *cmd, t_shell *shell);
@@ -183,7 +189,7 @@ char	*environment_getenv(char *variable_name, t_shell *shell);
 
 int		environment_export_env(
 			t_shell *shell, char *name, char *value, char *cmd);
-int		execution_unset_env(t_env **env, char **variable_name, int index);
+int		execution_unset_env(t_shell *shell, t_env **env, char **variable_name, int index);
 void	environment_delete(t_env *env);
 void	environment_delete(t_env *env);
 
@@ -196,7 +202,7 @@ int		execution_print_env(t_shell *shell);
 // redirect
 int		redirect_infile(t_shell *shell, t_cmd *cmds);
 char	*heredoc_convert_env(t_shell *shell, char *buff, int index, int xedni);
-
+void	print_error(char *str, char *cmd, int mode);
 int		free_db_ptr(char **str1, char **str2, void *str3);
 void	signal_defualt(void);
 int		execution_change_directory(t_shell *shell, char **command);
@@ -213,8 +219,11 @@ void	free_token(void *content);
 // utility
 int		exp_env(char *token, char **str, t_shell *shell);
 int		exp_str(char *token, char **str);
+int		exp_sq_str(char *token, char **str);
+int		exp_dq_str(char *token, char **str);
 int		exp_env_hom(char *token, char **str, t_shell *shell);
 t_list	*wild_paths(t_list *tokens);
+int		wordlen(char *str);
 
 int		is_opt(char *str);
 int		parse_opt(char *opt);

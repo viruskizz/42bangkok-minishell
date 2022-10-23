@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 23:26:59 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/16 15:56:36 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/23 21:23:11 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,10 @@ int	execution_command(t_shell *shell, t_execute *exe, t_cmd *cmds)
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &shell->terminal->shell);
 	sigaction(SIGQUIT, &shell->sigquit, NULL);
 	redirect_dup_start(shell, exe);
-	if (string_compare(cmds->tokens[0], "cd", NO_LEN) == 1)
-		shell->exstat = 0;
-	else if (string_compare(cmds->tokens[0], "export", NO_LEN) == 1)
-		shell->exstat = 0;
-	else if (string_compare(cmds->tokens[0], "unset", NO_LEN) == 1)
+	if (string_compare(cmds->tokens[0], "cd", NO_LEN) == 1
+		|| string_compare(cmds->tokens[0], "export", NO_LEN) == 1
+		|| string_compare(cmds->tokens[0], "unset", NO_LEN) == 1
+		|| string_compare(cmds->tokens[0], "exit", NO_LEN) == 1)
 		shell->exstat = 0;
 	else if (string_compare(cmds->tokens[0], "env", NO_LEN) == 1)
 		shell->exstat = execution_print_env(shell);
@@ -58,7 +57,9 @@ int	execution_path_command(t_shell *shell, char **command, int index)
 		}
 		else if (env_path[index + 1] == NULL)
 		{
-			printf("minishell: command not found: %s\n", command[0]);
+			print_error(command[0], NO_CMD);
+			// ft_putstr_fd("minishell: command not found: ", 2);
+			// ft_putendl_fd (command[0], 2);
 			shell->exstat = 127;
 			break ;
 		}
@@ -72,6 +73,12 @@ int	execution_token(t_shell *shell, char *path, char **command)
 {
 	pid_t	pid;
 
+	if(string_compare(command[0], "pwd", NO_LEN)
+		&& ft_lencount(NULL, command, STRS) != 1)
+	{
+		ft_putstr_fd("minishell: pwd: too many arguements\n", 2);
+		return (1);
+	}
 	pid = fork();
 	if (pid < 0)
 		return (-1);
