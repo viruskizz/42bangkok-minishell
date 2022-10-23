@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 23:33:02 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/23 23:03:27 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/23 23:51:35 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,7 @@ int	change_directory(t_shell *shell, char *directory)
 	command = ft_midjoin("OLDPWD", path_env, '=');
 	if (chdir(directory) != 0)
 	{
-		print_error(directory, CD_NODIR);
-		// printf("minishell: cd: no such file or directory: %s\n", directory);
+		print_error(directory, NULL, CD_NODIR);
 		shell->exstat = 1;
 	}
 	environment_export_env(shell, "OLDPWD", path_env, command);
@@ -48,8 +47,7 @@ int	execution_change_directory(t_shell *shell, char **command)
 	user = ft_midjoin("~", environment_getenv("USER", shell), '\0');
 	if (ft_lencount(NULL, command, STRS) == 3)
 	{
-		print_error(command[1], CD_PWD);
-		//printf("minishell: cd: string not in pwd: %s\n", command[1]);
+		print_error(command[1], NULL, CD_PWD);
 		shell->exstat = 1;
 	}
 	else if (ft_lencount(NULL, command, STRS) == 1
@@ -84,47 +82,6 @@ int	execution_print_env(t_shell *shell)
 	return (0);
 }
 
-int	unset_validation(t_shell *shell, char *variable_name)
-{
-	if (ft_isalpha(variable_name[0]) == 0 && variable_name[0] != '_')
-	{
-			print_error(variable_name, "unset", ENV_NAME);
-			shell->exstat = 1;
-			return (-1);
-	}
-	return (0);
-}
-
-/* unset ther environment in t_env can do more than one time*/
-void	execution_unset_env(t_shell *shell, t_env **env, char **name, int index)
-{
-	t_env	*current;
-	t_env	*check;
-
-	while (name[++index] != NULL)
-	{
-		current = *env;
-		check = *env;
-		if (unset_valiable(shell, name) == -1)
-			continue ;
-		if (string_compare((*env)->name, name[index], NO_LEN) == 1)
-		{
-			*env = (*env)->next;
-			environment_delete(current);
-		}
-		while (current != NULL)
-		{
-			check = check->next;
-			if (check && string_compare(check->name, name[index], NO_LEN) == 1)
-			{
-				current->next = check->next;
-				environment_delete(check);
-			}
-			current = current->next;
-		}
-	}
-}
-
 int	execution_export_env(t_shell *shell, char **cmds, int index)
 {
 	char	*var_name;
@@ -135,7 +92,7 @@ int	execution_export_env(t_shell *shell, char **cmds, int index)
 	{
 		var_name = environment_get_name(shell, cmds[index]);
 		if (var_name == NULL)
-			return (-1);
+			continue ;
 		if (environment_check_name(var_name, cmds[index], shell) != 0)
 		{
 			free(var_name);

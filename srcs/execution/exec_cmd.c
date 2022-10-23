@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 23:26:59 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/23 21:23:11 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/24 00:04:18 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	execution_command(t_shell *shell, t_execute *exe, t_cmd *cmds)
 	if (exe->index == 0 && exe->xedni == 0)
 	{
 		if (redirect_infile(shell, exe->cmds) < 0)
-			return (-1);
+			exit(1);
 	}
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &shell->terminal->shell);
 	sigaction(SIGQUIT, &shell->sigquit, NULL);
@@ -57,9 +57,7 @@ int	execution_path_command(t_shell *shell, char **command, int index)
 		}
 		else if (env_path[index + 1] == NULL)
 		{
-			print_error(command[0], NO_CMD);
-			// ft_putstr_fd("minishell: command not found: ", 2);
-			// ft_putendl_fd (command[0], 2);
+			print_error(command[0], NULL, NO_CMD);
 			shell->exstat = 127;
 			break ;
 		}
@@ -73,7 +71,7 @@ int	execution_token(t_shell *shell, char *path, char **command)
 {
 	pid_t	pid;
 
-	if(string_compare(command[0], "pwd", NO_LEN)
+	if (string_compare(command[0], "pwd", NO_LEN)
 		&& ft_lencount(NULL, command, STRS) != 1)
 	{
 		ft_putstr_fd("minishell: pwd: too many arguements\n", 2);

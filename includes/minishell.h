@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 22:58:34 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/23 23:04:25 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/23 23:56:33 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,9 +189,8 @@ char	*environment_getenv(char *variable_name, t_shell *shell);
 
 int		environment_export_env(
 			t_shell *shell, char *name, char *value, char *cmd);
-int		execution_unset_env(t_shell *shell, t_env **env, char **variable_name, int index);
-void	environment_delete(t_env *env);
-void	environment_delete(t_env *env);
+void	execution_unset_env(
+			t_shell *shell, t_env **env, char **variable_name, int index);
 
 int		minishell_make_environment(t_shell *shell);
 t_env	*environment_new(char *env);

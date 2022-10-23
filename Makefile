@@ -24,6 +24,7 @@ SRCS = main.c \
 	execution/exec_redirect.c \
 	execution/hdoc_convert.c \
 	execution/cmd_export.c \
+	execution/cmd_unset.c \
 	execution/cmd_exit.c \
 	input_handling/split_input.c \
 	input_handling/validate_token.c \

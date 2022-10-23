@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 00:16:33 by araiva            #+#    #+#             */
-/*   Updated: 2022/10/23 22:53:43 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/23 23:50:54 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,6 @@ int	free_db_ptr(char **str1, char **str2, void *str3)
 		str3 = NULL;
 	}
 	return (1);
-}
-
-/* helper of environment_upset_env */
-void	environment_delete(t_env *env)
-{
-	free(env->name);
-	free(env->value);
-	free(env);
 }
 
 /* print error */

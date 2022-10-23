@@ -1,6 +1,12 @@
-*.o
-minishell
-*.txt
+.DS_Store
 .vscode
-libft/libft.a
+
+*.o
+*.txt
+
+*test*
+!test.sh
+
+minishell
 build
+libft/libft.a

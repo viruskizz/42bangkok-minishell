@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 04:07:40 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/23 21:47:51 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/23 23:53:25 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ char	*environment_get_name(t_shell *shell, char *command)
 	int		index;
 
 	index = 0;
-	if ( shell != NULL && ft_isalpha(command[0]) == 0 && command[0] != '_')
+	if (shell != NULL && ft_isalpha(command[0]) == 0 && command[0] != '_')
 	{
-		print_error(command, ENV_NAME);
+		print_error(command, "export", ENV_NAME);
 		shell->exstat = 1;
 		return (0);
 	}
@@ -51,17 +51,15 @@ int	environment_check_name(char *variable_name, char *cmd, t_shell *shell)
 	index = 0;
 	if (ft_isalpha(variable_name[0]) == 0 && variable_name[0] != '_')
 	{
-		print_error(cmd, ENV_NAME);
-		// printf("minishell: export: `%s\': not a valid identifier\n", cmd);
+		print_error(cmd, "export", ENV_NAME);
 		shell->exstat = 1;
 		return (-1);
 	}
-	while (variable_name[index] != '\0')
+	while (variable_name[++index] != '\0')
 	{
 		if (ft_isalnum(variable_name[index++]) == 0)
 		{
-			print_error(cmd, ENV_NAME);
-			// printf("minishell: export: `%s\': not a valid identifier\n", cmd);
+			print_error(cmd, "export", ENV_NAME);
 			shell->exstat = 1;
 			return (-1);
 		}
