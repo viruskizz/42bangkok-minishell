@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 18:52:24 by araiva            #+#    #+#             */
-/*   Updated: 2022/10/23 23:24:51 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/24 01:24:30 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ int	main(void)
 		line = handling_input(input);
 		if (!line)
 			continue ;
-		parse_input(line, &shell);
-		free(line);
+		if (parse_input(line, &shell) == -1)
+			continue ;
 		if (cmd_execution(&shell) < 0)
 			perror("minishell");
 		ft_lstclear(&shell.cmds, &free_cmd);
@@ -51,6 +51,7 @@ static int	parse_input(char *input, t_shell *shell)
 	t_list	*tokens;
 
 	tokens = split_input(input);
+	free(input);
 	if (!validate_token(&tokens))
 	{
 		printf("Error unexpected token\n");
@@ -67,7 +68,16 @@ static int	parse_input(char *input, t_shell *shell)
 static char	*handling_input(char *input)
 {
 	char	*line;
+	int		index;
 
+	index = 0;
+	while ((input[index] >= 9 && input[index] <= 13) || input[index] == ' ')
+		index++;
+	if (input[index] == '\0')
+	{
+		free(input);
+		return (NULL);
+	}
 	line = ft_strtrim(input, " \t");
 	free(input);
 	if (ft_strlen(line) == 0)

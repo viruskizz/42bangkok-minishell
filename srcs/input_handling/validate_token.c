@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate_token.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araiva <tsomsa@student.42.fr>              +#+  +:+       +#+        */
+/*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 16:54:51 by araiva            #+#    #+#             */
-/*   Updated: 2022/09/28 16:54:52 by araiva           ###   ########.fr       */
+/*   Updated: 2022/10/24 01:38:11 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ static int	is_valid_quote(char *str)
 				}
 				str++;
 			}
+			if (*str == '\0')
+				break ;
 		}
 		str++;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exp_str.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araiva <tsomsa@student.42.fr>              +#+  +:+       +#+        */
+/*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 16:56:17 by araiva            #+#    #+#             */
-/*   Updated: 2022/09/28 16:56:18 by araiva           ###   ########.fr       */
+/*   Updated: 2022/10/24 01:46:26 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	exp_dq_str(char *token, char **str)
 		token++;
 	while (!ft_strchr("$\"\0", token[wlen]))
 		wlen++;
-	s = ft_calloc(wlen, sizeof(char));
+	s = ft_calloc(wlen + 1, sizeof(char));
 	ft_strlcpy(s, token, wlen + 1);
 	*str = my_strcat(*str, s);
 	return (wlen);

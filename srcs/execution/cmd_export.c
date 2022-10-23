@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 04:07:40 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/23 23:53:25 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/24 02:08:39 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,13 @@ int	environment_check_name(char *variable_name, char *cmd, t_shell *shell)
 	int	index;
 
 	index = 0;
-	if (ft_isalpha(variable_name[0]) == 0 && variable_name[0] != '_')
+	if (ft_isalpha(variable_name[0]) == 0 && variable_name[index++] != '_')
 	{
 		print_error(cmd, "export", ENV_NAME);
 		shell->exstat = 1;
 		return (-1);
 	}
-	while (variable_name[++index] != '\0')
+	while (variable_name[index] != '\0')
 	{
 		if (ft_isalnum(variable_name[index++]) == 0)
 		{

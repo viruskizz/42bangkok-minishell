@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 23:49:19 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/23 23:56:02 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/24 03:15:42 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static int	unset_validation(t_shell *shell, char *variable_name);
 static void	environment_delete(t_env *env);
+static void	list_forward(t_env **list);
 
 /* unset ther environment in t_env can do more than one time*/
 void	execution_unset_env(t_shell *shell, t_env **env, char **name, int index)
@@ -24,23 +25,23 @@ void	execution_unset_env(t_shell *shell, t_env **env, char **name, int index)
 	while (name[++index] != NULL)
 	{
 		current = *env;
-		check = *env;
 		if (unset_validation(shell, name[index]) == -1)
 			continue ;
 		if (string_compare((*env)->name, name[index], NO_LEN) == 1)
 		{
 			*env = (*env)->next;
 			environment_delete(current);
+			current = *env;
 		}
-		while (current != NULL)
+		while (current->next != NULL)
 		{
-			check = check->next;
+			check = current->next;
 			if (check && string_compare(check->name, name[index], NO_LEN) == 1)
 			{
 				current->next = check->next;
 				environment_delete(check);
 			}
-			current = current->next;
+			list_forward(&current);
 		}
 	}
 }
@@ -62,4 +63,10 @@ static void	environment_delete(t_env *env)
 	free(env->name);
 	free(env->value);
 	free(env);
+}
+
+static void	list_forward(t_env **list)
+{
+	if ((*list)->next != NULL)
+		(*list) = (*list)->next;
 }

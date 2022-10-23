@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 16:53:08 by araiva            #+#    #+#             */
-/*   Updated: 2022/10/24 00:24:04 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/24 04:46:16 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,12 @@ t_list	*parse_token(t_list *tokens, t_shell *shell)
 		tmp = lst->content;
 		lst->content = new;
 		if (is_parse_wild_path(tmp))
+		{
+			printf("->%p\n", lst);
 			lst = parse_wildcard(&lst);
+			printf("->%p\n", lst);
+
+		}
 		free(tmp);
 		lst = lst->next;
 	}
