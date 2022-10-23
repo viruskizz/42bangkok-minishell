@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 16:53:08 by araiva            #+#    #+#             */
-/*   Updated: 2022/10/13 22:52:33 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/24 00:24:04 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ static int	parse_dq_quote(char *str, char **new, t_shell *shell)
 
 static t_list	*parse_wildcard(t_list **tokens)
 {
-	char	tmp;
 	t_list	*paths;
 	t_list	*next;
 
