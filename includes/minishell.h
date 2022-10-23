@@ -215,6 +215,7 @@ int		exp_str(char *token, char **str);
 int		exp_sq_str(char *token, char **str);
 int		exp_dq_str(char *token, char **str);
 int		exp_env_hom(char *token, char **str, t_shell *shell);
+int		is_parse_wild_path(char *str);
 t_list	*wild_paths(t_list *tokens);
 int		wordlen(char *str);
 
