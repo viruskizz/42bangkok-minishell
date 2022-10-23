@@ -31,3 +31,6 @@ echo 10    "20     "'30     '
 echo 10    "20     " '30     '
 echo 10    "20     "     '30     '
 echo "$HOME" '$HOME'
+echo x > redirect1
+cat redirect1
+rm redirect1

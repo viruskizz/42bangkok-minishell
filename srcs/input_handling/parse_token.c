@@ -30,12 +30,7 @@ t_list	*parse_token(t_list *tokens, t_shell *shell)
 		tmp = lst->content;
 		lst->content = new;
 		if (is_parse_wild_path(tmp))
-		{
-			printf("->%p\n", lst);
 			lst = parse_wildcard(&lst);
-			printf("->%p\n", lst);
-
-		}
 		free(tmp);
 		lst = lst->next;
 	}
