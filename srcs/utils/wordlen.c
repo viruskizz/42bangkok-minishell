@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wordlen.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araiva <tsomsa@student.42.fr>              +#+  +:+       +#+        */
+/*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 08:19:15 by araiva            #+#    #+#             */
-/*   Updated: 2022/10/22 08:19:16 by araiva           ###   ########.fr       */
+/*   Updated: 2022/10/24 01:23:53 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,7 @@ static int	qlen(char *str)
 	i = 1;
 	while (str[i] && str[i] != str[0])
 		i++;
-	return (++i);
+	if (str[i] == str[0])
+		return (++i);
+	return (i);
 }

@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 16:51:30 by araiva            #+#    #+#             */
-/*   Updated: 2022/10/13 23:13:48 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/24 02:06:38 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ int	exp_env_hom(char *token, char **str, t_shell *shell)
 		wlen = ft_strlen(token);
 	var = environment_getenv("HOME", shell);
 	*str = my_strcat(*str, ft_strdup(var));
-	*str = my_strcat(*str, ft_strdup("/"));
 	return (wlen);
 }
 

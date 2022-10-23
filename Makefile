@@ -1,12 +1,12 @@
 NAME = minishell
 CC = gcc
-# CFLAGS = -Wextra -Wall -Werror
+CFLAGS = -Wextra -Wall -Werror
 
 LIBFT_DIR = libft
 LREAD_DIR = /opt/homebrew/Cellar/readline/8.1.2
 
 INCLUDE_DIR	= includes
-# INCLUDES =	-I$(INCLUDE_DIR) -I$(LIBFT_DIR) -I /opt/homebrew/Cellar/readline/8.1.2/include/
+
 INCLUDES =	-I$(INCLUDE_DIR) \
 			-I$(LIBFT_DIR) \
 			-I$(LREAD_DIR)/include
@@ -24,6 +24,8 @@ SRCS = main.c \
 	execution/exec_redirect.c \
 	execution/hdoc_convert.c \
 	execution/cmd_export.c \
+	execution/cmd_unset.c \
+	execution/cmd_exit.c \
 	input_handling/split_input.c \
 	input_handling/validate_token.c \
 	input_handling/parse_token.c \

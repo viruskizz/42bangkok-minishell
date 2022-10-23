@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 01:51:03 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/09/26 21:41:27 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/24 03:49:04 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ int	split_count(char *str, char c, int mode)
 
 	result = 0;
 	index = 0;
+	if (str == NULL)
+		return (0);
 	if (mode == WORD)
 	{
 		while (str[index] != '\0')

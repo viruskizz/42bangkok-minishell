@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 04:07:40 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/14 22:28:29 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/24 02:08:39 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,22 @@
 
 /* function find environment variable name malloc and return */
 /* mode:ENVI:0 use in make env | mode:COMM:1 use in export */
-char	*environment_get_name(char *command)
+char	*environment_get_name(t_shell *shell, char *command)
 {
 	char	*variable_name;
 	int		index;
 
 	index = 0;
+	if (shell != NULL && ft_isalpha(command[0]) == 0 && command[0] != '_')
+	{
+		print_error(command, "export", ENV_NAME);
+		shell->exstat = 1;
+		return (0);
+	}
 	while (command[index] != '\0' && command[index] != '=')
 		index++;
+	if (command[index] == '\0')
+		return (0);
 	variable_name = (char *)ft_calloc(sizeof(char), (index + 1));
 	if (variable_name == NULL)
 		return (0);
@@ -41,9 +49,9 @@ int	environment_check_name(char *variable_name, char *cmd, t_shell *shell)
 	int	index;
 
 	index = 0;
-	if (ft_isalpha(variable_name[0]) == 0 && variable_name[0] != '_')
+	if (ft_isalpha(variable_name[0]) == 0 && variable_name[index++] != '_')
 	{
-		printf("minishell: export: `%s\': not a valid identifier\n", cmd);
+		print_error(cmd, "export", ENV_NAME);
 		shell->exstat = 1;
 		return (-1);
 	}
@@ -51,7 +59,7 @@ int	environment_check_name(char *variable_name, char *cmd, t_shell *shell)
 	{
 		if (ft_isalnum(variable_name[index++]) == 0)
 		{
-			printf("minishell: export: `%s\': not a valid identifier\n", cmd);
+			print_error(cmd, "export", ENV_NAME);
 			shell->exstat = 1;
 			return (-1);
 		}
@@ -81,7 +89,7 @@ int	environment_check_value(char *command, int quote, int qquote, int mode)
 	}
 	if (quote % 2 != 0 || qquote % 2 != 0)
 	{
-		printf("minishell: invalid quotes\n");
+		ft_putstr_fd("minishell: invalid quotes\n", 2);
 		return (-1);
 	}
 	if (mode == START)
