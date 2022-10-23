@@ -16,6 +16,25 @@ static int	is_match_path(char *srch, char *pattern);
 static void	*get_paths(char *dirname, char *srch, t_list **paths);
 static int	is_end_path(char *str);
 
+int	is_parse_wild_path(char *str)
+{
+	char	c;
+
+	while (*str)
+	{
+		c = *str;
+		if (c == '*')
+			return (1);
+		if ((c == '\'' || c == '"') && str++)
+		{
+			while (*str && *str != c)
+				str++;
+		}
+		str++;
+	}
+	return (0);
+}
+
 t_list	*wild_paths(t_list *tokens)
 {
 	t_list	*paths;

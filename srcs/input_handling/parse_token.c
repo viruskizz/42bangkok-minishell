@@ -20,16 +20,18 @@ static t_list	*parse_wildcard(t_list **lst);
 t_list	*parse_token(t_list *tokens, t_shell *shell)
 {
 	t_list	*lst;
+	char	*tmp;
 	char	*new;
 
 	lst = tokens;
 	while (lst)
 	{
 		new = parser(lst->content, shell);
-		free(lst->content);
+		tmp = lst->content;
 		lst->content = new;
-		if (ft_strchr(lst->content, '*'))
+		if (is_parse_wild_path(tmp))
 			lst = parse_wildcard(&lst);
+		free(tmp);
 		lst = lst->next;
 	}
 	return (tokens);
@@ -92,6 +94,7 @@ static int	parse_dq_quote(char *str, char **new, t_shell *shell)
 
 static t_list	*parse_wildcard(t_list **tokens)
 {
+	char	tmp;
 	t_list	*paths;
 	t_list	*next;
 
