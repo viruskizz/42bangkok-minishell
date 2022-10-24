@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 00:09:42 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/24 00:39:57 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/24 22:06:52 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	redirect_read_file(char **files, int infile, int index, int file)
 	while (files[index] != NULL)
 	{
 		file = open(files[index++], O_RDONLY);
-		if (file < 0)
+		if (file < 0 && free_db_ptr(NULL, NULL, buff) == 1)
 			return (-1);
 		while (1 > 0)
 		{

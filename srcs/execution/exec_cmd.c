@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 23:26:59 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/24 17:42:50 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/24 21:34:01 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ int	redirect_dup_start(t_shell *shell, t_execute *exe)
 	if (cmd->fg == NULL && cmd->fgg == NULL && cmd->opt == OPT_PIPE)
 		dup2(exe->fd[1], 1);
 	else if (cmd->fg != NULL && cmd->fg[exe->index] != NULL)
-		file = open(cmd->fg[exe->index++], O_RDWR | O_CREAT, 0644);
+		file = open(cmd->fg[exe->index++], O_RDWR | O_CREAT | O_TRUNC, 0644);
 	else if ((cmd->fgg != NULL && cmd->fgg[exe->xedni] != NULL))
 		file = open(cmd->fgg[exe->xedni++], O_RDWR | O_CREAT | O_APPEND, 0644);
 	if (file < -1)
