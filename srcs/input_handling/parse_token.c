@@ -96,14 +96,18 @@ static t_list	*parse_wildcard(t_list **tokens)
 {
 	t_list	*paths;
 	t_list	*next;
+	char	*srch;
 
+	srch = (*tokens)->content;
 	paths = wild_paths(*tokens);
 	if (paths)
 	{
 		next = (*tokens)->next;
-		(*tokens)->content = paths->content;
+		(*tokens)->content = ft_strdup(paths->content);
 		(*tokens)->next = paths->next;
 		ft_lstadd_back(tokens, next);
+		ft_lstdelone(paths, &free_token);
+		free(srch);
 	}
 	return (*tokens);
 }
