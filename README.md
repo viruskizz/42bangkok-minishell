@@ -5,8 +5,6 @@
 
 ## _42Bangkok' project_
 
-
-
 The **minishell** 42 project, recoding our own little bash. A program capable of parsing a prompt and launching executables with arguments, along with a few built-in functions.
 
 **Read documentation:**
@@ -17,31 +15,106 @@ The **minishell** 42 project, recoding our own little bash. A program capable of
 
 \* is recommended documentation.
 
-## Shell Grammar and Terminoly
+---
 
-There are descrition that you should about shell.
+## Interactive Minishell Test :bookmark_tabs:
 
-### Field
+The interactive minishell tester is shell script to execute command from tester file `testcase` (default). You can edit your testcase by yourself. You will know the output comparison between bash and your code.
 
-### Token
+There are 2 mode for this script.
 
-### Quoting
+1. **Report Mode** : This mode will generate test result in `test` directory. You can tracing the result. Compare between output and expected result from bash.
 
-### Word Expansion
+2. **Interative Mode** : This mode is simple. Script just pass the command into your `minishell`. This mode good for _debugging_
 
-### List
+You select between `Report` and `Interative`. Defualt mode is `Report`. You also can switch mode with shell argument flag `-i`
+**Mode**
 
-### Pipeline
+### Usage :computer:
 
-### Wildcard
+#### Installation
+Download my script `test.sh` from this project or my gist
 
-### Simple Command
+```bash
+# Download with wget
+wget -O test.sh https://gist.githubusercontent.com/viruskizz/c53fefe8f0ef08cc56e97f56ae6ce6c1/raw/47c0e230a690c473acef9539f8dee29717455480/minishell_testscript.sh
+# check existed
+ls test.sh
+# Grant executable permission
+chmod +x test.sh
+```
 
-### Command Table
+#### Setup
+
+Setup defual shell variable at the top of file
+
+```sh
+# your exec file
+EXEC="minishell"
+
+# restart command in Makefile
+RESTART_CMD="make re"
+
+# Prefix shell command
+PREFIX_COMMAND="input command"
+
+# Testcase file, use -f as flag to apply specfic test for `test_mnshell.sh`
+TEST_FILE="testcase"
+```
+
+#### Run
+
+Run with default setup.
+
+```sh
+./test.sh
+```
+
+Run with specific testcase file
+
+```sh
+./test.sh -f mytestcase
+```
+
+Run with `interative` mode
+
+```sh
+./test.sh -i
+```
+
+Option
+
+```yml
+-f: specific testfile
+-i: run with interative mode
+-n: remove `Araiva` banner
+-l: check `valgrind` leaks
+-L: check `valgrind` leaks with flags --leak-check=full
+-h: show help instuction
+```
+
+### CAUTION !! :warning:
+
+Some character output is not same as bash default because `minishell` is not interprete special character such as `\` `;`
+**Example**
+
+1. `\` in minishell output
+
+```bash
+$ echo "this is slash \"
+this is slash \
+```
+
+2. `;` in minishell output
+
+```bash
+$ echo some char;echo x
+some char;echo x
+```
 
 ---
 
-## Implementation
+## Implementation :pencil:
 
 The step to implement your `minishell` that can split into 3 path.
 
