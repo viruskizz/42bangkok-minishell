@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 23:26:59 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/24 03:58:14 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/24 17:42:50 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	execution_path_command(t_shell *shell, char **command, int index)
 
 	path = NULL;
 	env_path = ft_split_mode(environment_getenv("PATH", shell), ':', BOUND);
-	while (env_path[index] != NULL)
+	while (env_path != NULL && env_path[index] != NULL)
 	{
 		path = ft_midjoin(env_path[index++], command[0], '/');
 		if (access(path, F_OK | R_OK | X_OK) == 0)
