@@ -16,13 +16,17 @@ GRAY="\033[0;37m"
 CYAN="\033[0;36m"
 GREEN="\033[0;32m"
 YELLOW="\033[0;33m"
+MAGENTA="\033[0;35m"
+GRAY="\033[0;37m"
+LRED="\033[0;91m"
+BOLD="\033[1m"
 RESET="\033[0m"
 IFILE=test/input.txt
 RFILE=test/result.txt
 OFILE=test/output.txt
 EFILE=test/expect.txt
 DFILE=test/diff.txt
-TURL="https://raw.githubusercontent.com/viruskizz/42bangkok_minishell/develop/testfile"
+TURL="https://raw.githubusercontent.com/viruskizz/42bangkok_minishell/develop/test.txt"
 
 # Get option from command line
 usage() {
@@ -56,7 +60,7 @@ done
 main() {
   generate
   echo -e "$YELLOW""minishell test script"$RESET"\nby Araiva"
-  echo "========================"
+  echo "========================================================="
   runner
   verb
   debuger
@@ -94,9 +98,41 @@ runner() {
   # Runner
   $RESTART_CMD
   ./minishell < $IFILE > $RFILE
-  while read -r line; do eval "$line"; done < $IFILE <<EOF > $EFILE
+  while read -r line; do eval "$line"; done < $IFILE > $EFILE
   cat $RFILE | grep -v "$PREFIX_COMMAND" > $OFILE
   diff $OFILE $EFILE > $DFILE
+
+  n=$(cat $OFILE | wc -l)
+  i=1
+  correct=0
+  wrong=0
+  printf "NO. | Input %35s\n" "Mark"
+  echo "---------------------------------------------------------"
+  while [ $i -le $n ]
+  do
+    input=$(sed -n "$i,1p" $IFILE)
+    output=$(sed -n "$i,1p" $OFILE)
+    expect=$(sed -n "$i,1p" $EFILE)
+    if [ "$output" == "$expect" ]; then
+      correct=$(( correct + 1 ))
+      check=true
+    else
+      wrong=$(( wrong + 1 ))
+      check=false
+    fi
+    printf "%02d: %-50s" $i "$input"
+    if [[ $check == true ]]; then
+      echo -e $GREEN"✓"$RESET
+    else
+      echo -e $RED"X"$RESET
+      echo -e "$CYAN""output:" $output $RESET
+      echo -e "$GREEN""expect:" $expect $RESET
+    fi 
+    i=$(( i + 1 ))
+  done
+  echo "---------------------------------------------------------"
+  echo -e $MAGENTA"RESULT"$RESET
+  echo -e $BOLD"Correct: $correct/$n"
 }
 
 verb() {
@@ -106,22 +142,7 @@ verb() {
 }
 
 debuger() {
-  n=$(cat $OFILE | wc -l)
-  i=1
-  while [ $i -le $n ]
-  do
-    INPUT=$(sed -n "$i,1p" $IFILE)
-    OUTPUT=$(sed -n "$i,1p" $OFILE)
-    EXPECT=$(sed -n "$i,1p" $EFILE)
-    # echo -e $GRAY  "$i:" $INPUT $RESET
-    # echo -e $YELLOW ">:" $OUTPUT $RESET
-    # echo -e $CYAN   "+:" $EXPECT $RESET
-    # echo -e $CYAN   "+:" `eval "$(sed -n "$i,1p" $IFILE)"` $RESET
-    # EXPECT=`eval $(sed -n "$i,1p" $IFILE)`
-    # echo -e $EXPECT >> $EFILE
-    # echo -e $CYAN   "+:" $EXPECT $RESET
-    i=$(( i + 1 ))
-  done
+  cat $DFILE
 }
 
 clean() {
