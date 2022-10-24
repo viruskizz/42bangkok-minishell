@@ -19,7 +19,11 @@ The **minishell** 42 project, recoding our own little bash. A program capable of
 
 ## Interactive Minishell Test :bookmark_tabs:
 
-The interactive minishell tester is shell script to execute command from tester file `testcase` (default). You can edit your testcase by yourself. You will know the output comparison between bash and your code.
+<div>
+    <img src="https://raw.githubusercontent.com/viruskizz/42bangkok_minishell/main/test_example.png" alt="interactive minishell testscript" height=640 />
+</div>
+
+**The interactive minishell tester** is shell script to execute command from tester file `testcase` (default). You can edit your testcase by yourself. You will know the output comparison between bash and your code.
 
 There are 2 mode for this script.
 
@@ -91,6 +95,20 @@ Option
 -l: check `valgrind` leaks
 -L: check `valgrind` leaks with flags --leak-check=full
 -h: show help instuction
+```
+
+### Testcase
+
+You can use my `Testcase` from my [Gist] but it is include a bonus part. Some command does't show an output so you need to pipe it or run next command to test your result.
+
+Example testcase
+
+```bash
+# comment test with `#`
+echo fin
+echo x > redirect1 | echo
+cat redirect1
+rm redirect1 | echo
 ```
 
 ### CAUTION !! :warning:
@@ -238,3 +256,4 @@ This table will show the example every input pattern. You can learn parsing toke
 [Signal Number]: https://pubs.opengroup.org/onlinepubs/009696799/basedefs/signal.h.html
 [adrienblanc]: https://adrienblanc.com/projects/42/minishell
 [paulahemsi]: https://github.com/paulahemsi/minishell
+[Gist]: https://gist.github.com/viruskizz/c53fefe8f0ef08cc56e97f56ae6ce6c1
