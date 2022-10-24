@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 16:53:08 by araiva            #+#    #+#             */
-/*   Updated: 2022/10/13 22:52:33 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/24 04:46:16 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,18 @@ static t_list	*parse_wildcard(t_list **lst);
 t_list	*parse_token(t_list *tokens, t_shell *shell)
 {
 	t_list	*lst;
+	char	*tmp;
 	char	*new;
 
 	lst = tokens;
 	while (lst)
 	{
 		new = parser(lst->content, shell);
-		free(lst->content);
+		tmp = lst->content;
 		lst->content = new;
-		if (ft_strchr(lst->content, '*'))
+		if (is_parse_wild_path(tmp))
 			lst = parse_wildcard(&lst);
+		free(tmp);
 		lst = lst->next;
 	}
 	return (tokens);
@@ -94,14 +96,18 @@ static t_list	*parse_wildcard(t_list **tokens)
 {
 	t_list	*paths;
 	t_list	*next;
+	char	*srch;
 
+	srch = (*tokens)->content;
 	paths = wild_paths(*tokens);
 	if (paths)
 	{
 		next = (*tokens)->next;
-		(*tokens)->content = paths->content;
+		(*tokens)->content = ft_strdup(paths->content);
 		(*tokens)->next = paths->next;
 		ft_lstadd_back(tokens, next);
+		ft_lstdelone(paths, &free_token);
+		free(srch);
 	}
 	return (*tokens);
 }

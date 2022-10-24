@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 20:38:04 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/16 15:56:15 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/23 23:03:55 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,12 +72,11 @@ static int	execution_waitpid(t_shell *shell, t_execute *exe)
 	if (string_compare(cmds->tokens[0], "cd", NO_LEN) == 1)
 		execution_change_directory(shell, cmds->tokens);
 	else if (string_compare(cmds->tokens[0], "export", NO_LEN) == 1)
-	{
-		if (execution_export_env(shell, cmds->tokens, 0) == -1)
-			return (-42);
-	}
+		execution_export_env(shell, cmds->tokens, 0);
 	else if (string_compare(cmds->tokens[0], "unset", NO_LEN) == 1)
-		shell->exstat = execution_unset_env(&shell->env, cmds->tokens, 0);
+		execution_unset_env(shell, &shell->env, cmds->tokens, 0);
+	else if (string_compare(cmds->tokens[0], "exit", NO_LEN) == 1)
+		shell->exstat = execution_exit(shell, cmds->tokens);
 	if (shell->cmds->next != NULL && ((t_cmd *)shell->cmds->content)->opt == 1)
 		dup2(exe->fd[0], 0);
 	else

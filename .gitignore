@@ -10,3 +10,6 @@
 minishell
 build
 libft/libft.a
+
+output.txt
+input.txt

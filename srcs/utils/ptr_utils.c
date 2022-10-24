@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ptr_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araiva <tsomsa@student.42.fr>              +#+  +:+       +#+        */
+/*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 00:16:33 by araiva            #+#    #+#             */
-/*   Updated: 2022/10/20 00:16:34 by araiva           ###   ########.fr       */
+/*   Updated: 2022/10/23 23:50:54 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,30 @@ int	free_db_ptr(char **str1, char **str2, void *str3)
 	return (1);
 }
 
-/* helper of environment_upset_env */
-void	environment_delete(t_env *env)
+/* print error */
+void	print_error(char *str, char *cmd, int mode)
 {
-	free(env->name);
-	free(env->value);
-	free(env);
+	if (mode == ENV_NAME)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd, 2);
+		ft_putstr_fd(": `", 2);
+		ft_putstr_fd(str, 2);
+		ft_putstr_fd("\': not a valid identifier\n", 2);
+	}
+	else if (mode == CD_NODIR)
+	{
+		ft_putstr_fd("minishell: cd: no such file or directory: ", 2);
+		ft_putendl_fd(str, 2);
+	}
+	else if (mode == CD_PWD)
+	{
+		ft_putstr_fd("minishell: cd: string not in pwd: ", 2);
+		ft_putendl_fd(str, 2);
+	}
+	else if (mode == NO_CMD)
+	{
+		ft_putstr_fd("minishell: command not found: ", 2);
+		ft_putendl_fd (str, 2);
+	}
 }

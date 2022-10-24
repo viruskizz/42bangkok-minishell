@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 23:33:02 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/14 23:29:02 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/23 23:51:35 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	change_directory(t_shell *shell, char *directory)
 	command = ft_midjoin("OLDPWD", path_env, '=');
 	if (chdir(directory) != 0)
 	{
-		printf("minishell: cd: no such file or directory: %s\n", directory);
+		print_error(directory, NULL, CD_NODIR);
 		shell->exstat = 1;
 	}
 	environment_export_env(shell, "OLDPWD", path_env, command);
@@ -47,7 +47,7 @@ int	execution_change_directory(t_shell *shell, char **command)
 	user = ft_midjoin("~", environment_getenv("USER", shell), '\0');
 	if (ft_lencount(NULL, command, STRS) == 3)
 	{
-		printf("minishell: cd: string not in pwd: %s\n", command[1]);
+		print_error(command[1], NULL, CD_PWD);
 		shell->exstat = 1;
 	}
 	else if (ft_lencount(NULL, command, STRS) == 1
@@ -60,7 +60,7 @@ int	execution_change_directory(t_shell *shell, char **command)
 		change_directory(shell, command[1]);
 	else
 	{
-		printf("minishell: cd: too many agurments\n");
+		ft_putstr_fd("minishell: cd: too many agurments\n", 2);
 		shell->exstat = 1;
 	}
 	free(user);
@@ -82,36 +82,6 @@ int	execution_print_env(t_shell *shell)
 	return (0);
 }
 
-/* unset ther environment in t_env can do more than one time*/
-int	execution_unset_env(t_env **env, char **variable_name, int index)
-{
-	t_env	*current;
-	t_env	*check;
-
-	while (variable_name[++index] != NULL)
-	{
-		current = *env;
-		check = *env;
-		if (string_compare((*env)->name, variable_name[index], NO_LEN) == 1)
-		{
-			*env = (*env)->next;
-			environment_delete(current);
-		}
-		while (current != NULL)
-		{
-			check = check->next;
-			if (check != NULL && string_compare(check->name,
-					variable_name[index], NO_LEN) == 1)
-			{
-				current->next = check->next;
-				environment_delete(check);
-			}
-			current = current->next;
-		}
-	}
-	return (0);
-}
-
 int	execution_export_env(t_shell *shell, char **cmds, int index)
 {
 	char	*var_name;
@@ -120,9 +90,9 @@ int	execution_export_env(t_shell *shell, char **cmds, int index)
 	shell->exstat = 0;
 	while (cmds != NULL && cmds[++index] != NULL)
 	{
-		var_name = environment_get_name(cmds[index]);
+		var_name = environment_get_name(shell, cmds[index]);
 		if (var_name == NULL)
-			return (-1);
+			continue ;
 		if (environment_check_name(var_name, cmds[index], shell) != 0)
 		{
 			free(var_name);
@@ -132,7 +102,7 @@ int	execution_export_env(t_shell *shell, char **cmds, int index)
 		if (var_value == NULL)
 		{
 			free(var_name);
-			return (-1);
+			continue ;
 		}
 		environment_export_env(shell, var_name, var_value, cmds[index]);
 		free(var_value);
