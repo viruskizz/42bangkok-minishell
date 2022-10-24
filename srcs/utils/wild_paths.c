@@ -56,7 +56,7 @@ static void	*get_paths(char *dirname, char *srch, t_list **paths)
 	DIR				*dir;
 	struct dirent	*entry;
 	char			*str;
-	int				is_mathch;
+	int				is_match;
 
 	dir = opendir(dirname);
 	if (!dir)
@@ -65,10 +65,10 @@ static void	*get_paths(char *dirname, char *srch, t_list **paths)
 	while (entry)
 	{
 		str = entry->d_name;
-		is_mathch = is_match_path(str, srch);
-		if (is_mathch > 0)
-			get_paths(str, srch + is_mathch + 1, paths);
-		else if (is_mathch == 0 && *str != '.')
+		is_match = is_match_path(str, srch);
+		if (is_match > 0)
+			get_paths(str, srch + is_match + 1, paths);
+		else if (is_match == 0 && *str != '.')
 			ft_lstadd_back(paths, ft_lstnew(ft_strdup(str)));
 		entry = readdir(dir);
 	}

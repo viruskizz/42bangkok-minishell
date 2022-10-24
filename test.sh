@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Setup
+# Your Setup
 RESTART_CMD="make restart"
 PREFIX_COMMAND="input command"
 TEST_FILE="test.txt"
@@ -26,6 +26,7 @@ RFILE=test/result.txt
 OFILE=test/output.txt
 EFILE=test/expect.txt
 DFILE=test/diff.txt
+XFILE=test/error.txt
 TURL="https://raw.githubusercontent.com/viruskizz/42bangkok_minishell/develop/test.txt"
 
 # Get option from command line
@@ -58,10 +59,12 @@ while getopts "hvdcf:" options; do
 done
 
 main() {
-  generate
+  $RESTART_CMD
   echo -e "$YELLOW""minishell test script"$RESET"\nby Araiva"
+  generate
   echo "========================================================="
   runner
+  printoutput
   verb
   debuger
   clean
@@ -69,44 +72,44 @@ main() {
 }
 
 generate() {
-  if [ ! -d "test/" ]
-  then
+  if [ ! -d "test/" ]; then
     mkdir test/
   fi
 
-  if [ ! -f $TEST_FILE ]
-  then
+  if [ ! -f $TEST_FILE ]; then
     echo -e $RED"NOT_FOUND: $TEST_FILE"$RESET
     REMOTE=$(wget --spider -q $TURL)
     if [ $? -eq 0 ]
     then
       echo "Download test file from internet"
       wget -O $TEST_FILE $TURL -q --show-progress
-      cp $TEST_FILE $IFILE
     else
       echo "create example $TEST_FILE"
       echo "echo example" > $TEST_FILE
       exit 1
     fi
-  else
+  fi
+  if [ -f $TEST_FILE ]; then
     echo "file: " $TEST_FILE
-    cp $TEST_FILE $IFILE
+    cat $TEST_FILE | grep -v "^#" > $IFILE
   fi
 }
 
 runner() {
   # Runner
-  $RESTART_CMD
   ./minishell < $IFILE > $RFILE
   while read -r line; do eval "$line"; done < $IFILE > $EFILE
   cat $RFILE | grep -v "$PREFIX_COMMAND" > $OFILE
   diff $OFILE $EFILE > $DFILE
+}
 
+printoutput() {
+  
   n=$(cat $OFILE | wc -l)
   i=1
   correct=0
   wrong=0
-  printf "NO. | Input %35s\n" "Mark"
+  printf "NO. | Input %45s\n" "Mark"
   echo "---------------------------------------------------------"
   while [ $i -le $n ]
   do
