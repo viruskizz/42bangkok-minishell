@@ -1,0 +1,38 @@
+# comment test with `#`
+echo sr*
+echo "sr*"
+echo abc
+echo "xyz"
+echo "xyz"'123'
+echo a"x"y"z"a        ijk
+echo ~
+echo '123'
+echo xyz'123'xyz
+echo 'x'$HOME'x'
+echo 'x'~'x'
+echo
+echo '"/home/araiva"'
+echo "'/home/araiva'"
+echo 0
+echo abc$HOME
+echo abc$HOMEde
+echo "abc$HOMEde"
+echo 'abc$HOMEde'
+echo abc0de
+echo "abc0de"
+echo 'abc0de'
+echo "10""20""30"
+echo "10"20"30"
+echo '10''20''30'
+echo '10'20'30'
+echo 10"20"'30'
+echo 10"20     "'30     '
+echo 10 "20     "'30     '
+echo 10    "20     "'30     '
+echo 10    "20     " '30     '
+echo 10    "20     "     '30     '
+echo "$HOME" '$HOME'
+echo x > redirect1 | echo
+cat redirect1
+rm redirect1 | echo
+echo fin
