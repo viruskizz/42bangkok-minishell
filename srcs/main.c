@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 18:52:24 by araiva            #+#    #+#             */
-/*   Updated: 2022/10/24 01:24:30 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/24 17:28:21 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static int	parse_input(char *input, t_shell *shell)
 	free(input);
 	if (!validate_token(&tokens))
 	{
-		printf("Error unexpected token\n");
+		ft_putstr_fd("minishell: Error unexpected token\n", 2);
 		ft_lstclear(&tokens, &free_token);
 		return (-1);
 	}

@@ -6,7 +6,7 @@
 /*   By: sharnvon <sharnvon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 01:51:03 by sharnvon          #+#    #+#             */
-/*   Updated: 2022/10/24 03:49:04 by sharnvon         ###   ########.fr       */
+/*   Updated: 2022/10/24 17:41:41 by sharnvon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ int	split_count(char *str, char c, int mode)
 
 	result = 0;
 	index = 0;
-	if (str == NULL)
-		return (0);
 	if (mode == WORD)
 	{
 		while (str[index] != '\0')
@@ -99,6 +97,8 @@ char	**ft_split_mode(char *str, char c, int mode)
 {
 	char	**result;
 
+	if (str == NULL)
+		return (0);
 	result = (char **)ft_calloc(sizeof(char *), split_count(str, c, WORD) + 1);
 	if (result == NULL)
 		return (0);
